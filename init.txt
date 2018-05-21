@@ -1,0 +1,6 @@
+Going to create an app like skype
+
+1. Title = Gossiping
+2. db = firebase - google A/C
+3. technology = html, css, bs, js, jquery, nodejs 
+
