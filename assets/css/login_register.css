@@ -11,3 +11,7 @@
 #navbarNavDropdown.show {
     padding-bottom: 20px;
 }
+.navbar-dark .navbar-toggler {
+    color: var(--white);
+    border: none;
+}
