@@ -1,23 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    
     <title>Gossiping</title>
-    <link href="css/common.css">
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/common.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="vendor/css/themify-icons/themify-icons.css">
+  
+    <link rel="stylesheet" href="vendor/css/bootstrap-v4.0.0/css/bootstrap.min.css">
+    <script src="vendor/css/bootstrap-v4.0.0/js/popper.min.js"></script>
+    
+    <script src="vendor/js/jquery/jquery-min-v3.3.1.js"></script>
+    <script src="vendor/css/bootstrap-v4.0.0/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/css/login_register.css">
+
 </head>
 <body>
-    We are gossiping....
-    First commit - Maruf
     
-    commit by ibrahim
-    
-    <h5>Second commit - Maruf</h5>
-    
-    <script>
-        hello();
-    </script>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
+        
+        <a class="navbar-brand pl-2 pr-2 text-white" href="index.html">
+            Gossiping
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="ti-align-justify"></i>
+        </button>
+        <div id="navbarNavDropdown" class="navbar-collapse collapse">
+            <ul class="navbar-nav mr-auto font-weight-bold pl-4">
+            </ul>
+            <ul class="navbar-nav font-weight-bold">
+                <li class="nav-item">
+                    <a id="logout" class="nav-link pl-4 pr-4" href="login.html">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+  
+<div class="container-fluid mt-5">
+
+    <div class="row">
+        
+        <div class="col-sm-4 col-md-3 mb-4 ">
+            <div class="border border-success p-4">
+                <ul id="add_user">
+                
+                </ul>
+                
+            </div>
+        </div>
+        
+        <div class=" col-sm-8 col-md-9 mb-4">
+            <div class="border border-success p-4">
+                
+                <form action="#">
+                      <div class="form-group">
+                        <label for="email">Email address:</label>
+                        <input type="email" placeholder="Email" class="form-control rounded-0" id="email">
+                      </div>
+                      <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <input type="password" placeholder="Password" class="form-control rounded-0" id="password">
+                      </div>
+                      <div class="form-group form-check">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox"> Remember me
+                        </label>
+                      </div>
+                      <button type="submit" id="do_login" class="btn btn-info rounded-0">Login</button>
+                </form>
+                
+            </div>
+        </div>
+      
+    </div>
+</div>
+
 </body>
+<!--<script src="https://www.gstatic.com/firebasejs/5.0.3/firebase.js"></script>-->
+<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+
+<script src="assets/js/firebase_connection.js"></script>
+
+<script>
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log("---------------cu--------------"+user.uid);
+  } else {
+    console.log("---------------el--------------");
+  }
+});
+
+var query = firebase.database().ref("users").orderByKey();
+query.once("value")
+  .then(function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      // key will be "ada" the first time and "alan" the second time
+      var key = childSnapshot.key;
+      // childData will be the actual contents of the child
+      var childData = childSnapshot.val();
+        
+        console.log(childData);
+        
+        $("#add_user").append('<li>Name : '+childData.name +' Email : '+childData.email+'</li>')
+  });
+});
+ 
+$("#logout").on("click", function(){
+    firebase.auth().signOut().then(function() {
+      console.log("Sign-out successful.");
+    }, function(error) {
+      console.log("An error happened.");
+    });
+});    
+</script>
     
 </html>
