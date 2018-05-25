@@ -1,0 +1,17 @@
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--white);
+}
+.navbar-dark .navbar-nav .active {
+    border-bottom: 2px solid var(--white);
+}
+
+#navbarNavDropdown.show .navbar-nav .nav-item:not(.active) {
+	border-bottom: 1px solid var(--white);
+}
+#navbarNavDropdown.show {
+    padding-bottom: 20px;
+}
+.navbar-dark .navbar-toggler {
+    color: var(--white);
+    border: none;
+}
