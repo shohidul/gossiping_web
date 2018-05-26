@@ -57,11 +57,15 @@
         </div>
         
         <div class=" col-sm-8 col-md-9 mb-4">
-            <div class="border border-success p-4 h-100">
+            <div id="load_container" class="border border-success p-4 h-100">
                 
-                
+                <div id="messageDiv">Chat APP<br/></div>
+                <input id="nameInput" placeholder="Name"/>
+                <input id="messageInput" placeholder="Message..."/>
+        
                 
             </div>
+
         </div>
       
     </div>
@@ -75,20 +79,30 @@
 
 <script src="assets/js/firebase_connection.js"></script>
 
+
 <script>
-    
+/*--------firebase get all current user function-------------*/    
 var currentUser;
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    console.log("---------------cu--------------"+user.uid);
+      
     currentUser = user;
-    $("#current_user").text(user.email);
+      
+    firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
+          var username = (snapshot.val() && snapshot.val().name) || 'Anonymous';
+            console.log("-------username-------------"+username);
+          $("#current_user").text(username);
+       });
+    
+      
+      
   } else {
     console.log("---------------el--------------");
     window.location.replace("file:///C:/Users/USER/Documents/GitHub/gossiping_web/login.html");
   }
 });
 
+/*--------firebase get all user function-------------*/
 var query = firebase.database().ref("users").orderByKey();
 query.once("value")
   .then(function(snapshot) {
@@ -105,14 +119,46 @@ query.once("value")
         }
   });
 });
- 
+
+/*--------firebase logout function-------------*/
 $("#logout").on("click", function(){
     firebase.auth().signOut().then(function() {
       console.log("Sign-out successful.");
     }, function(error) {
       console.log("An error happened.");
     });
-});    
+});   
+    
+
+  //-------------------------------------------------  
+
+var messageRef = dbRef.ref('messages');
+    
+/*var messageRef = new Firebase('https://gossipweb-e1ec6.firebaseio.com/messages');*/
+    
+$('#messageInput').keypress(function(e){
+   if(e.keyCode == 13) {
+       
+var to_uid = $('#nameInput').val();
+var from_uid = currentUser.uid;
+var text = $('#messageInput').val();
+       
+  messageRef.push({to_uid:to_uid, from_uid:from_uid, text:text});
+  // messageRef.child('currentMessage');
+  $('#messageInput').val();
+   }
+
+});
+
+messageRef.on('child_added',function(snapshot){
+   var message = snapshot.val();
+  console.log(message);
+  document.getElementById('messageDiv').innerHTML += message.to_uid+'--'+message.text+'<br/>';
+
+});
+
+    
+    
 </script>
     
 </html>
