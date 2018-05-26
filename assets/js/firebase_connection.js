@@ -1,3 +1,4 @@
+/*--------firebase configuration-------------*/
 var config = {
     apiKey: "AIzaSyBPlftKyBDOkhYs4f49ChUCszFGJV3wGSA",
     authDomain: "gossipweb-e1ec6.firebaseapp.com",
@@ -16,7 +17,7 @@ firebase.initializeApp(config);
   var usersRef = dbRef.ref('users');
   var auth = null;
 
-  //Register
+/*--------firebase register function-------------*/
   $('#user_register').on('click', function () {
       //alert("start");
     //e.preventDefault();
@@ -65,7 +66,7 @@ firebase.initializeApp(config);
     }  
   });  
 
-
+/*--------firebase login function-------------*/
 $('#do_login').on('click', function () {
       
     if( $('#email').val() != '' && $('#password').val() != '' ){
@@ -90,7 +91,7 @@ $('#do_login').on('click', function () {
     }
   });
     
-    
+/*--------page redirect function-------------*/    
 function redirectData(authData){
 //passing the variable into the window.location URL
     window.location.replace("file:///C:/Users/USER/Documents/GitHub/gossiping_web/index.html");
