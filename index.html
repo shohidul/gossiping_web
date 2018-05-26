@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+
     <title>Gossiping</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link rel="stylesheet" href="vendor/css/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="vendor/css/bootstrap-v4.0.0/css/bootstrap.min.css">
-    
+
     <script src="vendor/css/bootstrap-v4.0.0/js/popper.min.js"></script>
     <script src="vendor/js/jquery/jquery-min-v3.3.1.js"></script>
     <script src="vendor/css/bootstrap-v4.0.0/js/bootstrap.min.js"></script>
-    
+
     <link rel="stylesheet" href="assets/css/login_register.css">
     <link rel="stylesheet" href="assets/css/common.css">
 
 </head>
 <body>
-    
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top shadow-nohover">
-        
+
         <a class="navbar-brand pl-2 pr-2 text-white" href="index.html">
             Gossiping
         </a>
-        
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <i class="ti-align-justify"></i>
         </button>
@@ -42,32 +42,32 @@
         </div>
     </nav>
     <br>
-  
+
 <div class="container-fluid mt-5">
 
     <div class="row">
-        
+
         <div class="col-sm-4 col-md-3 mb-4 ">
             <div class="border border-success p-4">
-                <ul id="add_user" class="list-group">
-                
+                <ul id="add_user" class="list-group friend-list">
+
                 </ul>
-                
+
             </div>
         </div>
-        
+
         <div class=" col-sm-8 col-md-9 mb-4">
             <div id="load_container" class="border border-success p-4 h-100">
-                
+
                 <div id="messageDiv">Chat APP<br/></div>
                 <input id="nameInput" placeholder="Name"/>
                 <input id="messageInput" placeholder="Message..."/>
-        
-                
+
+
             </div>
 
         </div>
-      
+
     </div>
 </div>
 
@@ -81,21 +81,21 @@
 
 
 <script>
-/*--------firebase get all current user function-------------*/    
+/*--------firebase get all current user function-------------*/
 var currentUser;
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-      
+
     currentUser = user;
-      
+
     firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
           var username = (snapshot.val() && snapshot.val().name) || 'Anonymous';
             console.log("-------username-------------"+username);
           $("#current_user").text(username);
        });
-    
-      
-      
+
+
+
   } else {
     console.log("---------------el--------------");
     window.location.replace("file:///C:/Users/USER/Documents/GitHub/gossiping_web/login.html");
@@ -111,11 +111,11 @@ query.once("value")
       var key = childSnapshot.key;
       // childData will be the actual contents of the child
       var childData = childSnapshot.val();
-        
+
         console.log(childData);
-        
+
         if(currentUser != null ){
-            $("#add_user").append('<li class="list-group-item h-25 w-100 p-2 mb-2 shadow">Name : '+childData.name +'<br> Email : '+childData.email+'</li>')
+            $("#add_user").append('<li class="friend list-group-item h-25 w-100 p-2 mb-2 shadow">Name : <span class="friend-name">'+childData.name +'</span><br> Email : '+childData.email+'</li>')
         }
   });
 });
@@ -127,22 +127,28 @@ $("#logout").on("click", function(){
     }, function(error) {
       console.log("An error happened.");
     });
-});   
-    
+});
 
-  //-------------------------------------------------  
+
+  //-------------------------------------------------
 
 var messageRef = dbRef.ref('messages');
-    
+
 /*var messageRef = new Firebase('https://gossipweb-e1ec6.firebaseio.com/messages');*/
-    
+
+$('.friend-list').on("click", ".friend", function(){
+    var friendName = $(this).find(".friend-name").text();
+    alert(friendName);
+})
+
+
 $('#messageInput').keypress(function(e){
    if(e.keyCode == 13) {
-       
+
 var to_uid = $('#nameInput').val();
 var from_uid = currentUser.uid;
 var text = $('#messageInput').val();
-       
+
   messageRef.push({to_uid:to_uid, from_uid:from_uid, text:text});
   // messageRef.child('currentMessage');
   $('#messageInput').val();
@@ -157,8 +163,7 @@ messageRef.on('child_added',function(snapshot){
 
 });
 
-    
-    
+
 </script>
-    
+
 </html>

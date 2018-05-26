@@ -94,5 +94,5 @@ $('#do_login').on('click', function () {
 /*--------page redirect function-------------*/    
 function redirectData(authData){
 //passing the variable into the window.location URL
-    window.location.replace("file:///C:/Users/USER/Documents/GitHub/gossiping_web/index.html");
+    window.location.replace("index.html");
 }

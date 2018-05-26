@@ -5,23 +5,14 @@ Going to create an app like skype
 3. technology = html, css, bs, js, jquery, nodejs 
 
 
+#tables
 
+messages
+    -user_from
+    -user_to
+    -text
+    -date
+    -day
+    -time
+    -file_url
 
-<script>
-function GetURLParameter(sParam){
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++)
-    {
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam)
-        {
-            return decodeURIComponent(sParameterName[1]);
-        }
-    }
-};
-    var id = GetURLParameter('id');
-    $("#user_id").text(id);
-    console.log(id);
-        
-</script>
