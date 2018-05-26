@@ -1,10 +1,10 @@
 var config = {
-    apiKey: "AIzaSyCu8fp2Kzy3GWGFSiOV_OSGDwHV6-otmrQ",
-    authDomain: "gossipapp-8e2a7.firebaseapp.com",
-    databaseURL: "https://gossipapp-8e2a7.firebaseio.com",
-    projectId: "gossipapp-8e2a7",
-    storageBucket: "gossipapp-8e2a7.appspot.com",
-    messagingSenderId: "798365592402"
+    apiKey: "AIzaSyBPlftKyBDOkhYs4f49ChUCszFGJV3wGSA",
+    authDomain: "gossipweb-e1ec6.firebaseapp.com",
+    databaseURL: "https://gossipweb-e1ec6.firebaseio.com",
+    projectId: "gossipweb-e1ec6",
+    storageBucket: "gossipweb-e1ec6.appspot.com",
+    messagingSenderId: "280843844970"
   };
 
 firebase.initializeApp(config);

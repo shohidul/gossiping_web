@@ -33,6 +33,9 @@
             </ul>
             <ul class="navbar-nav font-weight-bold">
                 <li class="nav-item">
+                    <a id="current_user" class="nav-link pl-4 pr-4"></a>
+                </li>
+                <li class="nav-item">
                     <a id="logout" class="nav-link pl-4 pr-4" href="login.html">Logout</a>
                 </li>
             </ul>
@@ -46,7 +49,7 @@
         
         <div class="col-sm-4 col-md-3 mb-4 ">
             <div class="border border-success p-4">
-                <ul id="add_user">
+                <ul id="add_user" class="list-group">
                 
                 </ul>
                 
@@ -54,24 +57,9 @@
         </div>
         
         <div class=" col-sm-8 col-md-9 mb-4">
-            <div class="border border-success p-4">
+            <div class="border border-success p-4 h-100">
                 
-                <form action="#">
-                      <div class="form-group">
-                        <label for="email">Email address:</label>
-                        <input type="email" placeholder="Email" class="form-control rounded-0" id="email">
-                      </div>
-                      <div class="form-group">
-                        <label for="pwd">Password:</label>
-                        <input type="password" placeholder="Password" class="form-control rounded-0" id="password">
-                      </div>
-                      <div class="form-group form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox"> Remember me
-                        </label>
-                      </div>
-                      <button type="submit" id="do_login" class="btn btn-info rounded-0">Login</button>
-                </form>
+                
                 
             </div>
         </div>
@@ -80,10 +68,10 @@
 </div>
 
 </body>
-<!--<script src="https://www.gstatic.com/firebasejs/5.0.3/firebase.js"></script>-->
-<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase.js"></script>
+<!--<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>-->
 
 <script src="assets/js/firebase_connection.js"></script>
 
@@ -94,6 +82,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log("---------------cu--------------"+user.uid);
     currentUser = user;
+    $("#current_user").text(user.email);
   } else {
     console.log("---------------el--------------");
     window.location.replace("file:///C:/Users/USER/Documents/GitHub/gossiping_web/login.html");
@@ -112,7 +101,7 @@ query.once("value")
         console.log(childData);
         
         if(currentUser != null ){
-            $("#add_user").append('<li>Name : '+childData.name +' Email : '+childData.email+'</li>')
+            $("#add_user").append('<li class="list-group-item h-25 w-100 p-2 mb-2 shadow">Name : '+childData.name +'<br> Email : '+childData.email+'</li>')
         }
   });
 });
