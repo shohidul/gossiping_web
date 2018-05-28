@@ -37,7 +37,14 @@ friends/<my_uid>/<friend_uid>/{
     <key>:<value>
 }
 
-updated 
+
+Status Value :
+
+    0.Requested
+    2.Remove
+    
+    1.Confirm
+    3.Reject
 
 
 

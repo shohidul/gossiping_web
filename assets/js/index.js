@@ -10,6 +10,45 @@ auth.onAuthStateChanged(function(user) {
             $("#current_user_name").text(currentUser.first_name+" "+currentUser.last_name);
             $("#user_status").text("Status : "+currentUser.is_active);
         });
+      
+      
+        dbRef.ref('friends/'+user.uid).once("value").then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+
+              var childData = childSnapshot.val();
+
+                if(childData !== null ){
+                    if(childData.status == 0 ){
+                    var friendlisthtml='<li class="list-group-item h-25 w-100 p-3 ">'; 
+                        friendlisthtml+='<span class="request_user_email">Email : '+childData.to_uid+'</span><br>';
+                        friendlisthtml+='<span class="request_user_uid d-none">'+childData.to_uid+'</span>';
+                        friendlisthtml+='<button type="button" class="btn btn-success btn-sm btn-accept" onclick="acceptRequest(this)">Accept</button>';
+                        friendlisthtml+='<button type="button" class="btn btn-danger btn-sm btn-reject" onclick="rejectRequest(this)">Reject</button>';
+                        friendlisthtml+='</li>';
+                    $("#request_user").append(friendlisthtml);
+                }
+             }
+          });
+        });
+      
+            dbRef.ref('friends/'+user.uid).once("value").then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+
+              var childData = childSnapshot.val();
+
+                if(childData !== null ){
+                    if(childData.status == 1 ){
+                    var friendlisthtml='<li class="list-group-item h-25 w-100 p-3 ">'; 
+                        friendlisthtml+='<span class="request_user_email">Email : '+childData.to_uid+'</span><br>';
+                        friendlisthtml+='<span class="request_user_uid d-none">'+childData.to_uid+'</span>';
+                        friendlisthtml+='</li>';
+                    $("#friend_user").append(friendlisthtml);
+                }
+             }
+          });
+        });
+      
+      
   } else {
         window.location.replace("user_login.html");
   }
@@ -39,7 +78,6 @@ dbRef.ref("/users").once("value").then(function(snapshot) {
       var childData = childSnapshot.val();
         
         if(childData !== null ){
-            
             var friendlisthtml='<li class="list-group-item h-25 w-100 p-3 ">'; 
                 friendlisthtml+='<span class="user_name text-info font-weight-bold">Name : '+childData.first_name+' '+childData.last_name+'</span><br>';
                 friendlisthtml+='<span class="user_email">Email : '+childData.email+'</span><br>';
@@ -49,7 +87,7 @@ dbRef.ref("/users").once("value").then(function(snapshot) {
                 friendlisthtml+='<span class="user_status text-danger">Status : '+childData.is_active+'</span><br>';
             } 
                 friendlisthtml+='<span class="user_uid d-none">'+childData.user_uid+'</span>';
-                friendlisthtml+='<button type="button" class="btn btn-success btn-sm">request</button>';
+                friendlisthtml+='<button type="button" class="btn btn-success btn-sm btn-friend-request">Send Request</button>';
                 friendlisthtml+='</li>';
             
             $("#add_user").append(friendlisthtml)
@@ -58,17 +96,67 @@ dbRef.ref("/users").once("value").then(function(snapshot) {
 });
 
   
-$(".list-group").on("click", ".list-group-item", function(){
-    var name =$(this).find(".user_name").text();
-    var email =$(this).find(".user_email").text();
-    var status =$(this).find(".user_status").text();
-    var uid =$(this).find(".user_uid").text();
+$(".list-group").on("click", ".list-group-item .btn-friend-request", function(){
+    var reqUID =$(this).closest('li').find(".user_uid").text();
+    var myRequestData = {
+        from_uid :  currentUser.user_uid,
+        status : "0",
+        to_uid : reqUID
+    }
+    var toRequestData = {
+        from_uid :  reqUID,
+        status : "0",
+        to_uid : currentUser.user_uid
+    }
     
-    $("#chat_f_name").text(name);
-    $("#chat_f_email").text(email);
-    $("#chat_f_status").text(status);
-    $("#chat_f_uid").text(uid);
+      dbRef.ref('friends/'+currentUser.user_uid+'/' + reqUID)
+                    .set(myRequestData)
+                    .then(function(){
+                        console.log("first insert");
+      });
+    
+     dbRef.ref('friends/'+reqUID+'/' + currentUser.user_uid)
+                .set(toRequestData)
+                .then(function(){
+                    console.log("second insert");
+     });
+    
 });
+
+
+function acceptRequest(el){
+    var reqUID =$(el).closest('li').find(".request_user_uid").text();
+       dbRef.ref('friends/'+currentUser.user_uid+'/' + reqUID)
+                    .update({status : "1"})
+                    .then(function(){
+                        console.log("first updated");
+      });
+    
+     dbRef.ref('friends/'+reqUID+'/' + currentUser.user_uid)
+                .update({status : "1"})
+                .then(function(){
+                    console.log("second updated");
+     });
+    
+}
+
+function rejectRequest(el){
+    var reqUID =$(el).closest('li').find(".request_user_uid").text();
+    dbRef.ref('friends/'+currentUser.user_uid+'/' + reqUID)
+                    .update({status : "3"})
+                    .then(function(){
+                        console.log("first updated");
+    });
+    
+     dbRef.ref('friends/'+reqUID+'/' + currentUser.user_uid)
+                .update({status : "3"})
+                .then(function(){
+                    console.log("second updated");
+     });
+}
+
+
+
 /* $( "body" ).on( "click", "p", function() {
   $( this ).after( "<p>Another paragraph! " + (++count) + "</p>" );
 }); */  
@@ -100,3 +188,4 @@ messageRef.on('child_added',function(snapshot){
   document.getElementById('messageDiv').innerHTML += message.to_uid+'--'+message.text+'<br/>';
 
 });
+

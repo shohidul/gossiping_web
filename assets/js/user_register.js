@@ -25,7 +25,7 @@ function doRegister(){
             created_day:"",
             created_month:"",
             user_uid:"",
-            is_active:"yes"
+            is_active:"Online"
           
     };
     var passwords = {
