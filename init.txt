@@ -4,9 +4,7 @@ Going to create an app like skype
 2. db = firebase - google A/C
 3. technology = html, css, bs, js, jquery, nodejs 
 
-
-#tables
-
+#----------table-------
 messages
     -user_from
     -user_to
@@ -15,4 +13,31 @@ messages
     -day
     -time
     -file_url
+    
+    
+    
+
+-----to do list------
+1. search all users
+2. get searched user data (1)
+3. send friend request
+4. accept friend request
+5. reject friend request
+6. One to One Chat
+
+-------users table--------
+users/<user_uid>/{
+    --------user all data---------
+    <key>:<value>
+}
+
+-------friends table--------
+friends/<my_uid>/<friend_uid>/{
+    --------friend all data---------
+    <key>:<value>
+}
+
+
+
+    
 

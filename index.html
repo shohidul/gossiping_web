@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    
     <title>Gossiping</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
     <link rel="stylesheet" href="vendor/css/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="vendor/css/bootstrap-v4.0.0/css/bootstrap.min.css">
-
+    
     <script src="vendor/css/bootstrap-v4.0.0/js/popper.min.js"></script>
     <script src="vendor/js/jquery/jquery-min-v3.3.1.js"></script>
     <script src="vendor/css/bootstrap-v4.0.0/js/bootstrap.min.js"></script>
-
+    
     <link rel="stylesheet" href="assets/css/login_register.css">
     <link rel="stylesheet" href="assets/css/common.css">
 
 </head>
 <body>
-
+    
     <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top shadow-nohover">
-
+        
         <a class="navbar-brand pl-2 pr-2 text-white" href="index.html">
             Gossiping
         </a>
-
+        
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <i class="ti-align-justify"></i>
         </button>
@@ -36,134 +36,76 @@
                     <a id="current_user" class="nav-link pl-4 pr-4"></a>
                 </li>
                 <li class="nav-item">
-                    <a id="logout" class="nav-link pl-4 pr-4" href="login.html">Logout</a>
+                    <a id="logout" class="nav-link pl-4 pr-4" href="user_login.html">Logout</a>
                 </li>
             </ul>
         </div>
     </nav>
     <br>
-
+  
 <div class="container-fluid mt-5">
 
     <div class="row">
-
+        
         <div class="col-sm-4 col-md-3 mb-4 ">
-            <div class="border border-success p-4">
-                <ul id="add_user" class="list-group friend-list">
-
-                </ul>
-
+            <div class="row border-right border-success p-4">
+                <div class="col-12 border-bottom border-info text-center">
+                    <img id="current_user_photo" class="rounded-circle" src="vendor/images/profile/default_user.jpg" alt="Profile" width="100" height="100">
+                    <h5 id="current_user_name"></h5>
+                    <p id="user_status" class="text-success"></p>
+                
+                </div>
+                <div class="col-12 border-bottom border-info pt-4 pb-4">
+                    <ul id="add_user" class="list-group">
+                
+                    </ul>
+                </div>
             </div>
         </div>
-
+        
         <div class=" col-sm-8 col-md-9 mb-4">
-            <div id="load_container" class="border border-success p-4 h-100">
-
-                <div id="messageDiv">Chat APP<br/></div>
-                <input id="nameInput" placeholder="Name"/>
-                <input id="messageInput" placeholder="Message..."/>
-
-
-            </div>
-
+            <div id="load_container" class="row p-4">
+                
+                <div id="chat_header" class="col-12 chat_header h-25 pb-4 border-bottom border-info">
+                    <div class="row">
+                        <div class="col-1 align-self-center text-center">
+                            <img id="current_user_photo" class="rounded-circle" src="vendor/images/profile/default_user.jpg" alt="Profile" width="60" height="65">
+                        </div>
+                        <div class="col-11">
+                            <span id="chat_f_name" class="user_name text-info font-weight-bold">Name : Maruf Hasan</span><br>
+                            <span id="chat_f_email" class="user_email">Email : mh@gmail.com</span><br>
+                            <span id="chat_f_status" class="user_status text-success">Status : Online</span><br>
+                            <span id="chat_f_uid" class="user_uid d-none">Email : RZtMg8vzGxYjA78r9EXCxT6MY743</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 chat_body h-100 pt-4 pb-4">
+                        
+                </div>
+                <div class="col-12 chat_footer h-25 mt-5 border-top border-info pt-3">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input id="messageInput" class="w-100" placeholder="Message..."/>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="">Send</button>
+                        </div>
+                    </div>
+                </div>
+                
         </div>
-
+      
     </div>
 </div>
+    
+    
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    
+<script src="assets/js/firebase_connection.js"></script>
+<script src="assets/js/index.js"></script>
 
 </body>
-<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase.js"></script>
-<!--<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>-->
-
-<script src="assets/js/firebase_connection.js"></script>
-
-
-<script>
-/*--------firebase get all current user function-------------*/
-var currentUser;
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-
-    currentUser = user;
-
-    firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
-          var username = (snapshot.val() && snapshot.val().name) || 'Anonymous';
-            console.log("-------username-------------"+username);
-          $("#current_user").text(username);
-       });
-
-
-
-  } else {
-    console.log("---------------el--------------");
-    window.location.replace("file:///C:/Users/USER/Documents/GitHub/gossiping_web/login.html");
-  }
-});
-
-/*--------firebase get all user function-------------*/
-var query = firebase.database().ref("users").orderByKey();
-query.once("value")
-  .then(function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      // key will be "ada" the first time and "alan" the second time
-      var key = childSnapshot.key;
-      // childData will be the actual contents of the child
-      var childData = childSnapshot.val();
-
-        console.log(childData);
-
-        if(currentUser != null ){
-            $("#add_user").append('<li class="friend list-group-item h-25 w-100 p-2 mb-2 shadow">Name : <span class="friend-name">'+childData.name +'</span><br> Email : '+childData.email+'</li>')
-        }
-  });
-});
-
-/*--------firebase logout function-------------*/
-$("#logout").on("click", function(){
-    firebase.auth().signOut().then(function() {
-      console.log("Sign-out successful.");
-    }, function(error) {
-      console.log("An error happened.");
-    });
-});
-
-
-  //-------------------------------------------------
-
-var messageRef = dbRef.ref('messages');
-
-/*var messageRef = new Firebase('https://gossipweb-e1ec6.firebaseio.com/messages');*/
-
-$('.friend-list').on("click", ".friend", function(){
-    var friendName = $(this).find(".friend-name").text();
-    alert(friendName);
-})
-
-
-$('#messageInput').keypress(function(e){
-   if(e.keyCode == 13) {
-
-var to_uid = $('#nameInput').val();
-var from_uid = currentUser.uid;
-var text = $('#messageInput').val();
-
-  messageRef.push({to_uid:to_uid, from_uid:from_uid, text:text});
-  // messageRef.child('currentMessage');
-  $('#messageInput').val();
-   }
-
-});
-
-messageRef.on('child_added',function(snapshot){
-   var message = snapshot.val();
-  console.log(message);
-  document.getElementById('messageDiv').innerHTML += message.to_uid+'--'+message.text+'<br/>';
-
-});
-
-
-</script>
-
+    
 </html>

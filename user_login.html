@@ -36,10 +36,10 @@
             </ul>
             <ul class="navbar-nav font-weight-bold">
                 <li class="nav-item">
-                    <a class="nav-link pl-4 pr-4 active" href="login.html">Login</a>
+                    <a class="nav-link pl-4 pr-4 active" href="user_login.html">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 pr-4" href="register.html">Register</a>
+                    <a class="nav-link pl-4 pr-4" href="user_register.html">Register</a>
                 </li>
             </ul>
         </div>
@@ -55,7 +55,7 @@
         <div class=" col-sm-12 col-md-12 mb-4">
             <div class="p-4 mt-4 col-11 col-sm-8 col-md-5 col-xl-3 mx-auto shadow-nohover rounded">
                 
-                <form action="#">
+                <form>
                     <h4 class="mb-5">Sign in with your Gossiping Account</h4>
                     
                       <div class="form-group">
@@ -71,10 +71,10 @@
                           <input class="form-check-input" type="checkbox"> Remember me
                         </label>
                       </div>
-                      <button type="submit" id="do_login" class="btn btn-info rounded-0 shadow w-25">Login</button>
+                      <button type="button" id="do_login_btn" class="btn btn-info rounded-0 shadow w-25">Login</button>
                         
                     <div class="form-group form-check pl-0 mt-2 mb-0">
-                        <a href="register.html">Create a new Gossiping Account</a>
+                        <a href="user_register.html">Create a new Gossiping Account</a>
                     </div>
                 </form>
                 
@@ -84,15 +84,17 @@
     </div>
 </div>
     
+<!--<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase.js"></script>-->
+    
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    
+<script src="assets/js/firebase_connection.js"></script>
+<script src="assets/js/user_login.js"></script>
 
 
 </body>
-<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase.js"></script>
-<!--<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>-->
-    
-<script src="assets/js/firebase_connection.js"></script>
 
     
 </html>

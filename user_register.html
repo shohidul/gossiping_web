@@ -37,10 +37,10 @@
             </ul>
             <ul class="navbar-nav font-weight-bold">
                 <li class="nav-item">
-                    <a class="nav-link pl-4 pr-4" href="login.html">Login</a>
+                    <a class="nav-link pl-4 pr-4" href="user_login.html">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link pl-4 pr-4 active" href="register.html">Register</a>
+                    <a class="nav-link pl-4 pr-4 active" href="user_register.html">Register</a>
                 </li>
             </ul>
         </div>
@@ -56,30 +56,40 @@
         <div class=" col-sm-12 col-md-12 mb-4">
             <div class="p-4 mt-4 col-11 col-sm-8 col-md-5 col-xl-3 mx-auto shadow-nohover rounded">
                 
-                <form action="#">
+                <form>
                         <h4 class="mb-5">Create your Gossiping Account</h4>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="first_name">First Name :</label>
+                                <input type="text" placeholder="First Name" class="form-control rounded-0" id="first_name">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="last_name">Last Name :</label>
+                                <input type="text" placeholder="Last Name" class="form-control rounded-0" id="last_name">
+                            </div>
+                        </div>
+                    </div>
                     
-                    <div class="form-group">
-                        <label for="name">Full Name:</label>
-                        <input type="name" placeholder="User Full Name" class="form-control rounded-0" id="name">
-                      </div>
                       <div class="form-group">
-                        <label for="email">Email address:</label>
+                        <label for="email">Email address :</label>
                         <input type="email" placeholder="Email" class="form-control rounded-0" id="email">
                       </div>
                       <div class="form-group">
-                        <label for="password">Password:</label>
+                        <label for="password">Password :</label>
                         <input type="password" placeholder="Password" class="form-control rounded-0" id="password">
                       </div>
                     <div class="form-group">
-                        <label for="re_password">Re-enter Password:</label>
+                        <label for="re_password">Re-enter Password :</label>
                         <input type="password" placeholder="Re-enter Password" class="form-control rounded-0" id="re_password">
                       </div>
                       
-                      <button type="submit" id="user_register" class="btn btn-info rounded-0 shadow w-25">Register</button>
+                      <button type="button" id="user_register_btn" class="btn btn-info rounded-0 shadow w-25">Register</button>
                     
                     <div class="form-group form-check pl-0 mt-2 mb-0">
-                        <a href="login.html">Already have an Account? Login</a>
+                        <a href="user_login.html">Already have an Account? Login</a>
                     </div>
                 </form>
                 
@@ -88,20 +98,16 @@
       
     </div>
 </div>
+    
+<!--<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase.js"></script>-->
+
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    
+<script src="assets/js/firebase_connection.js"></script>
+<script src="assets/js/user_register.js"></script>
 
 </body>
 
-    
-<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase.js"></script>
-    
-<script src="assets/js/firebase_connection.js"></script>
-<script>
-  // Initialize Firebase
-/*$( "input" ).focus(function() {
-    var pholder = $( this ).attr("placeholder");
-    $( this ).closest( "label" ).text(pholder);
-    console.log(pholder);
-});
-    */
-</script>
 </html>
