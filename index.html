@@ -56,10 +56,41 @@
                 
                 </div>
                 <div class="col-12 border-bottom border-info pt-4 pb-4">
-                    <ul id="add_user" class="list-group">
-                
-                    </ul>
+                    
+                    
+                <!-- Nav tabs -->
+                  <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#friends">Friends</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#all_users">All Users</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#friend_request">Friend Request</a>
+                    </li>
+                  </ul>
+
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <div id="friends" class="container tab-pane active"><br>
+                      <h3>Friends</h3>
+                      <p>All Friends will be visible here</p>
+                    </div>
+                    <div id="all_users" class="container tab-pane fade"><br>
+                        <ul id="add_user" class="list-group">
+
+                        </ul>
+                    </div>
+                    <div id="friend_request" class="container tab-pane fade"><br>
+                        <h3>Friend Request</h3>
+                      <p>All Friend Request will be visible here</p>
+                    </div>
+                  </div>
+                    
+                    
                 </div>
+                
             </div>
         </div>
         
@@ -80,6 +111,8 @@
                     </div>
                 </div>
                 <div class="col-12 chat_body h-100 pt-4 pb-4">
+                    
+
                         
                 </div>
                 <div class="col-12 chat_footer h-25 mt-5 border-top border-info pt-3">
