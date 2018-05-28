@@ -4,7 +4,18 @@ Going to create an app like skype
 2. db = firebase - google A/C
 3. technology = html, css, bs, js, jquery, nodejs 
 
-
+#----------table-------
+messages
+    -user_from
+    -user_to
+    -text
+    -date
+    -day
+    -time
+    -file_url
+    
+    
+    
 
 -----to do list------
 1. search all users
@@ -26,4 +37,7 @@ friends/<my_uid>/<friend_uid>/{
     <key>:<value>
 }
 
+
+
+    
 

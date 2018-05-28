@@ -17,4 +17,3 @@ var usersRef    = dbRef.ref('users');
 var messageRef  = dbRef.ref('messages');
 var messageRef  = dbRef.ref('friends');
 
-
