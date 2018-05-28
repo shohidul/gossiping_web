@@ -49,6 +49,7 @@ dbRef.ref("/users").once("value").then(function(snapshot) {
                 friendlisthtml+='<span class="user_status text-danger">Status : '+childData.is_active+'</span><br>';
             } 
                 friendlisthtml+='<span class="user_uid d-none">'+childData.user_uid+'</span>';
+                friendlisthtml+='<button type="button" class="btn btn-success btn-sm">request</button>';
                 friendlisthtml+='</li>';
             
             $("#add_user").append(friendlisthtml)
