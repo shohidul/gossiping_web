@@ -48,7 +48,7 @@ function doRegister(){
             usersRef.child(auth.user.uid)
                     .set(userData)
                     .then(function(){
-                        window.location.replace("index.html");
+                        window.location.replace("user_profile.html");
               });
             
           }).catch(function(error){

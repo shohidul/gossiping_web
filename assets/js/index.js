@@ -9,6 +9,11 @@ auth.onAuthStateChanged(function(user) {
             $("#current_user").text(username);
             $("#current_user_name").text(currentUser.first_name+" "+currentUser.last_name);
             $("#user_status").text("Status : "+currentUser.is_active);
+            
+             storageRef.child('images/'+currentUser.photo_url).getDownloadURL().then(function(url) {
+                    $("#current_user_profile_photo").attr("src", url);
+             })
+            
         });
       
       
@@ -38,12 +43,39 @@ auth.onAuthStateChanged(function(user) {
 
                 if(childData !== null ){
                     if(childData.status == 1 ){
-                    var friendlisthtml='<li class="list-group-item h-25 w-100 p-3 ">'; 
-                        friendlisthtml+='<span class="request_user_email">Email : '+childData.to_uid+'</span><br>';
-                        friendlisthtml+='<span class="request_user_uid d-none">'+childData.to_uid+'</span>';
-                        friendlisthtml+='</li>';
-                    $("#friend_user").append(friendlisthtml);
-                }
+                        
+   dbRef.ref('/users/' + childData.to_uid).once('value').then(function(snapshot) {
+    friendUser = snapshot.val();
+       var img_url = "";
+  
+        var friendlisthtml= '<li class="list-group-item h-25 w-100 p-3 friend-user-list">'; 
+            friendlisthtml+= '<div class="row ">';
+            friendlisthtml+= '<div class="col-1 align-self-center text-center">';
+   /*     
+             storageRef.child('images/'+friendUser.photo_url).getDownloadURL().then(function(url) {
+
+                 
+             });*/
+       
+            friendlisthtml+= '<img id="current_user_img" class="rounded-circle" src="" alt="Profile" width="42"                           height="42">';  
+            friendlisthtml+= '</div>';
+            friendlisthtml+= '<div class="col-11" id="friend-user">';
+            friendlisthtml+= '<span id="f_name" class="friend-user-name text-info font-weight-bold">'+friendUser.first_name+'</span><br>';
+            friendlisthtml+= '<input type="hidden" value="'+friendUser.user_uid+'" class="friend-user-uid"/>';
+            friendlisthtml+= '<span id="f_email" class="friend-user-email">'+friendUser.email+'</span><br>';
+            friendlisthtml+= '<span id="f_status" class="friend-user-status text-success">'+friendUser.is_active+'</span><br>';
+            friendlisthtml+= '</div></div></li>';
+       
+         
+           
+       $("#friend_user").append(friendlisthtml);
+
+ });
+             
+                    
+            }
+                    
+                    
              }
           });
         });
@@ -157,35 +189,62 @@ function rejectRequest(el){
 
 
 
+
+$(".list-group").on("click", ".friend-user-list", function(){
+    var friendUID =$(this).closest('li').find(".friend-user-uid").val();
+    
+    var friendName =$(this).closest('li').find(".friend-user-name").text();
+    var friendEmail =$(this).closest('li').find(".friend-user-email").text();
+    var friendStatus =$(this).closest('li').find(".friend-user-status").text();
+   
+    $("#chat_f_name").text(friendName);
+     $("#chat_f_email").text(friendEmail);
+     $("#chat_f_status").text(friendStatus);
+    $("#chat_f_uid").text(friendUID);
+    
+    messagesRef.on('child_added',function(snapshot){
+   var message = snapshot.val();
+  console.log(message);
+  //document.getElementById('.chat_body').innerHTML += message.to_uid+'--'+message.text+'<br/>';
+$(".chat-body").append("<p>"+message.text+"</p>");
+
+});
+
+
+    
+});
+
+
 /* $( "body" ).on( "click", "p", function() {
   $( this ).after( "<p>Another paragraph! " + (++count) + "</p>" );
 }); */  
 
   //-------------------------------------------------  
 
-var messageRef = dbRef.ref('messages');
-   
+
 
 /*var messageRef = new Firebase('https://gossipweb-e1ec6.firebaseio.com/messages');*/
-    
+  
+
 $('#messageInput').keypress(function(e){
    if(e.keyCode == 13) {
        
-var to_uid = $('#nameInput').val();
-var from_uid = currentUser.uid;
+var to_uid = $('#chat_f_uid').text();
+var from_uid = currentUser.user_uid;
 var text = $('#messageInput').val();
        
-  messageRef.push({to_uid:to_uid, from_uid:from_uid, text:text});
-  // messageRef.child('currentMessage');
-  $('#messageInput').val();
+  messagesRef.push({to_uid:to_uid, from_uid:from_uid, text:text});
+
    }
 
 });
 
-messageRef.on('child_added',function(snapshot){
+/*
+messagesRef.on('child_added',function(snapshot){
    var message = snapshot.val();
   console.log(message);
-  document.getElementById('messageDiv').innerHTML += message.to_uid+'--'+message.text+'<br/>';
+  //document.getElementById('.chat_body').innerHTML += message.to_uid+'--'+message.text+'<br/>';
+$(".chat-body").append("<p>"+message.text+"</p>");
 
 });
-
+*/
