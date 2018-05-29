@@ -1,0 +1,43 @@
+<body>
+   <div class="main-container">
+       <div class="left-side">
+        
+       </div>
+       <div class="right-side">
+            <button id="sideBtn">Click me</button>
+       </div>
+   </div>
+    
+</body>
+<style>
+    body{
+        margin: 0;
+    }
+    .main-container{
+        //display: flex;
+    }
+    .left-side{
+        background-color: aquamarine;
+        height: 100%;
+        width: 350px;
+        min-width: 350px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        transition: transform 0.6 ease;
+    }
+    .left-side.open{
+        transform: translateX(0);
+        transition: transform 0.6 ease;
+    }
+    .right-side{
+        background-color: red;
+        height: 100%;
+    }
+</style>
+<script>
+    $("#sideBtn").on("click", function(){ 
+        $(".left-side").toggleClass("open");
+    })
+</script>

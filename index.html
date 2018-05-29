@@ -1,148 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html class="no-js" lang="">
+
 <head>
-    
-    <title>Gossiping</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <link rel="stylesheet" href="vendor/css/themify-icons/themify-icons.css">
-    <link rel="stylesheet" href="vendor/css/bootstrap-v4.0.0/css/bootstrap.min.css">
-    
-    <script src="vendor/css/bootstrap-v4.0.0/js/popper.min.js"></script>
-    <script src="vendor/js/jquery/jquery-min-v3.3.1.js"></script>
-    <script src="vendor/css/bootstrap-v4.0.0/js/bootstrap.min.js"></script>
-    
-    <link rel="stylesheet" href="assets/css/login_register.css">
-    <link rel="stylesheet" href="assets/css/common.css">
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="vendor/css/plugins/bootstrap-select.min.css">
+    <link rel="stylesheet" href="vendor/css/plugins/jquery.tagsinput.min.css">
+    
+    <!-- Material Kit CSS -->
+    <link rel="stylesheet" href="vendor/css/material-kit.css?v=2.0.3">
+    
+  <!--<link rel="stylesheet" href="vendor/css/normalize.css">-->
+  <link rel="stylesheet" href="assets/css/main.css">
 </head>
+
 <body>
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top shadow-nohover">
-        
-        <a class="navbar-brand pl-2 pr-2 text-white" href="index.html">
-            Gossiping
-        </a>
-        
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="ti-align-justify"></i>
-        </button>
-        <div id="navbarNavDropdown" class="navbar-collapse collapse">
-            <ul class="navbar-nav mr-auto font-weight-bold pl-4">
-            </ul>
-            <ul class="navbar-nav font-weight-bold">
-                <li class="nav-item">
-                    <a id="current_user" class="nav-link pl-4 pr-4"></a>
-                </li>
-                <li class="nav-item">
-                    <a id="logout" class="nav-link pl-4 pr-4" href="user_login.html">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <br>
+  <!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+  <!-- Add your site or application content here -->
+  <div id="mainContent"></div>
   
-<div class="container-fluid mt-5">
+  <script src="vendor/js/core/modernizr-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="vendor/js/core/jquery-3.3.1.min.js"><\/script>')</script>
+  
+  <!--   Core JS Files   -->
+    <!--<script src="/assets/js/core/jquery.min.js"></script>-->
+    <script src="vendor/js/core/popper.min.js"></script>
+    <script src="vendor/js/core/bootstrap-material-design.min.js"></script>
 
-    <div class="row">
-        
-        <div class="col-sm-4 col-md-3 mb-4 ">
-            <div class="row border-right border-success p-4">
-                <div class="col-12 border-bottom border-info text-center">
-                    <img id="current_user_profile_photo" class="rounded-circle" src="vendor/images/profile/default_user.jpg" alt="Profile" width="100" height="100">
-                    <h5 id="current_user_name"></h5>
-                    <p id="user_status" class="text-success"></p>
-                
-                </div>
-                <div class="col-12 border-bottom border-info pt-4 pb-4">
-                    <label>Search</label>
-                    <input type="text" id="search_box" placeholder="Search ...">
-                <!-- Nav tabs -->
-                  <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#friends">Friends</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#all_users">All Users</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#friend_request">Friend Request</a>
-                    </li>
-                  </ul>
+    <!-- Plugin for Date Time Picker and Full Calendar Plugin-->
+    <script src="vendor/js/plugins/moment.min.js"></script>
 
-                  <!-- Tab panes -->
-                  <div class="tab-content">
-                    <div id="friends" class="container tab-pane active"><br>
-                      <ul id="friend_user" class="list-group">
+    <!-- Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+    <script src="vendor/js/plugins/bootstrap-select.min.js"></script>
 
-                     </ul>
-                    </div>
-                    <div id="all_users" class="container tab-pane fade"><br>
-                        <ul id="add_user" class="list-group">
+    <!-- Plugin for Tags, full documentation here: http://xoxco.com/projects/code/tagsinput/  -->
+    <script src="vendor/js/plugins/jquery.tagsinput.min.js"></script>
 
-                        </ul>
-                    </div>
-                    <div id="friend_request" class="container tab-pane fade"><br>
-                        <ul id="request_user" class="list-group">
+        <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+        <!--<script src="/assets/js/plugins/jasny-bootstrap.min.js"></script>-->
 
-                        </ul>
-                    </div>
-                  </div>
-                    
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        <div class=" col-sm-8 col-md-9 mb-4">
-                <div id="load_container" class="row p-4">
-                
-                <div id="chat_header" class="col-12 chat_header h-25 pb-4 border-bottom border-info">
-                    <div class="row">
-                        <div class="col-1 align-self-center text-center">
-                            <img id="current_user_photo" class="rounded-circle" src="vendor/images/profile/default_user.jpg" alt="Profile" width="60" height="65">
-                        </div>
-                        <div class="col-11" id="current_chat_friend">
-                            <span id="chat_f_name" class="user_name text-info font-weight-bold"></span><br>
-                            <span id="chat_f_email" class="user_email"></span><br>
-                            <span id="chat_f_status" class="user_status text-success"></span><br>
-                            <span id="chat_f_uid" class="user_uid d-none"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 chat-body h-100 pt-4 pb-4">
-                    
+        <!-- Plugin for Small Gallery in Product Page -->
+        <!--<script src="/assets/js/plugins/jquery.flexisel.js"></script>-->
 
-                        
-                </div>
-                <div class="col-12 chat_footer h-25 mt-5 border-top border-info pt-3">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <input id="messageInput" class="w-100" placeholder="Message..."/>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="">Send</button>
-                        </div>
-                    </div>
-                </div>
-                
-        </div>                                                              
-      
-    </div>
-</div>
-    </div> 
+    <!-- Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+    <script src="vendor/js/plugins/bootstrap-datetimepicker.js"></script>
 
-<script src="vendor/js/firebase/firebase-app.js"></script>
-<script src="vendor/js/firebase/firebase-auth.js"></script>
-<script src="vendor/js/firebase/firebase-database.js"></script>
-<script src="vendor/js/firebase/firebase-storage.js"></script>
-    
-<script src="assets/js/firebase_connection.js"></script>
-<script src="assets/js/index.js"></script>
+    <!-- Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+    <script src="vendor/js/plugins/nouislider.min.js"></script>
 
+    <!-- Material Kit Core initialisations of plugins and Bootstrap Material Design Library -->
+    <script src="vendor/js/material-kit.min.js?v=2.0.3"></script>
+  
+  
+  <script src="assets/js/plugins.js"></script>
+  <script src="assets/js/main.js"></script>
 
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <!--<script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async defer></script>-->
 </body>
-    
+
 </html>
