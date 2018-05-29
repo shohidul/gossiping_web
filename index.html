@@ -50,7 +50,7 @@
         <div class="col-sm-4 col-md-3 mb-4 ">
             <div class="row border-right border-success p-4">
                 <div class="col-12 border-bottom border-info text-center">
-                    <img id="current_user_photo" class="rounded-circle" src="vendor/images/profile/default_user.jpg" alt="Profile" width="100" height="100">
+                    <img id="current_user_profile_photo" class="rounded-circle" src="vendor/images/profile/default_user.jpg" alt="Profile" width="100" height="100">
                     <h5 id="current_user_name"></h5>
                     <p id="user_status" class="text-success"></p>
                 
@@ -97,22 +97,22 @@
         </div>
         
         <div class=" col-sm-8 col-md-9 mb-4">
-            <div id="load_container" class="row p-4">
+                <div id="load_container" class="row p-4">
                 
                 <div id="chat_header" class="col-12 chat_header h-25 pb-4 border-bottom border-info">
                     <div class="row">
                         <div class="col-1 align-self-center text-center">
                             <img id="current_user_photo" class="rounded-circle" src="vendor/images/profile/default_user.jpg" alt="Profile" width="60" height="65">
                         </div>
-                        <div class="col-11">
-                            <span id="chat_f_name" class="user_name text-info font-weight-bold">Name : Maruf Hasan</span><br>
-                            <span id="chat_f_email" class="user_email">Email : mh@gmail.com</span><br>
-                            <span id="chat_f_status" class="user_status text-success">Status : Online</span><br>
-                            <span id="chat_f_uid" class="user_uid d-none">Email : RZtMg8vzGxYjA78r9EXCxT6MY743</span>
+                        <div class="col-11" id="current_chat_friend">
+                            <span id="chat_f_name" class="user_name text-info font-weight-bold"></span><br>
+                            <span id="chat_f_email" class="user_email"></span><br>
+                            <span id="chat_f_status" class="user_status text-success"></span><br>
+                            <span id="chat_f_uid" class="user_uid d-none"></span>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 chat_body h-100 pt-4 pb-4">
+                <div class="col-12 chat-body h-100 pt-4 pb-4">
                     
 
                         
@@ -128,18 +128,20 @@
                     </div>
                 </div>
                 
-        </div>
+        </div>                                                              
       
     </div>
 </div>
-    
-    
-<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    </div> 
+
+<script src="vendor/js/firebase/firebase-app.js"></script>
+<script src="vendor/js/firebase/firebase-auth.js"></script>
+<script src="vendor/js/firebase/firebase-database.js"></script>
+<script src="vendor/js/firebase/firebase-storage.js"></script>
     
 <script src="assets/js/firebase_connection.js"></script>
 <script src="assets/js/index.js"></script>
+
 
 </body>
     

@@ -12,6 +12,7 @@
 /*------------create firebase references-------------*/
 var auth        = firebase.auth(); 
 var dbRef       = firebase.database();
+var storageRef = firebase.storage().ref();
 var usersRef    = dbRef.ref('users');
 var messagesRef  = dbRef.ref('messages');
 var friendsRef  = dbRef.ref('friends');
