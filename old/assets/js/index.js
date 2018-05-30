@@ -1,10 +1,8 @@
 /*--------firebase get all current user function-------------*/    
 var currentUser;
-var get_friend_uid;
-var get_my_id;
+
 auth.onAuthStateChanged(function(user) {
   if (user) {
-       get_my_id = user.uid;
 /*          var a = dbRef.ref('messages/'+get_my_id+'/'+get_friend_uid);
      a.orderByChild(get_my_id).limitToLast(1).once('child_added', function(snapshot) {
         $(".chat-body").append("<p>"+snapshot.val().text+"</p>");
@@ -203,8 +201,7 @@ function rejectRequest(el){
 var cMessageRef;
 
 //$(".list-group").on("click", ".friend-user-list", function(e){
-    
-function selectFriendToChat(e){  
+function selectFriendToChat(e){
     //e.preventDefault();
     var friendUID =$(e).closest('li').find(".friend-user-uid").val();
     var friendName =$(e).closest('li').find(".friend-user-name").text();
@@ -219,33 +216,30 @@ function selectFriendToChat(e){
 
 $(".chat-body").html("");  
   cMessageRef = 'messages/'+currentUser.user_uid+'/'+friendUID;
+    
+    var html ='<div id = "'+friendUID+'">';
 
     dbRef.ref('messages/'+friendUID+'/' + currentUser.user_uid).limitToLast(20)
             .once('value').then(function(snapshot) {
                  if(snapshot != null){
                      snapshot.forEach(function(item) {
-                      
-                         $( ".chat-body").append("<p>"+item.val().text+"</p>");
+                       $( "#"+friendUID+"").append('<p>'+item.val().text+'</p>');
+                         
                     });
                  }
     });
-   
- var f =   dbRef.ref('messages/'+currentUser.user_uid+'/'+friendUID);
+
+    html+='</div>';
+     $(".chat-body").append(html);
+    
+    var f =   dbRef.ref('messages/'+currentUser.user_uid+'/'+friendUID);
     f.off();
-f.on('child_added', function(snapshot) {
-   if(snapshot.val().to_uid == currentUser.user_uid){
-       $( ".chat-body").append("<p>"+snapshot.val().text+"</p>");
-   }
+    f.on('child_added', function(snapshot) {
+        $( ".chat-body #"+friendUID+"").append("<p>"+snapshot.val().text+"</p>");
+    });
     
-    
-});
-    
-   
-    
-  
 
-};    
-
+}
 
 
 $('#messageInput').keypress(function(e){
@@ -293,80 +287,5 @@ $('#messageInput').keypress(function(e){
    }
 
 });
-
-/*function printSMS(my_uid ,friend_uid){
-    dbRef.ref('messages/'+my_uid+'/'+friend_uid).on('child_added', function(snapshot) {
-    //$(".chat-body").append("<p>"+snapshot.val().text+"</p>");
-    console.log("from ......" + snapshot.val().text);
-});
-    
-}*/
-
-
-
-/*dbRef.ref(cMessageRef).on('child_added', function(snapshot) {
-        var message = snapshot.val();
-    console.log(message);
-       $(".chat-body").append("<p>"+snapshot.val().text+"</p>");
-});*/
-
-
-
-
-/*
-function selectFriendToChat(e){  
-    //e.preventDefault();
-    var friendUID =$(e).closest('li').find(".friend-user-uid").val();
-    var friendName =$(e).closest('li').find(".friend-user-name").text();
-    var friendEmail =$(e).closest('li').find(".friend-user-email").text();
-    var friendStatus =$(e).closest('li').find(".friend-user-status").text();
-   
-    $("#chat_f_name").text(friendName);
-     $("#chat_f_email").text(friendEmail);
-     $("#chat_f_status").text(friendStatus);
-    $("#chat_f_uid").text(friendUID);
-    
-
-$(".chat-body").html("");  
-  cMessageRef = 'messages/'+currentUser.user_uid+'/'+friendUID;
-    
-    var html ='<div id = " '+friendUID+' ">';
-
-    dbRef.ref('messages/'+friendUID+'/' + currentUser.user_uid).limitToLast(20)
-            .once('value').then(function(snapshot) {
-                 if(snapshot != null){
-                     snapshot.forEach(function(item) {
-                       func('<p>'+item.val().text+'</p>');
-                         
-                    });
-                 }
-    });
-   
-    
-    function func(a){
-        html+= a;
-         
-    }
-    html+='</div>';
-     $(".chat-body").append(html);
-    
-    var f =   dbRef.ref('messages/'+currentUser.user_uid+'/'+friendUID);
-    f.off();
-f.on('child_added', function(snapshot) {
-   
-    $( ".chat-body #"+friendUID+"").append("<p>"+snapshot.val().text+"</p>");
-    
-});
-    
-   
-    
-  
-
-};   
-
-
-*/
-
-   
-
+                             
 
