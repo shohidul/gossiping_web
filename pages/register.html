@@ -30,8 +30,8 @@
                                 
                                 <div class="col-md-5 mr-auto">
                                     
-                                    <form class="form" method="" action="">
-                                        <div class="form-group bmd-form-group">
+                                    <form class="form">
+                                      <!--  <div class="form-group bmd-form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">
@@ -50,7 +50,7 @@
                                                 </div>
                                                 <input type="text" class="form-control" placeholder="Last Name...">
                                             </div>
-                                        </div>
+                                        </div>-->
                                         <div class="form-group bmd-form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -58,7 +58,7 @@
                                                         <i class="material-icons">mail</i>
                                                     </span>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Email...">
+                                                <input type="text" class="form-control" placeholder="Email..." id="email">
                                             </div>
                                         </div>
                                         <div class="form-group bmd-form-group">
@@ -68,7 +68,7 @@
                                                         <i class="material-icons">lock_outline</i>
                                                     </span>
                                                 </div>
-                                                <input type="password" placeholder="Password..." class="form-control">
+                                                <input type="password" placeholder="Password..." class="form-control" id="password">
                                             </div>
                                         </div>
                                         <div class="form-group bmd-form-group">
@@ -78,7 +78,7 @@
                                                         <i class="material-icons">lock_outline</i>
                                                     </span>
                                                 </div>
-                                                <input type="password" placeholder="Re-enter Password..." class="form-control">
+                                                <input type="password" placeholder="Re-enter Password..." class="form-control" id="re_password">
                                             </div>
                                         </div>
                                         <div class="form-check">
@@ -92,7 +92,7 @@
                                             </label>
                                         </div>
                                         <div class="text-center">
-                                            <a href="#pablo" class="btn btn-primary btn-round">Register</a>
+                                            <a class="btn btn-primary btn-round" id="user_register_btn">Register</a>
                                         </div>
                                     </form>
                                 </div>
@@ -148,8 +148,8 @@
             </div>
             </div>
         </div>
-    </div>
-  
+    </div> 
+ <script src="assets/js/user_register.js"></script> 
 <script>
     $(".login-btn").on("click", function(){
         $('#mainContent').load("pages/login.html");
