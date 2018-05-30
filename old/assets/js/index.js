@@ -1,8 +1,17 @@
 /*--------firebase get all current user function-------------*/    
 var currentUser;
-
+var get_friend_uid;
+var get_my_id;
 auth.onAuthStateChanged(function(user) {
   if (user) {
+       get_my_id = user.uid;
+/*          var a = dbRef.ref('messages/'+get_my_id+'/'+get_friend_uid);
+     a.orderByChild(get_my_id).limitToLast(1).once('child_added', function(snapshot) {
+        $(".chat-body").append("<p>"+snapshot.val().text+"</p>");
+       
+    
+});*/
+     
         dbRef.ref('/users/' + user.uid).once('value').then(function(snapshot) {
             currentUser = snapshot.val();
             var username = (snapshot.val() && snapshot.val().first_name) || 'Anonymous';
@@ -80,6 +89,9 @@ auth.onAuthStateChanged(function(user) {
           });
         });
       
+      
+
+       
       
   } else {
         window.location.replace("user_login.html");
@@ -195,7 +207,6 @@ var cMessageRef;
 function selectFriendToChat(e){  
     //e.preventDefault();
     var friendUID =$(e).closest('li').find(".friend-user-uid").val();
-    
     var friendName =$(e).closest('li').find(".friend-user-name").text();
     var friendEmail =$(e).closest('li').find(".friend-user-email").text();
     var friendStatus =$(e).closest('li').find(".friend-user-status").text();
@@ -204,19 +215,34 @@ function selectFriendToChat(e){
      $("#chat_f_email").text(friendEmail);
      $("#chat_f_status").text(friendStatus);
     $("#chat_f_uid").text(friendUID);
-
-    $(".chat-body").html("");
     
-    cMessageRef = 'messages/'+currentUser.user_uid+'/'+friendUID;
+
+$(".chat-body").html("");  
+  cMessageRef = 'messages/'+currentUser.user_uid+'/'+friendUID;
 
     dbRef.ref('messages/'+friendUID+'/' + currentUser.user_uid).limitToLast(20)
             .once('value').then(function(snapshot) {
                  if(snapshot != null){
                      snapshot.forEach(function(item) {
-                        $(".chat-body").append("<p>"+item.val().text+"</p>");
+                      
+                         $( ".chat-body").append("<p>"+item.val().text+"</p>");
                     });
                  }
-            });
+    });
+   
+ var f =   dbRef.ref('messages/'+currentUser.user_uid+'/'+friendUID);
+    f.off();
+f.on('child_added', function(snapshot) {
+   if(snapshot.val().to_uid == currentUser.user_uid){
+       $( ".chat-body").append("<p>"+snapshot.val().text+"</p>");
+   }
+    
+    
+});
+    
+   
+    
+  
 
 };    
 
@@ -244,16 +270,18 @@ $('#messageInput').keypress(function(e){
         dbRef.ref('messages/'+my_uid).child(friend_uid)
                 .push(myMessageData)
                 .then(function(){
-                    console.log("first updated");
+                 
         });
 
         dbRef.ref('messages/'+friend_uid).child(my_uid)
                 .push(friendMessageData)
                 .then(function(){
-                    console.log("second updated");
+                
         });
        
-       printSMS(my_uid ,friend_uid);
+      
+       
+      // printSMS(my_uid ,friend_uid);
 
         /*dbRef.ref('messages/'+my_uid+'/'+friend_uid).limitToLast(1).once('child_added').then(function(snapshot) {
         
@@ -266,13 +294,13 @@ $('#messageInput').keypress(function(e){
 
 });
 
-function printSMS(my_uid ,friend_uid){
+/*function printSMS(my_uid ,friend_uid){
     dbRef.ref('messages/'+my_uid+'/'+friend_uid).on('child_added', function(snapshot) {
-    $(".chat-body").append("<p>"+snapshot.val().text+"</p>");
-    //console.log(message);
+    //$(".chat-body").append("<p>"+snapshot.val().text+"</p>");
+    console.log("from ......" + snapshot.val().text);
 });
     
-}
+}*/
 
 
 
@@ -281,9 +309,64 @@ function printSMS(my_uid ,friend_uid){
     console.log(message);
        $(".chat-body").append("<p>"+snapshot.val().text+"</p>");
 });*/
-/*dbRef.ref('messages/CVWg6qgSPuNbO2BrYuD93wLCGKq2/0wwiX3lWLIPBbZ6P3T2qSjNRTSK2').on('child_added', function(snapshot) {
-    $(".chat-body").append("<p>"+snapshot.val().text+"</p>");
-    console.log(message);
-});*/
+
+
+
+
+/*
+function selectFriendToChat(e){  
+    //e.preventDefault();
+    var friendUID =$(e).closest('li').find(".friend-user-uid").val();
+    var friendName =$(e).closest('li').find(".friend-user-name").text();
+    var friendEmail =$(e).closest('li').find(".friend-user-email").text();
+    var friendStatus =$(e).closest('li').find(".friend-user-status").text();
+   
+    $("#chat_f_name").text(friendName);
+     $("#chat_f_email").text(friendEmail);
+     $("#chat_f_status").text(friendStatus);
+    $("#chat_f_uid").text(friendUID);
+    
+
+$(".chat-body").html("");  
+  cMessageRef = 'messages/'+currentUser.user_uid+'/'+friendUID;
+    
+    var html ='<div id = " '+friendUID+' ">';
+
+    dbRef.ref('messages/'+friendUID+'/' + currentUser.user_uid).limitToLast(20)
+            .once('value').then(function(snapshot) {
+                 if(snapshot != null){
+                     snapshot.forEach(function(item) {
+                       func('<p>'+item.val().text+'</p>');
+                         
+                    });
+                 }
+    });
+   
+    
+    function func(a){
+        html+= a;
+         
+    }
+    html+='</div>';
+     $(".chat-body").append(html);
+    
+    var f =   dbRef.ref('messages/'+currentUser.user_uid+'/'+friendUID);
+    f.off();
+f.on('child_added', function(snapshot) {
+   
+    $( ".chat-body #"+friendUID+"").append("<p>"+snapshot.val().text+"</p>");
+    
+});
+    
+   
+    
+  
+
+};   
+
+
+*/
+
+   
 
 
