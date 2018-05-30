@@ -54,6 +54,18 @@
           <li class="nav-item">
               <i class="material-icons chat-btn">chat</i>
           </li>
+            
+            <li class="nav-item">
+                <a class="nav-link login-btn" data-placement="bottom" href="#" data-original-title="Login">
+                  <i class="material-icons">lock_outline</i> Login
+                </a>
+          </li>
+            <li class="nav-item">
+                <a class="nav-link register-btn" data-placement="bottom" href="#" data-original-title="Register">
+                  <i class="material-icons">mode_edit</i> Register
+                </a>
+          </li>
+            
         </ul>
       </div>
     </div>
@@ -259,7 +271,13 @@
 <script>
     $(".chat-btn").on("click", function(){
         $('#mainContent').load("pages/app.html");
-    })
+    });
+    $(".login-btn").on("click", function(){
+        $('#mainContent').load("pages/login.html");
+    });
+    $(".register-btn").on("click", function(){
+        $('#mainContent').load("pages/register.html");
+    });
 </script>
 </body>
 
