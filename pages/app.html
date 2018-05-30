@@ -1,10 +1,10 @@
 <body>
    <div class="main-container">
        <div class="left-side">
-            <div class="left-inside">
-                <img id="currentUserImg" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                <p id="currenUsersFullName" class="user-full-name">User Name</p>
-                <p class="user-status">Status: <span id="currenUserStatus">Active <span class="green-dot"></span></span></p>
+            <div class="left-inside-top">
+                <img id="currentUserImg" class="current-user-image" src="assets/img/blank-profile.jpeg" alt="">
+                <p id="currenUsersFullName" class="current-user-full-name">User Name</p>
+                <p class="current-user-status">Status: <span id="currenUserStatus">Active <span class="green-dot"></span></span></p>
             </div>
             <div class="form-group has-success bmd-form-group">
                 <input id="exampleInput2" class="form-control" placeholder="Search Contacts" type="text">
@@ -12,130 +12,120 @@
                     <i class="material-icons">search</i>
                 </span>
             </div>
+            <div class="left-inside-bottom">
+                <ul class="friend-list">
+                    <li class="friend">
+                       <div class="friend-body">
+                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                       </div>
+                    </li>
+                    <li class="friend">
+                       <div class="friend-body">
+                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                       </div>
+                    </li>
+                    <li class="friend">
+                       <div class="friend-body">
+                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                       </div>
+                    </li>
+                    <li class="friend">
+                       <div class="friend-body">
+                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                       </div>
+                    </li>
+                    <li class="friend">
+                       <div class="friend-body">
+                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                       </div>
+                    </li>
+                    
+                </ul>
+           </div>
        </div>
+       
        <div class="right-side">
-            <div class="top">
-                <button id="sideBtn" class="btn btn-primary btn-link"><i class="material-icons">menu</i></button>
-                
-                <div class="top-btngroup pull-right">
-                    <button id="refresh" class=" btn btn-rose btn-just-icon btn-round"><i class="material-icons">cached</i></button>
+           <div class="welcome-screen">
+                <div class="top">
+                    <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
+
+                    <div class="top-btngroup pull-right">
+                        <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>
+                    </div>
                 </div>
-                
-            </div>
+                <div class="bottom">
+                    <h1>Welcome</h1>
+                </div>
+           </div>
+            <div class="chat-screen hidden">
+                <div class="top">
+                    <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
+                    
+                    <div class="selected-user">
+                        <img id="" class="selected-user-image" src="assets/img/blank-profile.jpeg" alt="">
+                        <div class="selected-user-info"><p id="" class="selected-user-full-name">Friend Name</p><p class="selected-user-status">Status: <span id="">Active <span class="green-dot"></span></span></p></div>
+                   </div>
+
+                    <div class="top-btngroup pull-right">
+                        <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="friend-chat">
+                        <img id="" class="selected-user-image" src="assets/img/blank-profile.jpeg" alt="">
+                        <div class="selected-user-info"><p id=""><span class="selected-user-full-name">Friend Name</span><span class="chat-time"> Yesterday</span></p>
+                        <p class="selected-user-chat">Chance too good. God level bars. I'm so proud of @LifeOfDesiigner #1 song 
+                         Don't be scared of the truth because we need to restart 
+                         the most humility. We are so blessed!</p></div>
+                    </div>
+                    <div class="my-chat">
+                        <img id="" class="selected-user-image" src="assets/img/blank-profile.jpeg" alt="">
+                        <div class="selected-user-info"><p class="text-right"><span class="chat-time">Yesterday </span><span class="selected-user-full-name">My Name</span></p>
+                        <p class="selected-user-chat">Chance too good. God level bars. I'm so proud of @LifeOfDesiigner #1 song 
+                         Don't be scared of the truth because we need to restart 
+                         the most humility. We are so blessed!</p></div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <textarea name="" id="chat-box" cols="30" rows="10"></textarea><button id="" class=" btn btn-rose btn-just-icon btn-round send-btn"><i class="material-icons">send</i></button>
+                </div>
+           </div>
        </div>
    </div>
-    
 </body>
-<style>
-    @import url("assets/css/variables.css");
-    body{
-        margin: 0;
-    }
-    .main-container{
-        overflow: hidden;
-        background-color: white;
-    }
-    .left-side{
-        height: 100vh;
-        width: var(--left-side-width);
-        min-width: var(--left-side-width);
-        float: left;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-    }
 
-    .right-side{
-        height: 100vh;
-        padding: 10px;
-        position: fixed;
-        left: var(--left-side-width);
-        right: 0;
-    }
-    .left-side.open{
-        transform: translateX(0);
-    }
-    .right-side.open{
-        transform: translateX(0);
-    }
-    #sideBtn{
-            display: none;
-    }
-    .top{
-        height: 100px;
-        border-bottom: 1px solid #ddd;
-    }
-    .top-btngroup{
-        line-height: 100px;
-        margin-right: 25px;
-    }
-    .left-inside{
-        height: 170px;
-        border-bottom: 1px solid #ddd;
-        padding-top: 20px;
-    }
-    .user-image{
-        width: 75px;
-        height: 75px;
-        border-radius: 50%;
-        margin: auto;
-        display: block;
-    }
-    
-    .user-full-name{
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 15px;
-        margin-bottom: 0;
-    }
-    
-    .user-status{
-        font-size: 12px;
-        text-align: center;
-        margin-top: -3px;
-        color: #4f4f4f;
-    }
-    .green-dot{
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background-color: #00dc00;
-        display: inline-block;
-    }
-    .bmd-form-group {
-        padding-top: 12px;
-        padding-left: 10px;
-        padding-right: 10px
-    }
-    .form-control-feedback {
-        top: 20px;
-        color: #ccc!important;
-        padding-right: 15px;
-    }
-    
-    @media (max-width: 998px) {
-        .left-side{
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-        .right-side{
-            transform: translateX(calc(-1 * var(--left-side-width)));
-            transition: transform 0.6s ease;
-            right: calc(-1 * var(--left-side-width));
-        }
-        #sideBtn{
-            display: inline-block;
-        }
-    }
+
+<link rel="stylesheet" href="assets/css/app.css">
+<style>
+   
 </style>
+
+
 <script>
-    $("#sideBtn").on("click", function(){ 
+    $(".side-btn").on("click", function(){ 
         $(".right-side").toggleClass("open");
         $(".left-side").toggleClass("open");
     })
     
-    $("#refresh").on("click", function(){
+    $(".refresh-btn").on("click", function(){
         $('#mainContent').load("pages/app.html");
+    })
+    
+    $(".friend").on("click", function(){
+        if($('.chat-screen').hasClass("hidden")){ 
+            $('.welcome-screen').addClass("hidden");
+            $('.chat-screen').removeClass("hidden");
+        }
+        
     })
 </script>
