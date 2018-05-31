@@ -20,7 +20,7 @@ function doLogin(){
           
             dbRef.ref('/users/' + authData.user.uid).update({is_active: "Online"});
           
-            loadPage("pages/home.html");
+            loadPage("pages/app.html");
           console.log("Login success!");
         }).catch(function(error) {
           console.log("Login Failed!", error);
