@@ -8,6 +8,9 @@ $('#user_register_btn').on('click', function () {
   doRegister()
 });
 function doRegister(){
+    
+
+    
     var userData = {
             first_name: "",
             last_name: "",
@@ -45,11 +48,13 @@ function doRegister(){
             
             userData.user_uid = auth.user.uid;
             
-            usersRef.child(auth.user.uid)
-                    .set(userData)
-                    .then(function(){
-                        loadPage("pages/login.html");
-              });
+             usersRef.add(userData)
+            .then(function(docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
+            });
             
           }).catch(function(error){
                 console.log("Error creating user:", error);
@@ -57,5 +62,12 @@ function doRegister(){
       } else {
                 console.log("password and confirm password didn't match :", error);
         }
+ 
+    
+   
+    
+    
+    
     }
+    
 }
