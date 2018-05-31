@@ -1,20 +1,24 @@
 /*--------firebase login function-------------*/
-$('#password, #email').keypress(function(e){
+$('#login_password').keypress(function(e){
    if(e.keyCode == 13) {
        doLogin();
    }
 });
-$('#do_login_btn').on('click', function () {
+$('#login_btn').on('click', function () {
    doLogin();
 });
 
-var authUser;
 function doLogin(){
-     if( $('#email').val() !== '' && $('#password').val() !== '' ){
-      var loginInfo = {
-        email: $('#email').val(),
-        password: $('#password').val()
-      };
+    
+    var loginInfo = {
+            email: $('#login_email').val(),
+            password: $('#login_password').val()
+          };
+    
+     if( loginInfo.email !== '' && loginInfo.password !== '' ){
+         
+          
+         
       auth.signInWithEmailAndPassword(loginInfo.email, loginInfo.password)
           .then(function(authData) {
           
