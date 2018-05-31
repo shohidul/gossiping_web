@@ -26,7 +26,7 @@
                                 </a>
                             </div>
                         </div>
-                        <p class="description text-center">Sign in with your Gossiping Account</p>
+                        <p class="description text-center">Or Be Classical</p>
                       <div class="card-body pt-0">
                             <form class="form" method="" action="">
                                     
@@ -37,7 +37,7 @@
                                                     <i class="material-icons">mail</i>
                                                 </span>
                                             </div>
-                                            <input id="login_email" type="text" class="form-control" placeholder="Email...">
+                                            <input type="text" class="form-control" placeholder="Email...">
                                         </div>
                                     </div>
                                     <div class="form-group bmd-form-group">
@@ -47,7 +47,7 @@
                                                     <i class="material-icons">lock_outline</i>
                                                 </span>
                                             </div>
-                                            <input id="login_password" type="password" placeholder="Password..." class="form-control">
+                                            <input type="password" placeholder="Password..." class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-check">
@@ -61,14 +61,14 @@
                                         </label>
                                     </div>
                                     <div class="text-center">
-                                        <a id="login_btn" href="#" class="btn btn-primary btn-round">Login</a>
+                                        <a href="#pablo" class="btn btn-primary btn-round">Login</a>
                                     </div>
                                 </form>
                         </div>
                         
                       <div class="card-footer m-auto">
                         
-                            <h4 class="text-center go-register-btn"><a href="#">Create a new Gossiping Account</a></h4>
+                            <h4 class="text-center register-btn"><a href="#">Create a new Gossiping Account</a></h4>
                         
                       </div>
                         
@@ -81,12 +81,9 @@
         
       </div>
     </div>
-    
-<script src="../assets/js/firebase_connection.js"></script>
-<script src="../assets/js/login.js"></script>
   
 <script>
-    $(".go-register-btn").on("click", function(){
+    $(".register-btn").on("click", function(){
         $('#mainContent').load("pages/register.html");
     })
 </script>
