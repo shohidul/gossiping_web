@@ -15,7 +15,7 @@ auth.onAuthStateChanged(function(user) {
             var username = (snapshot.val() && snapshot.val().first_name) || 'Anonymous';
             $("#current_user").text(username);
             $("#current_user_name").text(currentUser.first_name+" "+currentUser.last_name);
-            $("#user_status").text("Status : "+currentUser.is_active);
+            $("#user_status").text(currentUser.is_active);
             
              storageRef.child('images/'+currentUser.photo_url).getDownloadURL().then(function(url) {
                     $("#current_user_profile_photo").attr("src", url);
@@ -256,9 +256,9 @@ $('#messageInput').keypress(function(e){
             }
 
         var myMessageData = {
-            from_uid : friend_uid,
+            from_uid : my_uid,
             text : text,
-            to_uid : my_uid
+            to_uid : friend_uid
             }
 
         dbRef.ref('messages/'+my_uid).child(friend_uid)

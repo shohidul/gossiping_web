@@ -4,7 +4,7 @@
             <div class="left-inside-top">
                 <img id="currentUserImg" class="current-user-image" src="assets/img/blank-profile.jpeg" alt="">
                 <p id="currenUsersFullName" class="current-user-full-name">User Name</p>
-                <p class="current-user-status">Status: <span id="currenUserStatus">Active <span class="green-dot"></span></span></p>
+                <p class="current-user-status">Status: <span id="currenUserStatus">Active </span><span class="green-dot"></span></p>
             </div>
             <div class="form-group has-success bmd-form-group">
                 <input id="exampleInput2" class="form-control" placeholder="Search Contacts" type="text">
@@ -14,7 +14,8 @@
             </div>
             <div class="left-inside-bottom">
                 <ul class="friend-list">
-                    <li class="friend">
+             
+                    <!--<li class="friend">
                        <div class="friend-body">
                             <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
                             <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
@@ -41,14 +42,7 @@
                             <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
                             <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
                        </div>
-                    </li>
-                    <li class="friend">
-                       <div class="friend-body">
-                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                       </div>
-                    </li>
+                    </li>-->
                     
                 </ul>
            </div>
@@ -72,8 +66,9 @@
                     <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
                     
                     <div class="selected-user">
-                        <img id="" class="selected-user-image" src="assets/img/blank-profile.jpeg" alt="">
-                        <div class="selected-user-info"><p id="" class="selected-user-full-name">Friend Name</p><p class="selected-user-status">Status: <span id="">Active <span class="green-dot"></span></span></p></div>
+                        <img id="friend_image" class="selected-user-image" src="assets/img/blank-profile.jpeg" alt="">
+                        <input type="hidden" id="friend_uid"/>
+                        <div class="selected-user-info"><p id="friend_name" class="selected-user-full-name">Friend Name</p><p class="selected-user-status">Status: <span id="friend_status">Active <span class="green-dot"></span></span></p></div>
                    </div>
 
                     <div class="top-btngroup pull-right">
@@ -81,7 +76,7 @@
                     </div>
                 </div>
                 <div class="body">
-                    <div class="friend-chat">
+                    <!--<div class="friend-chat">
                         <img id="" class="selected-user-image" src="assets/img/blank-profile.jpeg" alt="">
                         <div class="selected-user-info"><p id=""><span class="selected-user-full-name">Friend Name</span><span class="chat-time"> Yesterday</span></p>
                         <p class="selected-user-chat">Chance too good. God level bars. I'm so proud of @LifeOfDesiigner #1 song 
@@ -94,10 +89,10 @@
                         <p class="selected-user-chat">Chance too good. God level bars. I'm so proud of @LifeOfDesiigner #1 song 
                          Don't be scared of the truth because we need to restart 
                          the most humility. We are so blessed!</p></div>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="bottom">
-                    <textarea name="" id="chat-box" cols="30" rows="10"></textarea><button id="" class=" btn btn-rose btn-just-icon btn-round send-btn"><i class="material-icons">send</i></button>
+                    <textarea name="" id="chat-box" cols="30" rows="10"></textarea><button id="send_btn" class=" btn btn-rose btn-just-icon btn-round send-btn"><i class="material-icons">send</i></button>
                 </div>
            </div>
        </div>
@@ -119,18 +114,18 @@
     
     $(".refresh-btn").on("click", function(){
         $('#mainContent').load("pages/app.html");
+       
     })
     
-    $(".friend").on("click", function(){
+/*    $(".friend").on("click", function(){
         if($('.chat-screen').hasClass("hidden")){ 
             $('.welcome-screen').addClass("hidden");
             $('.chat-screen').removeClass("hidden");
         }
         
-    })
+    })*/
 </script>
 
 
 <script src="assets/js/firebase_connection.js"></script>
-   
 <script src="assets/js/index.js"></script>
