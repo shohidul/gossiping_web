@@ -42,8 +42,8 @@
     }
     
     .my-chat{
-        direction: rtl;
         display: flex;
+        justify-content: flex-end;
     }
     .chat-time{
         font-size: 13px
