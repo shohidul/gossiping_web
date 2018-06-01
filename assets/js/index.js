@@ -1,5 +1,4 @@
 /*--------firebase get all current user function-------------*/    
-var currentUser;
 
 refreshApp();
 function refreshApp(){
@@ -176,12 +175,18 @@ var friendUID;
 
 
 
-
 /*--------firebase logout function-------------*/
-$("#logout").on("click", function(){
+$("#logout_btn").on("click", function(){
+    
+    usersRef.doc(auth.user.uid).update({
+            "is_active": "Offline"
+        }).then(function() {
+            console.log("Document successfully updated!");
+        });
+    
     auth.signOut().then(function() {
         
-        dbRef.ref('/users/' + currentUser.user_uid).update({is_active: "Offline"});
+       // dbRef.ref('/users/' + currentUser.user_uid).update({is_active: "Offline"});
         
         window.location.replace("user_login.html");
     }, function(error) {

@@ -26,7 +26,7 @@
                                 </a>
                             </div>
                         </div>
-                        
+                        <p class="description text-center">Create your Gossiping Account</p>
                       <div class="card-body">
                             <div class="row">
                                 
@@ -42,7 +42,7 @@
                                                         <i class="material-icons">mail</i>
                                                     </span>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Email..." id="email">
+                                                <input id="reg_email" type="text" class="form-control" placeholder="Email...">
 
                                             </div>
                                         </div>
@@ -53,7 +53,7 @@
                                                         <i class="material-icons">lock_outline</i>
                                                     </span>
                                                 </div>
-                                                <input type="password" placeholder="Password..." class="form-control" id="password">
+                                                <input id="reg_password" type="password" placeholder="Password..." class="form-control">
 
                                             </div>
                                         </div>
@@ -64,7 +64,7 @@
                                                         <i class="material-icons">lock_outline</i>
                                                     </span>
                                                 </div>
-                                                <input type="password" placeholder="Re-enter Password..." class="form-control" id="re_password">
+                                                <input id="reg_re_password" type="password" placeholder="Re-enter Password..." class="form-control" >
                                             </div>
                                         </div>
                                         <div class="form-check text-center">
@@ -78,9 +78,11 @@
                                             </label>
                                         </div>
                                         <div class="text-center">
-                                            <a class="btn btn-primary btn-round" id="user_register_btn">Register</a>
+                                            <a id="register_btn" href="#" class="btn btn-primary btn-round">Register</a>
                                         </div>
                                     </form>
+                                    
+                                    <h4 class="text-center"><a id="go_login_btn" href="#">Already have an Account? Login</a></h4>
                                 </div>
                                 
                                 <div class="col-md-6 ml-auto">
@@ -124,7 +126,7 @@
                         
                       <div class="card-footer m-auto">
                         
-                            <h4 class="text-center login-btn"><a href="#">Already have an Account? Login</a></h4>
+                            <h4 class="text-center"><a>All Copyright &copy; Reserved by Gossiping Team</a></h4>
                         
                       </div>
                         
@@ -139,20 +141,13 @@
     </div>
   
 <script>
-    $(".login-btn").on("click", function(){
-        $('#mainContent').load("pages/login.html");
-    })
+    loadPageByJS("#go_login_btn", "pages/login.html");
 </script>
 
-
-
-  <script src="vendor/js/firebase/firebase-app.js"></script>
-    <script src="vendor/js/firebase/firebase-auth.js"></script>
-    <script src="vendor/js/firebase/firebase-database.js"></script>
-    <script src="vendor/js/firebase/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
-    <script src="assets/js/firebase_connection.js"></script>
+<script src="assets/js/firebase_connection.js"></script>
+    
 <script src="assets/js/user_register.js"></script>
+    
 </body>
 
 

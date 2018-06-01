@@ -1,25 +1,22 @@
 /*--------firebase configuration-------------*/
 
 firebase.initializeApp({
-    apiKey: "AIzaSyACWy8qmNPbKReG5i7BxjEpuNpcFFaXaLM",
-    authDomain: "gossiping-ba908.firebaseapp.com",
-    databaseURL: "https://gossiping-ba908.firebaseio.com",
-    projectId: "gossiping-ba908",
-    storageBucket: "gossiping-ba908.appspot.com",
-    messagingSenderId: "783753751112"
+    apiKey: "AIzaSyBgM3KN6dBZi13eYK4cJA8MRoSX5kvsK4o",
+    authDomain: "gossiping-b018c.firebaseapp.com",
+    projectId: "gossiping-b018c"
 });
 
 
 
-
-
 /*------------create firebase references-------------*/
-/*var auth        = firebase.auth(); 
+var auth        = firebase.auth(); 
 
-var storageRef = firebase.storage().ref();*/
+//var storageRef = firebase.storage().ref();
 
 var dbRef       = firebase.firestore();
 var usersRef    = dbRef.collection('users');
-var messagesRef  = dbRef.collection('messages');
+var messagesRef = dbRef.collection('messages');
 var friendsRef  = dbRef.collection('friends');
+
+
 

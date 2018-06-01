@@ -65,6 +65,11 @@
                   <i class="material-icons">mode_edit</i> Register
                 </a>
           </li>
+            <li class="nav-item">
+                <a class="nav-link go-profile-btn" data-placement="bottom" href="#" data-original-title="Register">
+                  <i class="material-icons">mode_edit</i> Profile
+                </a>
+          </li>
             
         </ul>
       </div>
@@ -268,17 +273,16 @@
       </div>
     </div>
   </footer>
+    
 <script>
-    $(".chat-btn").on("click", function(){
-        $('#mainContent').load("pages/app.html");
-    });
-    $(".login-btn").on("click", function(){
-        $('#mainContent').load("pages/login.html");
-    });
-    $(".register-btn").on("click", function(){
-        $('#mainContent').load("pages/register.html");
-    });
+    loadPageByJS(".chat-btn", "pages/app.html");
+    loadPageByJS(".login-btn", "pages/login.html");
+    loadPageByJS(".register-btn", "pages/register.html");
+    loadPageByJS(".go-profile-btn", "pages/profile.html");
+    
+    
 </script>
+    
 </body>
 
 
