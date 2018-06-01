@@ -51,7 +51,7 @@ function doRegister(){
                 .catch(function(error) {
                     console.error("Error adding document: ", error);
                 });
-                loadPage("pages/app.html");
+                loadPage("pages/user_profile.html");
             
           }).catch(function(error){
                 console.log("Error creating user:", error);
