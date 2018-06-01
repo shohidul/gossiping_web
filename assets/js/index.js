@@ -379,4 +379,3 @@ $('#chat_box').keypress(function(e){
 		$(".chat-screen .body").animate({ scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
     });
    
-     
