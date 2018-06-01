@@ -27,9 +27,7 @@ auth.onAuthStateChanged(function(user) {
      /*  
         dbRef.ref('friends/'+user.uid).once("value").then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-
               var childData = childSnapshot.val();
-
                 if(childData !== null ){
                     if(childData.status == 0 ){
                     var friendlisthtml='<li class="list-group-item h-25 w-100 p-3 ">'; 
@@ -381,4 +379,3 @@ $('#chat_box').keypress(function(e){
 		$(".chat-screen .body").animate({ scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
     });
    
-     
