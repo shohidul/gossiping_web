@@ -8,6 +8,8 @@ var loadFile = function(event) {
 $("#go_next").on('click', function(){
 
 var profileData = {
+    first_name : $("#first_name").val(),
+    last_name : $("#last_name").val(),
     photo_url : file.name,
     username : $("#username").val(),
     recovery_email : $("#recovery_email").val(),
@@ -19,14 +21,17 @@ var profileData = {
     
 auth.onAuthStateChanged(function(user) {
   if (user) {
-            dbRef.ref('users/'+user.uid)
-                .update(profileData)
-                .then(function(){
-                    
-                    console.log("second updated");
-     });
+    usersRef.doc(user.uid)
+        .update(profileData)
+        .then(function() {
+               
+                console.log("Profile updated successfully successfully!");
+            });
+
+      
+      
       imageUpload(file);
-       //window.location.replace("index.html");
+       loadPage("pages/app.html");
   } else {
         window.location.replace("user_login.html");
   }
@@ -36,7 +41,7 @@ auth.onAuthStateChanged(function(user) {
 
 
 $("#go_skip").on('click', function(){
-     window.location.replace("index.html");
+     loadPage("pages/app.html");
 })
 
   
