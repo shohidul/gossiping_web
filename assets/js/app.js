@@ -1,5 +1,6 @@
 var currentUser;
 
+/* -------------- get currentUser and his/her friendlist and so ------------------ */
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
       
@@ -12,18 +13,19 @@ firebase.auth().onAuthStateChanged(function(user) {
             $("#currenUsersFullName").text(currentUser.first_name+" "+currentUser.last_name);
             $("#currenUserStatus").text(currentUser.is_active);
             
-             storageRef.child('images/'+currentUser.photo_url).getDownloadURL().then(function(url) {
+            storageRef.child('images/'+currentUser.photo_url).getDownloadURL().then(function(url) {
                     $("#currentUserImg").attr("src", url);
-             })
-            
+            });
 
                       // ---- all users data
             usersRef.get().then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
+                snapshot.forEach(function(childSnapshot) {
 
-              var childData = childSnapshot.data();
-
-        if(childData !== null ){
+                var childData = childSnapshot.data();
+                    
+                    
+                $(".friend-list").html("");
+            if(childData !== null ){
                  storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
                             var friendlisthtml = '<li class="friend">' 
                               + '<div class="friend-body">'
@@ -36,157 +38,129 @@ firebase.auth().onAuthStateChanged(function(user) {
                               + '</div>'
                               + '</li>';
 
-                    $(".friend-list").append(friendlisthtml);
+                            $(".friend-list").append(friendlisthtml);
 
+                            });
+
+				        } 
+                    });
                 });
-
-				} 
-
-          });
+            
+            
+            } else {
+                console.log("No such document!");
+            }
+        
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
         });
-            
-            
-        } else {
-            console.log("No such document!");
-        }
-        
-        
-        
-        
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });
       
-  }else{
-      loadPage("pages/login.html");
-  }
+      
+      
+      
+      
+      }else{
+          loadPage("pages/login.html");
+      }
     
 });
 
-
-
-
-/* -------------- Friend onclick ------------------ */
+/* -------------- Friend onclick get chating data with this friend------------------ */
 
  $(".friend-list").on("click", '.friend', function(e){
-        if($('.chat-screen').hasClass("hidden")){ 
-            $('.welcome-screen').addClass("hidden");
-            $('.chat-screen').removeClass("hidden");
-        }
-	$(".chat-screen .body").animate({ scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);	
-	    
-     var friendUID =$(this).find(".user-uid").val(); 
-       var friendName =$(this).find(".user-full-name").text();
-       var friendStatus =$(this).find(".user-status").val();
-       var friendPhotoUrl =$(this).find(".user-image").attr('src');
+    if($('.chat-screen').hasClass("hidden")){ 
+        $('.welcome-screen').addClass("hidden");
+        $('.chat-screen').removeClass("hidden");
+    }
+    $(".chat-screen .body").animate({ scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);	
+
+    var friendUID =$(this).find(".user-uid").val(); 
+    var friendName =$(this).find(".user-full-name").text();
+    var friendStatus =$(this).find(".user-status").val();
+    var friendPhotoUrl =$(this).find(".user-image").attr('src');
 	
     $("#friend_name").text(friendName);
     $("#friend_status").text(friendStatus);
     $("#friend_uid").val(friendUID);
     $("#friend_image").attr("src", friendPhotoUrl);
-	
 
 	$(".chat-screen .body").html(""); 
      
-	
-	var htmlContent;
-     var msg =  messagesRef.where("from_uid", "==", currentUser.uid).where("to_uid", "==", friendUID);
-     
-     	msg.get().then(function(snapshot) {
-        
-		 if(snapshot != null){
-			 snapshot.forEach(function(item) {
-
-                 console.log(item.data());
-                 
-			   if(item.data().from_uid == friendUID ){
+     var htmlContent;
+     dbRef.collection('messages/'+currentUser.uid+'/'+friendUID).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            
+            console.log(doc.id, " => ", doc.data());
+            if(doc.data().from_uid !== currentUser.uid ){
 				htmlContent = '<div class="friend-chat">'
 								+'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
 								+'<div class="selected-user-info">'
 								+ '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
-								+'<time class="chat-time">'+item.data().time+'</time></p>'
-								+'<p class="selected-user-chat">'+item.data().text+'</p></div>'
+								+'<time class="chat-time">'+doc.data().time+'</time></p>'
+								+'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
 								+'</div>';
 			   }else{
 				htmlContent = '<div class="my-chat">'
 							
 							+'<div class="selected-user-info">'
 							+ '<p class="text-right">'
-							+ '<time class="chat-time">'+item.data().time+' </time> &nbsp;&nbsp;'
+							+ '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
 							+'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
 							+ '</p>'
-							+'<p class="selected-user-chat text-right pull-right">'+item.data().text+'</p></div>'
+							+'<p class="selected-user-chat text-right pull-right">'+doc.data().text+'</p></div>'
 							+'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
 							+'</div>';
 			   }
 			  $(".chat-screen .body").append(htmlContent);
-			});
-		 }
-    });
-     
-	
-     
-     
-     
-     
-/*    msg.onSnapshot(function(snapshot) {
-        snapshot.docChanges().forEach(function(item) {
-            if (item.type === "added") {
-                if(item.doc.data().from_uid == friendUID ){
-				htmlContent = '<div class="friend-chat">'
-								+'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
-								+'<div class="selected-user-info">'
-								+ '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
-								+'<time class="chat-time">'+item.doc.data().time+'</time></p>'
-								+'<p class="selected-user-chat">'+item.doc.data().text+'</p></div>'
-								+'</div>';
-			   }else{
-				htmlContent = '<div class="my-chat">'
-							
-							+'<div class="selected-user-info">'
-							+ '<p class="text-right">'
-							+ '<time class="chat-time">'+item.doc.data().time+' </time> &nbsp;&nbsp;'
-							+'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
-							+ '</p>'
-							+'<p class="selected-user-chat text-right pull-right">'+item.doc.data().text+'</p></div>'
-							+'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
-							+'</div>';
-			   }
-			  $(".chat-screen .body").append(htmlContent);
-                
-                
-            }
             
         });
     });
      
-     */
-     
-     
-     
-     
-     
-    })
-
-
-
-
+    /*-----start---------------get realtime messages data-----------------------------*/ 
+     dbRef.collection('messages/'+currentUser.uid+'/'+friendUID).onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+            if (change.type === "added") {
+                
+                if(change.doc.data().from_uid===friendUID && change.doc.data().to_uid===currentUser.uid){
+                    
+                    console.log("f uid: "+change.doc.data().from_uid+"data: "+change.doc.data(), "");
+                    
+                    var htmlContent = '<div class="friend-chat">'
+                                    +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                                    +'<div class="selected-user-info">'
+                                    + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                                    +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
+                                    +'<p class="selected-user-chat">'+change.doc.data().text+'</p></div>'
+                                    +'</div>';
+                    
+                    
+                    $(".chat-screen .body").append(htmlContent);
+                }
+            }
+            if (change.type === "modified") {
+                console.log("Modified city: ", change.doc.data());
+            }
+            if (change.type === "removed") {
+                console.log("Removed city: ", change.doc.data());
+            }
+        });
+    });
+    /*-----end---------------get realtime messages data-----------------------------*/ 
+});
 
 /* ------------------- Message Send --------------------*/
-
 function sendMessage(){
+    
 	    var friend_uid = $("#friend_uid").val();
-        var my_uid = currentUser.uid;
-        var message = $('#chat-box').val();
+        var message    = $('#chat-box').val();
+    
+		var date       = moment().format('LL');
+		var day        = moment().format('dddd');  ;
+		var time       = moment().format('LT');
+		var fileurl    = "";
 		
-		var date = moment().format('LL');
-		var day = moment().format('dddd');  ;
-		var time = moment().format('LT');
-		var fileurl = "";
-
-		
-        var friendMessageData = {
-            from_uid : my_uid,
+        var messageData = {
+            from_uid : currentUser.uid,
             text : message,
             to_uid : friend_uid,
 			date : date,
@@ -194,16 +168,36 @@ function sendMessage(){
 			time : time,
 			fileurl : fileurl
             }
-
-
-       messagesRef.doc()
-                .set(friendMessageData)
+    
+        dbRef.collection('messages/'+currentUser.uid+'/'+friend_uid).doc()
+                .set(messageData)
+                .then(function(){
+                 console.log("Done");
+        });
+        dbRef.collection('messages/'+friend_uid+'/'+currentUser.uid).doc()
+                .set(messageData)
                 .then(function(){
                  console.log("Done");
         });
 
 
 	$('#chat-box').val("");
+    
+    
+  /*--start-------------print my send messages---------------------------------------*/  
+  var  htmlContent = '<div class="my-chat">'
+                +'<div class="selected-user-info">'
+                + '<p class="text-right">'
+                + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
+                +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                + '</p>'
+                +'<p class="selected-user-chat text-right pull-right">'+message+'</p></div>'
+                +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                +'</div>';
+
+  $(".chat-screen .body").append(htmlContent);
+    /*-end----------------print my send messages---------------------------------------*/  
+    
 }
                              
 $("#send_btn").on("click", function(){
@@ -218,10 +212,6 @@ $('#chat_box').keypress(function(e){
         return false;
     }
 });
-
-
-
-
 
 
 /*--------firebase logout function-------------*/
@@ -240,4 +230,6 @@ $("#logout_btn").on("click", function(){
         // An error happened.
     });
 });
+
+
 
