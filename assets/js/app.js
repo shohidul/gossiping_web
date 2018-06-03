@@ -24,7 +24,8 @@ firebase.auth().onAuthStateChanged(function(user) {
                 var childData = childSnapshot.data();
                     
                     
-                $(".friend-list").html("");
+            $(".friend-list").html("");
+                    
             if(childData !== null ){
                  storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
                             var friendlisthtml = '<li class="friend">' 
@@ -84,24 +85,26 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#friend_uid").val(friendUID);
     $("#friend_image").attr("src", friendPhotoUrl);
 
-	$(".chat-screen .body").html(""); 
+	
      
-     var htmlContent;
-     dbRef.collection('messages/'+currentUser.uid+'/'+friendUID).get().then(function(querySnapshot) {
+    var html; 
+     dbRef.collection('messages').where("friendship_id", "==", 20).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
             
-            console.log(doc.id, " => ", doc.data());
-            if(doc.data().from_uid !== currentUser.uid ){
+           // console.log(doc.id, " => ", doc.data());
+            var htmlContent = "";
+            
+                if(doc.data().from_uid == currentUser.uid ){ console.log( "if...."+doc.data().from_uid + " " + currentUser.uid);
 				htmlContent = '<div class="friend-chat">'
-								+'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
-								+'<div class="selected-user-info">'
-								+ '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
-								+'<time class="chat-time">'+doc.data().time+'</time></p>'
-								+'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
-								+'</div>';
-			   }else{
-				htmlContent = '<div class="my-chat">'
-							
+                            +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                            +'<div class="selected-user-info">'
+                            + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                            +'<time class="chat-time">'+doc.data().time+'</time></p>'
+                            +'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
+                            +'</div>';
+                html+= htmlContent;
+			     }else{console.log("else...."+doc.data().from_uid + " " + currentUser.uid);
+				    htmlContent = '<div class="my-chat">'
 							+'<div class="selected-user-info">'
 							+ '<p class="text-right">'
 							+ '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
@@ -110,31 +113,55 @@ firebase.auth().onAuthStateChanged(function(user) {
 							+'<p class="selected-user-chat text-right pull-right">'+doc.data().text+'</p></div>'
 							+'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
 							+'</div>';
+                 html+= htmlContent;       
 			   }
-			  $(".chat-screen .body").append(htmlContent);
-            
+          
         });
+         
+         $(".chat-screen .body").html(html); 
     });
      
-    /*-----start---------------get realtime messages data-----------------------------*/ 
-     dbRef.collection('messages/'+currentUser.uid+'/'+friendUID).onSnapshot(function(snapshot) {
+    
+});
+
+/*var query = firebase.firestore().collection("book")
+query = query.where(...)
+query = query.where(...)
+query = query.where(...)
+query = query.orderBy(...)
+query.get().then(...)*/
+
+
+/*-----start---------------get realtime messages data-----------------------------*/ 
+/*     dbRef.collection('messages').onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
             if (change.type === "added") {
                 
-                if(change.doc.data().from_uid===friendUID && change.doc.data().to_uid===currentUser.uid){
+                if(change.doc.data().friendship_id == 20){
                     
-                    console.log("f uid: "+change.doc.data().from_uid+"data: "+change.doc.data(), "");
-                    
-                    var htmlContent = '<div class="friend-chat">'
-                                    +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
-                                    +'<div class="selected-user-info">'
-                                    + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
-                                    +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
-                                    +'<p class="selected-user-chat">'+change.doc.data().text+'</p></div>'
-                                    +'</div>';
-                    
-                    
-                    $(".chat-screen .body").append(htmlContent);
+                    var htmlContent;
+
+                                if(doc.data().from_uid != currentUser.uid ){
+                                htmlContent = '<div class="friend-chat">'
+                                            +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                                            +'<div class="selected-user-info">'
+                                            + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                                            +'<time class="chat-time">'+doc.data().time+'</time></p>'
+                                            +'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
+                                            +'</div>';
+                                 }else{
+                                    htmlContent = '<div class="my-chat">'
+                                            +'<div class="selected-user-info">'
+                                            + '<p class="text-right">'
+                                            + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
+                                            +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                                            + '</p>'
+                                            +'<p class="selected-user-chat text-right pull-right">'+doc.data().text+'</p></div>'
+                                            +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                                            +'</div>';
+                               }
+                           $(".chat-screen .body").html(htmlContent);
+               
                 }
             }
             if (change.type === "modified") {
@@ -144,9 +171,9 @@ firebase.auth().onAuthStateChanged(function(user) {
                 console.log("Removed city: ", change.doc.data());
             }
         });
-    });
-    /*-----end---------------get realtime messages data-----------------------------*/ 
-});
+    });*/
+    /*-----end---------------get realtime messages data-----------------------------*/
+ 
 
 /* ------------------- Message Send --------------------*/
 function sendMessage(){
@@ -155,7 +182,7 @@ function sendMessage(){
         var message    = $('#chat-box').val();
     
 		var date       = moment().format('LL');
-		var day        = moment().format('dddd');  ;
+		var day        = moment().format('dddd');
 		var time       = moment().format('LT');
 		var fileurl    = "";
 		
@@ -166,26 +193,27 @@ function sendMessage(){
 			date : date,
 			day : day,
 			time : time,
-			fileurl : fileurl
+			fileurl : fileurl,
+            friendship_id: 20
             }
     
-        dbRef.collection('messages/'+currentUser.uid+'/'+friend_uid).doc()
+        dbRef.collection('messages').doc()
                 .set(messageData)
                 .then(function(){
                  console.log("Done");
         });
-        dbRef.collection('messages/'+friend_uid+'/'+currentUser.uid).doc()
+        /*dbRef.collection('messages').doc()
                 .set(messageData)
                 .then(function(){
                  console.log("Done");
-        });
+        });*/
 
 
 	$('#chat-box').val("");
     
     
   /*--start-------------print my send messages---------------------------------------*/  
-  var  htmlContent = '<div class="my-chat">'
+ /* var  htmlContent = '<div class="my-chat">'
                 +'<div class="selected-user-info">'
                 + '<p class="text-right">'
                 + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
@@ -195,7 +223,7 @@ function sendMessage(){
                 +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
                 +'</div>';
 
-  $(".chat-screen .body").append(htmlContent);
+  $(".chat-screen .body").append(htmlContent);*/
     /*-end----------------print my send messages---------------------------------------*/  
     
 }
@@ -231,5 +259,118 @@ $("#logout_btn").on("click", function(){
     });
 });
 
+$("#search_box").on("input", function(){
+    
+         dbRef.collection('users').where("email", "==", $(this).val()).get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
 
+                    
+                if(doc != null){ console.log(doc.data());
+                   $("#searchBtn").addClass("hidden");
+                   $(".nav-pill-tabs").addClass("hidden");
+                   
+                   $("#searchCloseBtn").removeClass("hidden");
+                   $(".search-list").removeClass("hidden");
+                   var childData = doc.data();            
+                   storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
+                            var searchlisthtml = '<li class="friend">' 
+                              + '<div class="friend-body">'
+                              +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
+                              +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
+                              +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                              +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
+                              + '<p class="user-thought">Whats up guys</p></div>'
+                              + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
+                              + '</div>'
+                              + '</li>';
+
+                            $(".search-list").append(searchlisthtml);
+
+                            });             
+                }
+
+            });
+
+             //$(".chat-screen .body").html(html); 
+    });
+});
+
+$("#searchCloseBtn").on("click", function(){
+       $("#searchBtn").removeClass("hidden");
+       $(".nav-pill-tabs").removeClass("hidden");
+
+       $("#searchCloseBtn").addClass("hidden");
+       $(".search-list").addClass("hidden");
+    
+       $(".search-list").html("");
+       $("#search_box").val("");
+    
+       $("#add_friend").parent().addClass("hidden");
+    
+});
+
+
+ $(".search-list").on("click", '.friend', function(e){
+    if($('.chat-screen').hasClass("hidden")){ 
+        $('.welcome-screen').addClass("hidden");
+        $('.chat-screen').removeClass("hidden");
+    }
+    $(".chat-screen .body").animate({ scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);	
+
+    var friendUID =$(this).find(".user-uid").val(); 
+    var friendName =$(this).find(".user-full-name").text();
+    var friendStatus =$(this).find(".user-status").val();
+    var friendPhotoUrl =$(this).find(".user-image").attr('src');
+	
+    $("#friend_name").text(friendName);
+    $("#friend_status").text(friendStatus);
+    $("#friend_uid").val(friendUID);
+    $("#friend_image").attr("src", friendPhotoUrl);
+
+	
+       $(".chat-screen .body").html(""); 
+     
+    $("#add_friend").parent().removeClass("hidden");
+    
+});
+
+$("#add_friend").on("click", function(){
+        var reqUID =$("#friend_uid").val();
+
+        var date       = moment().format('LL');
+		var day        = moment().format('dddd');
+		var time       = moment().format('LT');
+    
+        var friends = {
+            from_uid : currentUser.uid,
+            to_uid : reqUID,
+			date : date,
+			day : day,
+			time : time,
+            status: 0
+        }
+    
+        dbRef.collection('friends').doc()
+                .set(friends)
+                .then(function(){
+                 console.log("request sent");
+        });
+    
+});
+
+
+function rejectRequest(el){
+    var reqUID =$("#friend_uid").text();
+    dbRef.doc('friends/' + reqUID)
+                    .update({status : "3"})
+                    .then(function(){
+                        console.log("first updated");
+    });
+    
+     dbRef.doc('friends/'+reqUID+'/' + currentUser.user_uid)
+                .update({status : "3"})
+                .then(function(){
+                    console.log("second updated");
+     });
+}
 
