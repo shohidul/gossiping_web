@@ -1,0 +1,22 @@
+
+                             usersRef.doc(change.doc.data().from_uid).get().then(function(doc) { 
+
+                                if (doc.exists) {
+                                    var childData = doc.data();            
+                                    storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
+                                        var friendlisthtml = '<li class="friend">' 
+                                          + '<div class="friend-body">'
+                                          +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
+                                          +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
+                                          +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                                          +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
+                                          + '<p class="user-thought">Whats up guys</p></div>'
+                                          + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
+                                          + '</div>'
+                                          + '</li>';
+
+                                        $(".friend-list").append(friendlisthtml);
+
+                                    });
+                                }
+                             })

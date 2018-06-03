@@ -17,35 +17,42 @@ firebase.auth().onAuthStateChanged(function(user) {
                     $("#currentUserImg").attr("src", url);
             });
 
-                      // ---- all users data
-            usersRef.get().then(function(snapshot) {
-                snapshot.forEach(function(childSnapshot) {
+                      // ---- friends data
+           
+            
+        /*    dbRef.collection("friends").where("friend_uid", "==", currentUser.uid)
+                .onSnapshot(function(snapshot) { 
+                    snapshot.docChanges().forEach(function(change) { 
+                        if (change.type === "added") {
+                        
+                                
+                             usersRef.doc(change.doc.data().from_uid).get().then(function(doc) { 
 
-                var childData = childSnapshot.data();
-                    
-                    
-            $(".friend-list").html("");
-                    
-            if(childData !== null ){
-                 storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
-                            var friendlisthtml = '<li class="friend">' 
-                              + '<div class="friend-body">'
-                              +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
-                              +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
-                              +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
-                              +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
-                              + '<p class="user-thought">Whats up guys</p></div>'
-                              + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
-                              + '</div>'
-                              + '</li>';
+                                if (doc.exists) {
+                                    var childData = doc.data();            
+                                    storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
+                                        var friendlisthtml = '<li class="friend">' 
+                                          + '<div class="friend-body">'
+                                          +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
+                                          +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
+                                          +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                                          +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
+                                          + '<p class="user-thought">Whats up guys</p></div>'
+                                          + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
+                                          + '</div>'
+                                          + '</li>';
 
-                            $(".friend-list").append(friendlisthtml);
+                                        $(".friend-list").append(friendlisthtml);
 
-                            });
+                                    });
+                                }
+                             })
+                                
+                  
+                        }
 
-				        } 
                     });
-                });
+                });*/
             
             
             } else {
@@ -57,12 +64,52 @@ firebase.auth().onAuthStateChanged(function(user) {
         });
       
       
-      
+      dbRef.collection("friendship").where("to_uid", "==", currentUser.uid).where("status", "==", 1)
+        .onSnapshot(function(snapshot) { 
+            snapshot.docChanges().forEach(function(change) { 
+                if (change.type === "added") {
+                    //console.log(change.doc.data());
+                    
+                     usersRef.doc(change.doc.data().from_uid).get().then(function(doc) { 
+                        
+                        if (doc.exists) {
+                            var childData = doc.data();            
+                            storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
+                            var searchlisthtml = '<li class="friend">' 
+                              + '<div class="friend-body">'
+                              +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
+                              +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
+                              +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                              +	'<input type="hidden" class="from-uid" value="'+change.doc.data().from_uid+'"/>'
+                              +	'<input type="hidden" class="friendship-uid" value="'+change.doc.id+'"/>'
+                              +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
+                              + '<p class="user-thought">Whats up guys</p></div>'
+                              + '<div class="request-status">'
+            +'<button type="submit" class="btn btn-success btn-raised btn-fab btn-round acceptBtn"><i class="material-icons">done</i></button>'
+            +'<button type="submit" class="btn btn-danger btn-raised btn-fab btn-round rejectBtn"><i class="material-icons">close</i></button>'
+                              + '</div>'
+                              + '</div>'
+                              + '</li>';
+
+                            $(".notification-list").append(searchlisthtml);
+
+                            });
+                        }
+                     })
+                    
+                    
+                    
+                }
+
+            });
+        });
       
       
       }else{
           loadPage("pages/login.html");
       }
+    
+    
     
 });
 
@@ -340,37 +387,51 @@ $("#add_friend").on("click", function(){
         var date       = moment().format('LL');
 		var day        = moment().format('dddd');
 		var time       = moment().format('LT');
+		var timestamp  = new Date();
     
-        var friends = {
+        var friendship = {
             from_uid : currentUser.uid,
             to_uid : reqUID,
 			date : date,
 			day : day,
 			time : time,
-            status: 0
+			timestamp : timestamp,
+            status: 1
         }
     
-        dbRef.collection('friends').doc()
-                .set(friends)
+        dbRef.collection('friendship').doc()
+                .set(friendship)
                 .then(function(){
                  console.log("request sent");
         });
     
 });
 
-
-function rejectRequest(el){
-    var reqUID =$("#friend_uid").text();
-    dbRef.doc('friends/' + reqUID)
-                    .update({status : "3"})
-                    .then(function(){
-                        console.log("first updated");
-    });
+$(".notification-list").on("click", ".acceptBtn",function(){
+    var current_li = $(this).closest("li");
+    var request_from = current_li.find(".friendship-uid").val();
     
-     dbRef.doc('friends/'+reqUID+'/' + currentUser.user_uid)
-                .update({status : "3"})
-                .then(function(){
-                    console.log("second updated");
-     });
-}
+       dbRef.collection('friendship').doc(request_from).update({
+             status: 2
+            }).then(function() {
+                console.log("Request accepted!");
+                 current_li.remove();
+            });
+    
+    
+})
+$(".notification-list").on("click", ".rejectBtn",function(){
+    var current_li = $(this).closest("li");
+    var request_from = current_li.find(".friendship-uid").val();
+    dbRef.collection('friendship').doc(request_from).update({
+             status: 0
+            }).then(function() {
+                console.log("Request rejected!");
+                current_li.remove();
+            });
+})
+
+
+
+
 
