@@ -6,46 +6,101 @@
                 <p id="currenUsersFullName" class="current-user-full-name">User Name</p>
                 <p class="current-user-status"><span id="currenUserStatus">Active </span> &nbsp; <span class="green-dot"></span></p>
             </div>
-            <div class="form-group has-success bmd-form-group">
-                <input id="exampleInput2" class="form-control" placeholder="Search Contacts" type="text">
+            <!--<div class="form-group has-success bmd-form-group">
+                <input id="search_box" class="form-control" placeholder="Search Contacts" type="text">
                 <span class="form-control-feedback">
                     <i class="material-icons">search</i>
                 </span>
-            </div>
+            </div>-->
+            <form class="form-inline ml-auto">
+              <div class="form-group bmd-form-group">
+                <input id="search_box" class="form-control" placeholder="Search" type="text">
+              </div>
+              <button type="submit" class="btn btn-white btn-raised btn-fab btn-round" id="searchBtn">
+                <i class="material-icons">search</i>
+              </button>
+               <button type="submit" class="btn btn-danger btn-raised btn-fab btn-round hidden" id="searchCloseBtn">
+                <i class="material-icons">close</i>
+              </button>
+            </form>
             <div class="left-inside-bottom">
-                <ul class="friend-list">
+               
+               <div class="nav-pill-tabs">
+                   
+                    <ul class="nav nav-pills nav-pills-rose">
+                        <li class="nav-item">
+                            <a class="nav-link active show" href="#pill1" data-toggle="tab">Friends</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pill2" data-toggle="tab">
+                                 Notific 
+                                <span class="badge badge-pill badge-danger">2</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pill3" data-toggle="tab">Global</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content tab-space">
+                        <div class="tab-pane active show" id="pill1">
+                            <ul class="friend-list">
+                                <!--<div class="text-center">
+                                    <a id="logout_btn" href="#" class="btn btn-primary btn-round">Logout</a>
+                                </div>-->
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="pill2">
+                            Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas.
+                            <br>
+                            <br>Dramatically maintain clicks-and-mortar solutions without functional solutions.
+                        </div>
+                        <div class="tab-pane" id="pill3">
+                            Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas.
+                            <br>
+                            <br>Dynamically innovate resource-leveling customer service for state of the art customer service.
+                        </div>
+                    </div>
+                </div>
+               
+               
+                <!--<ul class="friend-list">
              
-                    <!--<li class="friend">
-                       <div class="friend-body">
-                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                       </div>
-                    </li>
-                    <li class="friend">
-                       <div class="friend-body">
-                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                       </div>
-                    </li>
-                    <li class="friend">
-                       <div class="friend-body">
-                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                       </div>
-                    </li>
-                    <li class="friend">
-                       <div class="friend-body">
-                            <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                            <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                            <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                       </div>
-                    </li>-->
+                    
                     <div class="text-center">
                         <a id="logout_btn" href="#" class="btn btn-primary btn-round">Logout</a>
                     </div>
+                </ul>-->
+                    <!--<li class="friend">
+                           <div class="friend-body">
+                                <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                                <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                                <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                           </div>
+                        </li>
+                        <li class="friend">
+                           <div class="friend-body">
+                                <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                                <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                                <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                           </div>
+                        </li>
+                        <li class="friend">
+                           <div class="friend-body">
+                                <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                                <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                                <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                           </div>
+                        </li>
+                        <li class="friend">
+                           <div class="friend-body">
+                                <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
+                                <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
+                                <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
+                           </div>
+                        </li>-->
+                
+                
+                <ul class="search-list hidden">
                 </ul>
            </div>
        </div>
@@ -75,6 +130,9 @@
 
                     <div class="top-btngroup pull-right">
                         <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>
+                    </div>
+                    <div class="top-btngroup pull-right hidden">
+                        <button id="add_friend" class=" btn btn-rose btn-just-icon btn-round add-btn"><i class="material-icons">add</i></button>
                     </div>
                 </div>
                 <div class="body">
