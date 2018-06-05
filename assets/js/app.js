@@ -17,78 +17,9 @@ firebase.auth().onAuthStateChanged(function(user) {
                     $("#currentUserImg").attr("src", url);
             });
 
-          $(".friend-list").html("");  
-           dbRef.collection("friendship").where("to_uid", "==", currentUser.uid).where("status", "==", 2)
-                .onSnapshot(function(snapshot) { 
-                    snapshot.docChanges().forEach(function(change) { 
-                        // current_user in from and in to
-                        console.log(change.doc.data());
-                        if (change.type === "added") {
-                        
-                                
-                             usersRef.doc(change.doc.data().from_uid).get().then(function(doc) { 
-
-                                if (doc.exists) {
-                                    var childData = doc.data();            
-                                    storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
-                                        var friendlisthtml = '<li class="friend">' 
-                                          + '<div class="friend-body">'
-                                          +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
-                                          +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
-                                          +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
-                                          +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
-                                          + '<p class="user-thought">Whats up guys</p></div>'
-                                          + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
-                                          + '</div>'
-                                          + '</li>';
-
-                                        $(".friend-list").append(friendlisthtml);
-
-                                    });
-                                }
-                             })
-                                
-                  
-                        }
-
-                    });
-                });
-            
-        dbRef.collection("friendship").where("from_uid", "==", currentUser.uid).where("status", "==", 2)
-                .onSnapshot(function(snapshot) { 
-                    snapshot.docChanges().forEach(function(change) { 
-                        // current_user in from and in to
-                        console.log(change.doc.data());
-                        if (change.type === "added") {
-                        
-                                
-                             usersRef.doc(change.doc.data().to_uid).get().then(function(doc) { 
-
-                                if (doc.exists) {
-                                    var childData = doc.data();            
-                                    storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
-                                        var friendlisthtml = '<li class="friend">' 
-                                          + '<div class="friend-body">'
-                                          +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
-                                          +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
-                                          +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
-                                          +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
-                                          + '<p class="user-thought">Whats up guys</p></div>'
-                                          + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
-                                          + '</div>'
-                                          + '</li>';
-
-                                        $(".friend-list").append(friendlisthtml);
-
-                                    });
-                                }
-                             })
-                                
-                  
-                        }
-
-                    });
-                });
+        fetchFriend();
+        fetchFriend1();   
+    
             
             $(".notification-list").html("");
             dbRef.collection("friendship").where("to_uid", "==", currentUser.uid).where("status", "==", 1)
@@ -155,6 +86,84 @@ firebase.auth().onAuthStateChanged(function(user) {
     
     
 });
+
+function fetchFriend(){
+        $(".friend-list").html("");  
+           dbRef.collection("friendship").where("to_uid", "==", currentUser.uid).where("status", "==", 2)
+                .onSnapshot(function(snapshot) { 
+                    snapshot.docChanges().forEach(function(change) { 
+                        // current_user in from and in to
+                        console.log(change.doc.data());
+                        if (change.type === "added") {
+                        
+                                
+                             usersRef.doc(change.doc.data().from_uid).get().then(function(doc) { 
+
+                                if (doc.exists) {
+                                    var childData = doc.data();            
+                                    storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
+                                        var friendlisthtml = '<li class="friend">' 
+                                          + '<div class="friend-body">'
+                                          +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
+                                          +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
+                                          +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                                          +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
+                                          + '<p class="user-thought">Whats up guys</p></div>'
+                                          + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
+                                          + '</div>'
+                                          + '</li>';
+
+                                        $(".friend-list").append(friendlisthtml);
+
+                                    });
+                                }
+                             })
+                                
+                  
+                        }
+
+                    });
+                });
+}
+
+function fetchFriend1(){
+    $(".friend-list").html("");
+        dbRef.collection("friendship").where("from_uid", "==", currentUser.uid).where("status", "==", 2)
+                .onSnapshot(function(snapshot) { 
+                    snapshot.docChanges().forEach(function(change) { 
+                        // current_user in from and in to
+                        console.log(change.doc.data());
+                        if (change.type === "added") {
+                        
+                                
+                             usersRef.doc(change.doc.data().to_uid).get().then(function(doc) { 
+
+                                if (doc.exists) {
+                                    var childData = doc.data();            
+                                    storageRef.child('images/'+childData.photo_url).getDownloadURL().then(function(url) {
+                                        var friendlisthtml = '<li class="friend">' 
+                                          + '<div class="friend-body">'
+                                          +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
+                                          +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
+                                          +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                                          +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
+                                          + '<p class="user-thought">Whats up guys</p></div>'
+                                          + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
+                                          + '</div>'
+                                          + '</li>';
+
+                                        $(".friend-list").append(friendlisthtml);
+
+                                    });
+                                }
+                             })
+                                
+                  
+                        }
+
+                    });
+                });
+}
 
 /* -------------- Friend onclick get chating data with this friend------------------ */
 
