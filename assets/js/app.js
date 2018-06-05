@@ -17,8 +17,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                     $("#currentUserImg").attr("src", url);
             });
 
-                      // ---- friends data
-           
+          $(".friend-list").html("");  
            dbRef.collection("friendship").where("to_uid", "==", currentUser.uid).where("status", "==", 2)
                 .onSnapshot(function(snapshot) { 
                     snapshot.docChanges().forEach(function(change) { 
@@ -55,7 +54,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                     });
                 });
             
-                       dbRef.collection("friendship").where("from_uid", "==", currentUser.uid).where("status", "==", 2)
+        dbRef.collection("friendship").where("from_uid", "==", currentUser.uid).where("status", "==", 2)
                 .onSnapshot(function(snapshot) { 
                     snapshot.docChanges().forEach(function(change) { 
                         // current_user in from and in to
@@ -91,18 +90,14 @@ firebase.auth().onAuthStateChanged(function(user) {
                     });
                 });
             
-            
-            } else {
-                console.log("No such document!");
-            }
-        
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
-      
-      
-      dbRef.collection("friendship").where("to_uid", "==", currentUser.uid).where("status", "==", 1)
+            $(".notification-list").html("");
+            dbRef.collection("friendship").where("to_uid", "==", currentUser.uid).where("status", "==", 1)
         .onSnapshot(function(snapshot) { 
+             if(snapshot.size != 0){
+              $("#notificationCount").text(snapshot.size);
+          }else{
+               $("#notificationCount").text("");
+          }
             snapshot.docChanges().forEach(function(change) { 
                 if (change.type === "added") {
                     //console.log(change.doc.data());
@@ -140,6 +135,17 @@ firebase.auth().onAuthStateChanged(function(user) {
 
             });
         });
+            
+            } else {
+                console.log("No such document!");
+            }
+        
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+      
+      
+      
       
       
       }else{
@@ -217,7 +223,7 @@ query.get().then(...)*/
 
 
 /*-----start---------------get realtime messages data-----------------------------*/ 
-/*     dbRef.collection('messages').onSnapshot(function(snapshot) {
+    dbRef.collection('messages').onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
             if (change.type === "added") {
                 
@@ -255,7 +261,7 @@ query.get().then(...)*/
                 console.log("Removed city: ", change.doc.data());
             }
         });
-    });*/
+    });
     /*-----end---------------get realtime messages data-----------------------------*/
  
 
@@ -286,18 +292,18 @@ function sendMessage(){
                 .then(function(){
                  console.log("Done");
         });
-        /*dbRef.collection('messages').doc()
+        dbRef.collection('messages').doc()
                 .set(messageData)
                 .then(function(){
                  console.log("Done");
-        });*/
+        });
 
 
 	$('#chat-box').val("");
     
     
   /*--start-------------print my send messages---------------------------------------*/  
- /* var  htmlContent = '<div class="my-chat">'
+ var  htmlContent = '<div class="my-chat">'
                 +'<div class="selected-user-info">'
                 + '<p class="text-right">'
                 + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
@@ -307,7 +313,7 @@ function sendMessage(){
                 +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
                 +'</div>';
 
-  $(".chat-screen .body").append(htmlContent);*/
+  $(".chat-screen .body").append(htmlContent);
     /*-end----------------print my send messages---------------------------------------*/  
     
 }
