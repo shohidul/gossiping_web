@@ -5,7 +5,7 @@ Going to create an app like skype
 3. technology = html, css, bs, js, jquery, nodejs 
 
 #----------table-------
-messages
+messages/a_ui
     -user_from
     -user_to
     -text
@@ -13,6 +13,7 @@ messages
     -day
     -time
     -file_url
+    -f_uid
     
     
     
@@ -89,7 +90,11 @@ var updateTimestamp = docRef.update({
 });
 ==============================================
 
-
+messages/a_uid{
+    
+    to_uid:
+    
+}
 
 
 
