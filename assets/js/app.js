@@ -22,7 +22,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                 .onSnapshot(function(snapshot) { 
                     snapshot.docChanges().forEach(function(change) { 
                         // current_user in from and in to
-                        console.log(change.doc.data());
+                        console.log("friendship id----"+change.doc.id);
                         if (change.type === "added") {
                         
                                 
@@ -36,6 +36,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                                           +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
                                           +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
                                           +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                                          +'<input type="hidden" class="friendship-id" value="'+change.doc.id+'"/>'
                                           +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
                                           + '<p class="user-thought">Whats up guys</p></div>'
                                           + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
@@ -72,6 +73,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                                           +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
                                           +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
                                           +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                                          + '<input type="hidden" class="friendship-id" value="'+change.doc.id+'"/>'
                                           +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
                                           + '<p class="user-thought">Whats up guys</p></div>'
                                           + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
@@ -166,25 +168,30 @@ firebase.auth().onAuthStateChanged(function(user) {
     $(".chat-screen .body").animate({ scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);	
 
     var friendUID =$(this).find(".user-uid").val(); 
+    var friendshipID =$(this).find(".friendship-id").val(); 
     var friendName =$(this).find(".user-full-name").text();
     var friendStatus =$(this).find(".user-status").val();
     var friendPhotoUrl =$(this).find(".user-image").attr('src');
+     
+     
 	
     $("#friend_name").text(friendName);
     $("#friend_status").text(friendStatus);
     $("#friend_uid").val(friendUID);
+    $("#friendship_id").val(friendshipID);
     $("#friend_image").attr("src", friendPhotoUrl);
 
-	
+	$(".chat-screen .body").html("");
      
     var html; 
-     dbRef.collection('messages').where("friendship_id", "==", 20).get().then(function(querySnapshot) {
+     dbRef.collection('messages').where("friendship_id", "==", friendshipID).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
             
            // console.log(doc.id, " => ", doc.data());
             var htmlContent = "";
             
-                if(doc.data().from_uid == currentUser.uid ){ console.log( "if...."+doc.data().from_uid + " " + currentUser.uid);
+                if(doc.data().from_uid != currentUser.uid ){
+                    console.log( "if...."+doc.data().from_uid + " " + currentUser.uid);
 				htmlContent = '<div class="friend-chat">'
                             +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
                             +'<div class="selected-user-info">'
@@ -210,6 +217,49 @@ firebase.auth().onAuthStateChanged(function(user) {
          
          $(".chat-screen .body").html(html); 
     });
+ 
+     
+/*-----start---------------get realtime messages data-----------------------------*/ 
+    dbRef.collection('messages').where("friendship_id", "==", friendshipID).onSnapshot(function(snapshot) {
+        console.log("in realtime"+snapshot);
+        snapshot.docChanges().forEach(function(change) {
+            console.log("in for each --"+change);
+           // if (change.doc.type === "added") {
+                console.log("in if close --"+change.doc.data());
+                var newMsg = "";
+
+                    if(change.doc.data().from_uid == friendUID && change.doc.data().friendship_id == friendshipID){
+                    newMsg = '<div class="friend-chat">'
+                                +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                                +'<div class="selected-user-info">'
+                                + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                                +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
+                                +'<p class="selected-user-chat">'+change.doc.data().text+'</p></div>'
+                                +'</div>';
+                     }else {
+                        /*newMsg = '<div class="my-chat">'
+                                +'<div class="selected-user-info">'
+                                + '<p class="text-right">'
+                                + '<time class="chat-time">'+change.doc.data().time+' </time> &nbsp;&nbsp;'
+                                +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                                + '</p>'
+                                +'<p class="selected-user-chat text-right pull-right">'+change.doc.data().text+'</p></div>'
+                                +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                                +'</div>';*/
+                   }
+               $(".chat-screen .body").append(newMsg);
+               
+            //}
+        });
+    });
+    /*-----end---------------get realtime messages data-----------------------------*/     
+     
+     
+     
+     
+     
+     
+     
      
     
 });
@@ -222,53 +272,14 @@ query = query.orderBy(...)
 query.get().then(...)*/
 
 
-/*-----start---------------get realtime messages data-----------------------------*/ 
-    dbRef.collection('messages').onSnapshot(function(snapshot) {
-        snapshot.docChanges().forEach(function(change) {
-            if (change.type === "added") {
-                
-                if(change.doc.data().friendship_id == 20){
-                    
-                    var htmlContent;
 
-                                if(doc.data().from_uid != currentUser.uid ){
-                                htmlContent = '<div class="friend-chat">'
-                                            +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
-                                            +'<div class="selected-user-info">'
-                                            + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
-                                            +'<time class="chat-time">'+doc.data().time+'</time></p>'
-                                            +'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
-                                            +'</div>';
-                                 }else{
-                                    htmlContent = '<div class="my-chat">'
-                                            +'<div class="selected-user-info">'
-                                            + '<p class="text-right">'
-                                            + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
-                                            +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
-                                            + '</p>'
-                                            +'<p class="selected-user-chat text-right pull-right">'+doc.data().text+'</p></div>'
-                                            +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
-                                            +'</div>';
-                               }
-                           $(".chat-screen .body").html(htmlContent);
-               
-                }
-            }
-            if (change.type === "modified") {
-                console.log("Modified city: ", change.doc.data());
-            }
-            if (change.type === "removed") {
-                console.log("Removed city: ", change.doc.data());
-            }
-        });
-    });
-    /*-----end---------------get realtime messages data-----------------------------*/
  
 
 /* ------------------- Message Send --------------------*/
 function sendMessage(){
     
-	    var friend_uid = $("#friend_uid").val();
+	    var friendUID  = $("#friend_uid").val();
+        var friendshipID = $("#friendship_id").val();
         var message    = $('#chat-box').val();
     
 		var date       = moment().format('LL');
@@ -279,12 +290,12 @@ function sendMessage(){
         var messageData = {
             from_uid : currentUser.uid,
             text : message,
-            to_uid : friend_uid,
+            to_uid : friendUID,
 			date : date,
 			day : day,
 			time : time,
 			fileurl : fileurl,
-            friendship_id: 20
+            friendship_id: friendshipID
             }
     
         dbRef.collection('messages').doc()
@@ -292,18 +303,18 @@ function sendMessage(){
                 .then(function(){
                  console.log("Done");
         });
-        dbRef.collection('messages').doc()
+        /*dbRef.collection('messages').doc()
                 .set(messageData)
                 .then(function(){
                  console.log("Done");
-        });
+        });*/
 
 
 	$('#chat-box').val("");
     
     
   /*--start-------------print my send messages---------------------------------------*/  
- var  htmlContent = '<div class="my-chat">'
+ var  sendhtml = '<div class="my-chat">'
                 +'<div class="selected-user-info">'
                 + '<p class="text-right">'
                 + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
@@ -313,7 +324,7 @@ function sendMessage(){
                 +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
                 +'</div>';
 
-  $(".chat-screen .body").append(htmlContent);
+  $(".chat-screen .body").append(sendhtml);
     /*-end----------------print my send messages---------------------------------------*/  
     
 }
