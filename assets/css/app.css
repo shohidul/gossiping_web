@@ -234,6 +234,8 @@
     
     .selected-user-info{
         padding: 2px 10px;
+        width: 100%;
+        word-wrap: break-word;
     }
     .selected-user-full-name{
         margin: 0;
