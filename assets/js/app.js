@@ -107,7 +107,7 @@ function fetchFriend(){
                                           +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
                                           +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
                                           +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
-                                          +'<input type="hidden" class="friendship-id" value="'+change.doc.id+'"/>'
+                                          +'<input type="text" class="friendship-id" value="'+change.doc.id+'"/>'
                                           +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
                                           + '<p class="user-thought">Whats up guys</p></div>'
                                           + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
@@ -147,7 +147,7 @@ function fetchFriend1(){
                                           +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
                                           +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
                                           +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
-                                          + '<input type="hidden" class="friendship-id" value="'+change.doc.id+'"/>'
+                                          + '<input type="text" class="friendship-id" value="'+change.doc.id+'"/>'
                                           +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
                                           + '<p class="user-thought">Whats up guys</p></div>'
                                           + '<div class="user-status"><span class="user-activity"></span><span class="green-dot"></span></div>'
@@ -229,33 +229,36 @@ function fetchFriend1(){
  
      
 /*-----start---------------get realtime messages data-----------------------------*/ 
-    dbRef.collection('messages').where("friendship_id", "==", friendshipID).onSnapshot(function(snapshot) {
-        console.log("in realtime"+snapshot);
+    var q = dbRef.collection('messages').where("friendship_id", "==", $("#friendship_id").val());
+     q.onSnapshot(function(snapshot) {
+        console.log("in realtime "+$("#friendship_id").val());
         snapshot.docChanges().forEach(function(change) {
-            console.log("in for each --"+change);
+            //console.log("in for each --"+change);
            // if (change.doc.type === "added") {
-                console.log("in if close --"+change.doc.data());
+                
                 var newMsg = "";
 
-                    if(change.doc.data().from_uid == friendUID && change.doc.data().friendship_id == friendshipID){
+                    if(change.doc.data().from_uid == $("#friend_uid").val() && change.doc.data().friendship_id == $("#friendship_id").val()){
+                        console.log("in if close --"+change.doc.data().friendship_id);
+                        
                     newMsg = '<div class="friend-chat">'
                                 +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
                                 +'<div class="selected-user-info">'
                                 + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                                 +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
-                                +'<p class="selected-user-chat">'+change.doc.data().text+'</p></div>'
+                                +'<p class="selected-user-chat">'+change.doc.data().text+"<br>"+friendshipID+'</p></div>'
                                 +'</div>';
-                     }else {
-                        /*newMsg = '<div class="my-chat">'
+                     }/*else if(change.doc.data().to_uid == currentUser.uid){
+                        newMsg = '<div class="my-chat">'
                                 +'<div class="selected-user-info">'
                                 + '<p class="text-right">'
                                 + '<time class="chat-time">'+change.doc.data().time+' </time> &nbsp;&nbsp;'
                                 +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
                                 + '</p>'
-                                +'<p class="selected-user-chat text-right pull-right">'+change.doc.data().text+'</p></div>'
+                                +'<p class="selected-user-chat text-right pull-right">'+change.doc.data().text+"<br>"+friendshipID+'</p></div>'
                                 +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
-                                +'</div>';*/
-                   }
+                                +'</div>';
+                   }*/
                $(".chat-screen .body").append(newMsg);
                
             //}
