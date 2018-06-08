@@ -97,6 +97,13 @@ messages/a_uid{
 }
 
 
+Problem to solve :
 
+1 - Double message fix
+2 - Fix scroller
+3- Message send on enter
+4- Add button on request
+5 - Login Status
+6 - Push Notification
 
 
