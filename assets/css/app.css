@@ -9,6 +9,12 @@
     .welcome-screen h1{
         text-align: center;
     }
+    .first-screen .body{
+        height: 100%;
+        position: relative;
+        padding: 50px;
+    }
+  
     .chat-screen{
         height: 100%;
         position: relative;
@@ -381,6 +387,16 @@
         line-height: 35px;
         font-size: 18px;
     }
+    .card-profile .card-avatar, .card-testimonial .card-avatar {
+        width: 130px;
+        height: 130px;
+    }
+    .card-profile .card-avatar img, .card-testimonial .card-avatar img {
+        width: inherit;
+        height: inherit;
+        object-fit: cover;
+    }
+
     @media (max-width: 998px) {
         .left-side{
             transform: translateX(-100%);
@@ -426,5 +442,14 @@
         }
        .right-side {
             padding: 5px;
+        }
+       #chat-box{
+           width: 85%;
+       }
+       .send-btn {
+            right: 10px;
+        }
+       .chat-screen .bottom {
+            padding: 5px 10px;
         }
     }

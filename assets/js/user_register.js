@@ -9,9 +9,12 @@ $('#register_btn').on('click', function () {
 });
 function doRegister(){
     
+ $("#register_btn").addClass("hidden");
+ $("#register_loading").removeClass("hidden");
+    
     var userData = {
-            first_name: "",
-            last_name: "",
+            first_name: $('#first_name').val(),
+            last_name: $('#last_name').val(),
             birth_date: "",
             gender: "",
             email: $('#reg_email').val(),
@@ -26,7 +29,7 @@ function doRegister(){
             created_day:"",
             created_month:"",
             uid:"",
-            is_active:"Online"
+            is_active:"FirstLogin"
           
     };
     var passwords = {
@@ -39,22 +42,22 @@ function doRegister(){
           
         firebase.auth().createUserWithEmailAndPassword(userData.email, passwords.password)
           .then(function(authUser){
-            
-                console.log("Authenticated successfully with payload:", authUser);
-
                 userData.uid = authUser.user.uid;
-
                 usersRef.doc(authUser.user.uid).set(userData)
                 .then(function() {
-                    console.log("Document written with ID: ");
+                    $("#registerDiv").fadeOut();
+                    $("#registerDiv").addClass("hidden");
+                    $("#registerSuccessDiv").removeClass("hidden");
+                    $("#registerSuccessDiv").fadeIn();
                 })
                 .catch(function(error) {
                     console.error("Error adding document: ", error);
                 });
-                loadPage("pages/user_profile.html");
+                
             
           }).catch(function(error){
-                console.log("Error creating user:", error);
+                $("#register_btn").removeClass("hidden");
+                $("#register_loading").addClass("hidden");
           });
       } else {
                 console.log("password and confirm password didn't match :", error);

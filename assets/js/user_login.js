@@ -21,13 +21,7 @@ function doLogin() {
 
         auth.signInWithEmailAndPassword(loginInfo.email, loginInfo.password)
             .then(function (authData) {
-
-                usersRef.doc(authData.user.uid).update({
-                    "is_active": "Online"
-                })
-
                 loadPage("pages/app.html");
-
             }).catch(function (error) {
                   $("#login_btn").removeClass("hidden");
                   $("#login_loading").addClass("hidden");
