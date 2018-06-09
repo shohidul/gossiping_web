@@ -10,7 +10,8 @@ $('#login_btn').on('click', function () {
 
 
 function doLogin() {
-
+    $("#login_btn").addClass("hidden");
+    $("#login_loading").removeClass("hidden");
     var loginInfo = {
         email: $('#login_email').val(),
         password: $('#login_password').val()
@@ -28,6 +29,8 @@ function doLogin() {
                 loadPage("pages/app.html");
 
             }).catch(function (error) {
+                  $("#login_btn").removeClass("hidden");
+                  $("#login_loading").addClass("hidden");
                 console.log("Login Failed!", error);
             });
     }
