@@ -4,7 +4,8 @@
             <div class="left-inside-top">
                 <img id="currentUserImg" class="current-user-image" src="assets/img/blank-profile.jpeg" alt="">
                 <p id="currenUsersFullName" class="current-user-full-name">User Name</p>
-                <p class="current-user-status"><span id="currenUserStatus">Active </span> &nbsp; <span class="green-dot"></span></p>
+                <p class="current-user-status"><span id="currenUserStatus"></span> &nbsp; <span id="statusSignal" class="dot"></span></p>
+                
             </div>
             <!--<div class="form-group has-success bmd-form-group">
                 <input id="search_box" class="form-control" placeholder="Search Contacts" type="text">
@@ -13,7 +14,7 @@
                 </span>
             </div>-->
             <form class="form-inline ml-auto">
-              <div class="form-group bmd-form-group">
+              <div class="form-group bmd-form-group width-83per">
                 <input id="search_box" class="form-control" placeholder="Search" type="text">
               </div>
               <button type="submit" class="btn btn-white btn-raised btn-fab btn-round" id="searchBtn">
@@ -34,7 +35,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#pill2" data-toggle="tab">
                                  Notific 
-                                <span class="badge badge-pill badge-danger" id="notificationCount"></span>
+                                <span class="badge badge-pill badge-info" id="notificationCount"></span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -167,7 +168,7 @@
 
 
 <script>
-    $(".side-btn").on("click", function(){ 
+    $(".side-btn, .left-inside-top, .friend-list, .search-list").bind("click", ".friend", function(){ 
         $(".right-side").toggleClass("open");
         $(".left-side").toggleClass("open");
     })

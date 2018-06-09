@@ -50,6 +50,7 @@
     }
     .selected-user-chat{
         width: 60%;
+        white-space:pre-wrap;
     }
     .chat-screen .bottom{
         border-top: 1px solid #ddd;
@@ -102,7 +103,11 @@
         transform: translateX(0);
     }
     .side-btn{
-            display: none;
+        display: none;
+        width: 50px;
+        padding: 5px;
+        height: 100%;
+        margin: 0;
     }
     .top{
         height: 100px;
@@ -131,8 +136,8 @@
         overflow-y: auto;
         position: absolute;
         left: 0;
-        top: 80px;
-        bottom: 10px;
+        top: 65px;
+        bottom: 0;
         right: 0;
     }
 
@@ -152,7 +157,7 @@
         overflow-y: auto;
         position: absolute;
         left: 0;
-        top: 80px;
+        top: 65px;
         bottom: 10px;
         right: 0;
     }
@@ -221,7 +226,7 @@
         cursor: pointer;
     }
     .friend-body{
-        width: 300px;
+        //width: 300px;
         padding: 10px 0;
         display: flex;
         border-bottom: 1px solid #eee;
@@ -245,6 +250,8 @@
     .user-image, .selected-user-image{
         width: 50px;
         height: 50px;
+        min-width: 50px;
+        min-height: 50px;
         border-radius: 50%;
         object-fit: cover;
     }
@@ -289,7 +296,7 @@
     
     .user-info{
         padding-left: 10px;
-        width: 200px;
+        width: 100%;
     }
     
     .user-thought{
@@ -312,10 +319,10 @@
         color: #4f4f4f;
     }
     .user-status{
-        width: 50px;
+        width: 20%;
         position: relative;
     }
-    .user-status>.green-dot{
+    .user-status>.dot{
         position: absolute;
         bottom: 10px;
         right: 5px;
@@ -325,6 +332,13 @@
         height: 7px;
         border-radius: 50%;
         background-color: #00dc00;
+        display: inline-block;
+    }
+    .grey-dot{
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: #ccc;
         display: inline-block;
     }
     .bmd-form-group {
@@ -339,7 +353,7 @@
     }
 
     #search_box{
-        width: 250px;
+        width: 100%;
     }
     .request-status{
         display: flex;position: absolute;right: 0;
@@ -348,6 +362,24 @@
         display: flex;
         margin-left : 30px;
         margin-right : 30px;
+    }
+    .width-83per{
+        width: 83%;
+    }
+    .nav-item .nav-link {
+        min-width: 85px !important;
+        padding: 5px 5px !important;
+    }
+    .btn.btn-fab, .btn.btn-just-icon {
+        font-size: 20px;
+        height: 35px;
+        min-width: 35px;
+        width: 35px;
+        line-height: 35px;
+    }
+    .btn.btn-fab .material-icons, .btn.btn-fab .fa, .btn.btn-just-icon .material-icons, .btn.btn-just-icon .fa {
+        line-height: 35px;
+        font-size: 18px;
     }
     @media (max-width: 998px) {
         .left-side{
@@ -361,5 +393,38 @@
         }
         .side-btn{
             display: inline-block;
+        }
+        
+        .top{
+            height: 65px;
+            transition: transform 0.6s ease;
+        }
+        .selected-user{
+            top: 5px;
+        }
+        .top-btngroup{
+            line-height: 55px;
+        }
+        
+        .chat-screen .bottom {
+            height: 50px;
+            bottom: 10px;
+            padding: 5px 50px;
+        }
+        
+        .send-btn {
+            top: 10px;
+        }
+    }
+
+   @media (max-width: 450px) {
+       
+       .chat-screen .body {
+            padding: 10px;
+            bottom: 65px;
+            top: 70px;
+        }
+       .right-side {
+            padding: 5px;
         }
     }
