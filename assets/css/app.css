@@ -188,6 +188,31 @@
       background-color: none;
       border-right: 3px solid lightgray;
     }
+
+    .channel-list{
+        list-style-type: none;
+        overflow-y: auto;
+        position: absolute;
+        left: 0;
+        top: 110px;
+        bottom: 10px;
+        right: 0;
+    }
+    .channel-list::-webkit-scrollbar {
+        width: 10px;
+    }
+    .channel-list::-webkit-scrollbar-thumb:hover {
+        background-color: lightgray;
+    }
+
+    .channel-list::-webkit-scrollbar-track {
+       // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+
+    .channel-list::-webkit-scrollbar-thumb {
+      background-color: none;
+      border-right: 3px solid lightgray;
+    }
     
     .friend{
         background: white;
@@ -318,6 +343,11 @@
     }
     .request-status{
         display: flex;position: absolute;right: 0;
+    }
+    .channelDiv{
+        display: flex;
+        margin-left : 30px;
+        margin-right : 30px;
     }
     @media (max-width: 998px) {
         .left-side{
