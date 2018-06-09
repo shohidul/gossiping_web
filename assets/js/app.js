@@ -1,5 +1,5 @@
 var currentUser;
-
+var currentUserName;
 /* -------------- get currentUser and his/her friendlist and so ------------------ */
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -10,7 +10,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 
                 // ---- current user data
                 currentUser = doc.data();
-                $("#currenUsersFullName").text(currentUser.first_name + " " + currentUser.last_name);
+                currentUserName = currentUser.first_name + " " + currentUser.last_name;
+                $("#currenUsersFullName").text(currentUserName);
                 $("#currenUserStatus").text(currentUser.is_active);
 
                 storageRef.child('images/' + currentUser.photo_url).getDownloadURL().then(function (url) {
@@ -58,6 +59,54 @@ firebase.auth().onAuthStateChanged(function (user) {
                                     }
                                 })
                             }
+                        });
+                    });
+                
+                
+                $(".channel-list").html("");
+                dbRef.collection("channels").where("status", "==", 1)
+                    .onSnapshot(function (snapshot) {
+                        snapshot.docChanges().forEach(function (change) {
+                                var childData = change.doc.data();
+                                     var searchlisthtml = '<li class="channel">' 
+                                                      + '<div class="channel-body">'
+                                                      +	'<img id="friend_user_image" class="user-image" src="" alt="">'
+                                                      +	'<div class="user-info">'
+                                                      +	'<input type="hidden" class="channel-id" value="'+childData.channel_id+'"/>'
+                                                      + '<p id="" class="channel-name">'+childData.channel_name+'</p>'
+                                                      + '<p class="channel-created-by">'+childData.created_by_name+'</p></div>'
+                                                      + '</div>'
+                                                      + '</div>'
+                                                      + '</li>';
+
+                                            $(".channel-list").append(searchlisthtml);
+                                
+                  /*              usersRef.doc(change.doc.data().from_uid).get().then(function (doc) {
+                                    if (doc.exists) {
+                                        var childData = doc.data();
+                                        storageRef.child('images/' + childData.photo_url).getDownloadURL().then(function (url) {
+                                            var searchlisthtml = '<li class="friend">' 
+                                                      + '<div class="friend-body">'
+                                                      +	'<img id="friend_user_image" class="user-image" src="'+url+'" alt="">'
+                                                      +	'<div class="user-info"><p id="" class="user-full-name">'+childData.first_name+ ' ' +childData.last_name+'</p>'
+                                                      +	'<input type="hidden" class="user-uid" value="'+childData.uid+'"/>'
+                                                      +	'<input type="hidden" class="from-uid" value="'+change.doc.data().from_uid+'"/>'
+                                                      +	'<input type="hidden" class="friendship-uid" value="'+change.doc.id+'"/>'
+                                                      +	'<input type="hidden" class="user-status" value="'+childData.is_active+'"/>'
+                                                      + '<p class="user-thought">Whats up guys</p></div>'
+                                                      + '<div class="request-status">'
+                                                      + '<button type="submit" class="btn btn-success btn-raised btn-fab btn-round acceptBtn"><i class="material-icons">done</i></button>'
+                                                      + '<button type="submit" class="btn btn-danger btn-raised btn-fab btn-round rejectBtn"><i class="material-icons">close</i></button>'
+                                                      + '</div>'
+                                                      + '</div>'
+                                                      + '</li>';
+
+                                            $(".notification-list").append(searchlisthtml);
+
+                                        });
+                                    }
+                                })*/
+                      
                         });
                     });
 
@@ -206,7 +255,7 @@ function fetchFriendWhomISentRequestsTo() {
     var q = dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", $("#friendship_id").val());
      q.onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
-           // if (change.doc.type === "added") { 
+          if (change.doc.type === "added") { 
                 
                 var newMsg = "";
                 if(change.doc.data().from_uid == $("#friend_uid").val()){
@@ -231,7 +280,7 @@ function fetchFriendWhomISentRequestsTo() {
                 }*/
                 $(".chat-screen .body").append(newMsg);
                
-            //}
+            }
         });
     });
     /*-----end---------------get realtime messages data-----------------------------*/     
@@ -295,7 +344,11 @@ function sendMessage() {
                              
 $("#send_btn").on("click", function(){
     if($('#chat-box').val() != ""){
-        sendMessage();
+           // sendChannelMsg();
+       
+            sendMessage();
+        
+        
         $(".chat-screen .body").animate({ scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
     }
 })
@@ -458,5 +511,195 @@ $(".logout-btn").on("click", function () {
     window.location.href = "index.html";
 });
 
+$("#addChannelBtn").on("click", function(){
+    $("#channel_name").removeClass("hidden");
+    $("#closeChannelBtn").removeClass("hidden");
+    $("#addChannelBtn").addClass("hidden");
+    
+})
+
+$("#channel_name").on("input", function () {
+    if($("#channel_name").val().length <= 2){
+        $("#saveChannelBtn").addClass("hidden");
+    }else{
+        $("#saveChannelBtn").removeClass("hidden");
+    }
+
+})
+
+ $("#closeChannelBtn").on("click", function(){
+    $("#channel_name").addClass("hidden");
+    $("#closeChannelBtn").addClass("hidden");
+    $("#saveChannelBtn").addClass("hidden");
+    $("#addChannelBtn").removeClass("hidden");
+    $("#channel_name").val("");
+ })
+
+$("#saveChannelBtn").on("click", function(){
+    
+    var channelName = $("#channel_name").val();
+    $("#channel_name").val("");
+    
+    $("#channel_name").addClass("hidden");
+    $("#closeChannelBtn").addClass("hidden");
+    $("#saveChannelBtn").addClass("hidden");
+    $("#addChannelBtn").removeClass("hidden");
+    
+     var date = moment().format('LL');
+     var day = moment().format('dddd');
+     var time = moment().format('LT');
+     var timestamp = new Date();
+    
+    var channelData = {
+        channel_id : "",
+        channel_name: channelName,
+        created_by: currentUser.uid,
+        date: date,
+        day: day,
+        time: time,
+        timestamp: timestamp,
+        status: 1
+    }
+ 
+    
+    dbRef.collection('channels')
+         .where("created_by", "==", currentUser.uid)
+         .where("channel_name", "==", channelName)
+         .get().then(function(querySnapshot) {
+            if(querySnapshot.size > 0){
+                console.log("channel already exists");
+            }else{
+             var channelRef =  dbRef.collection('channels').doc();
+                    channelRef.set(channelData)
+                    .then(function () {
+                     dbRef.collection('channels').doc(channelRef.id).update({
+                            "channel_id": channelRef.id
+                        })
+                }); 
+            }
+        
+    });
+    
+    
+})
+
+$(".channel-list").on("click", ".channel", function () {
+         if ($('.chat-screen').hasClass("hidden")) {
+         $('.welcome-screen').addClass("hidden");
+         $('.chat-screen').removeClass("hidden");
+     }
+     $(".chat-screen .body").animate({
+         scrollTop: $(".chat-screen .body").prop("scrollHeight")
+     }, 1000);
+    
+    var current_li = $(this).closest("li");
+    var channelID = current_li.find(".channel-id").val();
+    var channelName = current_li.find(".channel-name").text();
+    var createdBy = current_li.find(".channel-created-by").text();
+  
+     $("#friend_name").text(channelName);
+     $("#friend_status").text(createdBy);
+     $("#friend_uid").val(channelID);
+
+    $(".chat-screen .body").html("");
+    
+    var html = ""; 
+     dbRef.collection('channelmessages').orderBy("msgtime").where("channel_id", "==", channelID).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) { 
+            
+            var htmlContent = "";
+            if (doc.data().msg_by != currentUser.uid) {
+                html += '<div class="friend-chat">'
+                      /*  +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'*/
+                        +'<div class="selected-user-info">'
+                        + '<p id=""><span class="selected-user-full-name">'+doc.data().msg_by+'</span>&nbsp;&nbsp;'
+                        +'<time class="chat-time">'+doc.data().time+'</time></p>'
+                        +'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
+                        +'</div>';
+            } else {
+                html += '<div class="my-chat">'
+                        +'<div class="selected-user-info">'
+                        + '<p class="text-right">'
+                        + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
+                        +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                        + '</p>'
+                        +'<p class="selected-user-chat text-right pull-right">'+doc.data().text+'</p></div>'
+                       /* +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'*/
+                        +'</div>';
+            }
+          
+        });
+         $(".chat-screen .body").html(html); 
+    });
+ 
+     
+/*-----start---------------get realtime messages data-----------------------------*/ 
+    var q = dbRef.collection('channelmessages').orderBy("msgtime").where("channel_id", "==", $(".channel-id").val());
+     q.onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+           // if (change.doc.type === "added") { 
+
+                  var  newMsg = '<div class="friend-chat">'
+                              /*  +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'*/
+                                +'<div class="selected-user-info">'
+                                + '<p id=""><span class="selected-user-full-name">'+change.doc.data().msg_by+'</span>&nbsp;&nbsp;'
+                                +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
+                                +'<p class="selected-user-chat">'+change.doc.data().text+'</p></div>'
+                                +'</div>';
+                $(".chat-screen .body").append(newMsg);
+
+        });
+    });
+    /*-----end---------------get realtime messages data-----------------------------*/     
+       
+
+})
+
+function sendChannelMsg() {
+
+    var channelID = $("#friend_uid").val();
+    var message = $('#chat-box').val();
+
+    var date = moment().format('LL');
+    var day = moment().format('dddd');
+    var time = moment().format('LT');
+    var fileurl = "";
+    var msgtime = Date.now();
+
+    var messageData = {
+        channel_id : channelID,
+        msg_by : currentUser.uid,
+        text: message,
+        date: date,
+        day: day,
+        time: time,
+        fileurl: fileurl,
+        msgtime: msgtime
+    }
+
+    dbRef.collection('channelmessages').doc()
+        .set(messageData)
+        .then(function () {
+            console.log("Message Sent");
+        });
 
 
+
+    $('#chat-box').val("");
+
+
+    /*--start-------------print my send messages---------------------------------------*/
+    var  sendhtml =   '<div class="my-chat">'
+                    + '<div class="selected-user-info">'
+                    + '<p class="text-right">'
+                    + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
+                    + '<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                    + '</p>'
+                    + '<p class="selected-user-chat text-right pull-right">'+message+'</p></div>'
+                  /*  + '<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'*/
+                    + '</div>';
+
+    $(".chat-screen .body").append(sendhtml);
+    /*-end----------------print my send messages---------------------------------------*/
+
+}
