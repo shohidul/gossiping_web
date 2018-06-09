@@ -427,4 +427,13 @@
        .right-side {
             padding: 5px;
         }
+       #chat-box{
+           width: 85%;
+       }
+       .send-btn {
+            right: 10px;
+        }
+       .chat-screen .bottom {
+            padding: 5px 10px;
+        }
     }

@@ -255,55 +255,55 @@ function fetchFriendWhomISentRequestsTo() {
 
 /* ------------------- Message Send --------------------*/
 function sendMessage() {
+    if($('#chat-box').val() != ""){
+        var friendUID = $("#friend_uid").val();
+        var friendshipID = $("#friendship_id").val();
+        var message = $('#chat-box').val();
 
-    var friendUID = $("#friend_uid").val();
-    var friendshipID = $("#friendship_id").val();
-    var message = $('#chat-box').val();
+        var date = moment().format('LL');
+        var day = moment().format('dddd');
+        var time = moment().format('LT');
+        var fileurl = "";
+        var msgtime = Date.now();
 
-    var date = moment().format('LL');
-    var day = moment().format('dddd');
-    var time = moment().format('LT');
-    var fileurl = "";
-    var msgtime = Date.now();
+        var messageData = {
+            from_uid: currentUser.uid,
+            text: message,
+            to_uid: friendUID,
+            date: date,
+            day: day,
+            time: time,
+            fileurl: fileurl,
+            friendship_id: friendshipID,
+            msgtime: msgtime
+        }
 
-    var messageData = {
-        from_uid: currentUser.uid,
-        text: message,
-        to_uid: friendUID,
-        date: date,
-        day: day,
-        time: time,
-        fileurl: fileurl,
-        friendship_id: friendshipID,
-        msgtime: msgtime
+        dbRef.collection('messages').doc()
+            .set(messageData)
+            .then(function () {
+                console.log("Message Sent");
+            });
+
+
+
+        $('#chat-box').val("");
+
+
+        /*--start-------------print my send messages---------------------------------------*/
+        var  sendhtml =   '<div class="my-chat">'
+                        + '<div class="selected-user-info">'
+                        + '<p class="text-right">'
+                        + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
+                        + '<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                        + '</p>'
+                        + '<p class="selected-user-chat text-right pull-right">'+message+'</p></div>'
+                        + '<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                        + '</div>';
+
+        $(".chat-screen .body").append(sendhtml);
+        $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
+        /*-end----------------print my send messages---------------------------------------*/
     }
-
-    dbRef.collection('messages').doc()
-        .set(messageData)
-        .then(function () {
-            console.log("Message Sent");
-        });
-
-
-
-    $('#chat-box').val("");
-
-
-    /*--start-------------print my send messages---------------------------------------*/
-    var  sendhtml =   '<div class="my-chat">'
-                    + '<div class="selected-user-info">'
-                    + '<p class="text-right">'
-                    + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
-                    + '<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
-                    + '</p>'
-                    + '<p class="selected-user-chat text-right pull-right">'+message+'</p></div>'
-                    + '<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
-                    + '</div>';
-
-    $(".chat-screen .body").append(sendhtml);
-    $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
-    /*-end----------------print my send messages---------------------------------------*/
-
 }
                              
 $("#send_btn").on("click", function(){
