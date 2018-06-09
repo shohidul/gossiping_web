@@ -1,4 +1,6 @@
-var currentUser;
+ var currentUser;
+$(document).ready(function(){
+
 
 /* -------------- get currentUser and his/her friendlist and so ------------------ */
 firebase.auth().onAuthStateChanged(function (user) {
@@ -7,17 +9,33 @@ firebase.auth().onAuthStateChanged(function (user) {
         usersRef.doc(user.uid).get().then(function (doc) {
 
             if (doc.exists) {
-
+                
                 // ---- current user data
                 currentUser = doc.data();
-                $("#currenUsersFullName").text(currentUser.first_name + " " + currentUser.last_name);
+                var userFullName = currentUser.first_name + " " + currentUser.last_name;
+                if(currentUser.is_active == "FirstLogin"){
+                    $(".welcome-screen").addClass("hidden");
+                    $(".first-screen").removeClass("hidden");
+                   /* $("#user_profile_name").text(userFullName);*/
+                    usersRef.doc(currentUser.uid).update({
+                        "is_active": "Online"
+                    })
+                }else{
+                     usersRef.doc(currentUser.uid).update({
+                        "is_active": "Online"
+                    })                    
+                     //$(".welcome-screen").removeClass("hidden");
+                }
+               $("#user_profile_name").text(userFullName);
+                 $("#currenUsersFullName").text(userFullName);
                 $("#currenUserStatus").text(currentUser.is_active);
                  $("#statusSignal").addClass("green-dot");
 
                 storageRef.child('images/' + currentUser.photo_url).getDownloadURL().then(function (url) {
                     $("#currentUserImg").attr("src", url);
                 });
-
+                
+                
                 fetchFriendWhoSentRequests();
                 fetchFriendWhomISentRequestsTo();
 
@@ -500,3 +518,62 @@ $(".logout-btn").on("click", function () {
     });
     window.location.href = "index.html";
 });
+})
+
+$("#edit-profile-img").on("click", function(){
+    $("#browsedImage").trigger("click");
+})
+
+var file;
+var loadFile = function(event) {
+   file = event.target.files[0];
+   $("#edit-profile-img").attr("src", URL.createObjectURL(event.target.files[0]));
+};
+
+
+function imageUpload(file){
+    console.log("start ........ " + file.name);
+   var uploadTask = storageRef.child('images/' + file.name).put(file);
+
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+      function(snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        }, function(error) {
+                console.log(error);
+        }, function() {
+              uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                console.log('File available at', downloadURL);
+                window.location.replace("index.html");
+              });
+        });
+}
+
+
+
+$("#update_profile").on('click', function(){
+var profileData = {
+    photo_url : file.name
+/*     first_name : "",
+    last_name : "",
+    username : "",
+    recovery_email : "",
+    phone : "",
+    gender : "",
+    birth_date : ""*/
+    
+}
+  usersRef.doc(currentUser.uid)
+        .update(profileData)
+        .then(function() {
+               
+                console.log("Profile updated successfully successfully!");
+            });
+
+      
+      
+      imageUpload(file);
+    
+})
+
+

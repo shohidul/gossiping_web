@@ -120,7 +120,7 @@
        </div>
        
        <div class="right-side">
-           <div class="welcome-screen">
+           <div class="welcome-screen hidden">
                 <div class="top">
                     <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
 
@@ -131,6 +131,49 @@
                 </div>
                 <div class="bottom">
                     <h1>Welcome</h1>
+                </div>
+           </div>
+            <div class="first-screen">
+               <div class="top">
+                    <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
+
+                    <div class="top-btngroup pull-right">
+                        <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>
+                        <button class=" btn btn-rose btn-just-icon btn-round logout-btn"><i class="material-icons">power_settings_new</i></button>
+                    </div>
+                </div>
+                <br>
+                <div class="body">
+             <!--       <div class="card card-profile hidden view-profile">
+                        <div class="card-avatar">
+                            <a href="#pablo">
+                                <img class="img" src="assets/img/blank-profile.jpeg" title="" style="">
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-category text-gray">Update your details</h6>
+                            <h4 class="card-title" id="user_profile_name"></h4>
+                            <p class="card-description">
+                                Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                            </p>
+                            <a href="#pablo" class="btn btn-info btn-round">Update</a>
+                        </div>
+                    </div>-->
+                    
+                     <div class="card card-profile edit-profile">
+                        <div class="card-avatar">
+                            <img class="img" src="assets/img/blank-profile.jpeg" title="" id="edit-profile-img">
+                            <input type="file" accept="image/*" onchange="loadFile(event)" class="form-control-file border hidden" id="browsedImage" /> 
+                        </div>
+                        <div class="card-body ">
+                            <h6 class="card-category text-gray">Update your details</h6>
+                            <h4 class="card-title" id="user_profile_name"></h4>
+                            
+                            
+                            
+                            <button class="btn btn-info btn-round" id="update_profile">Update</button>
+                        </div>
+                    </div>
                 </div>
            </div>
             <div class="chat-screen hidden">
@@ -161,7 +204,6 @@
 </body>
 
 
-<link rel="stylesheet" href="assets/css/app.css">
 <style>
    
 </style>
