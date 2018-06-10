@@ -45,9 +45,6 @@
                     <div class="tab-content tab-space">
                         <div class="tab-pane active show" id="pill1">
                             <ul class="friend-list">
-                                <!--<div class="text-center">
-                                    <a id="logout_btn" href="#" class="btn btn-primary btn-round">Logout</a>
-                                </div>-->
                             </ul>
                         </div>
                         <div class="tab-pane" id="pill2">
@@ -75,44 +72,6 @@
                         </div>
                     </div>
                 </div>
-               
-               
-                <!--<ul class="friend-list">
-             
-                    
-                    <div class="text-center">
-                        <a id="logout_btn" href="#" class="btn btn-primary btn-round">Logout</a>
-                    </div>
-                </ul>-->
-                    <!--<li class="friend">
-                           <div class="friend-body">
-                                <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                                <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                                <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                           </div>
-                        </li>
-                        <li class="friend">
-                           <div class="friend-body">
-                                <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                                <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                                <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                           </div>
-                        </li>
-                        <li class="friend">
-                           <div class="friend-body">
-                                <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                                <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                                <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                           </div>
-                        </li>
-                        <li class="friend">
-                           <div class="friend-body">
-                                <img id="" class="user-image" src="assets/img/blank-profile.jpeg" alt="">
-                                <div class="user-info"><p id="" class="user-full-name">User Name</p><p class="user-thought">What's up guys</p></div>
-                                <div class="user-status"><span class="user-activity">10 min</span><span class="green-dot hidden"></span></div>
-                           </div>
-                        </li>-->
-                
                 
                 <ul class="search-list hidden">
                 </ul>
@@ -133,7 +92,7 @@
                     <h1>Welcome</h1>
                 </div>
            </div>
-            <div class="first-screen">
+            <div class="first-screen hidden">
                <div class="top">
                     <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
 
@@ -163,7 +122,7 @@
                      <div class="card card-profile edit-profile">
                         <div class="card-avatar">
                             <img class="img" src="assets/img/blank-profile.jpeg" title="" id="edit-profile-img">
-                            <input type="file" accept="image/*" onchange="loadFile(event)" class="form-control-file border hidden" id="browsedImage" /> 
+                <input type="file" accept="image/*" onchange="loadFile(event)" class="form-control-file border hidden" id="browsedImage" /> 
                         </div>
                         <div class="card-body ">
                             <h6 class="card-category text-gray">Update your details</h6>
@@ -196,7 +155,14 @@
                 <div class="body">
                 </div>
                 <div class="bottom">
-                    <textarea name="" id="chat-box" cols="30" rows="10"></textarea><button id="send_btn" class=" btn btn-rose btn-just-icon btn-round send-btn"><i class="material-icons">send</i></button>
+                    <textarea name="" id="chat-box" cols="30" rows="10"></textarea>
+                   
+   
+                <input type="file" accept="image/*" class="form-control-file border hidden" id="sentImage" onchange="sendFile(event)"/>
+                 <button class="btn btn-fab btn-round btn-primary" id="btn_image_send">
+                   <i class="material-icons">attach_file</i>
+                 </button>
+                    <button id="send_btn" class=" btn btn-rose btn-just-icon btn-round send-btn"><i class="material-icons">send</i></button>
                 </div>
            </div>
        </div>

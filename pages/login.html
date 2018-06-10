@@ -13,7 +13,7 @@
                         <div class="card-header card-header-primary text-center mb-3">
                             <h3 class="card-title">Log in</h3>
                             <div class="social-line">
-                                <a href="#pablo" class="btn btn-link text-white">
+                                <a id="login_by_fb" class="btn btn-link text-white">
                                     <i class="fa fa-facebook-square"></i>
                                 <div class="ripple-container"></div></a>
                                 <a href="#pablo" class="btn btn-link text-white">
@@ -26,8 +26,7 @@
                         </div>
                         <p class="description text-center">Sign in with your Gossiping Account</p>
                         <div class="card-body pt-0">
-                            <form class="form" method="" action="">
-
+                           <form class="form" method="" action="" id="login_form">
                                 <div class="form-group bmd-form-group">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -67,11 +66,13 @@
                                 </div>
                                 
                             </form>
+                             <img src="/assets/img/fb_loading.gif" style="height : 150px;" class="hidden" id="fb_login_loading">   
                         </div>
                         
                       <div class="card-footer m-auto">
-                        
+                            <h4 class="text-center hidden" id="loading_text">Loading ...</h4>
                             <h6 class="text-center"><a id="go_register_btn" href="#">Create a new Gossiping Account</a></h6>
+                        
                         
                       </div>
                         

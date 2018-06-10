@@ -1,4 +1,5 @@
 /*--------firebase register function-------------*/
+
 $('#reg_re_password').keypress(function(e){
    if(e.keyCode == 13) {
        doRegister();
@@ -11,7 +12,11 @@ function doRegister(){
     
  $("#register_btn").addClass("hidden");
  $("#register_loading").removeClass("hidden");
-    
+        var date = moment().format('LL');
+        var day = moment().format('dddd');
+        var time = moment().format('LT');
+        var createtime = Date.now();
+
     var userData = {
             first_name: $('#first_name').val(),
             last_name: $('#last_name').val(),
@@ -24,12 +29,14 @@ function doRegister(){
             username: "",
             photo_url:"",
             profile_background_url:"",
-            created_at:"",
-            created_date:"",
-            created_day:"",
-            created_month:"",
+            created_at:createtime,
+            created_date:date,
+            created_day:day,
+            created_time:time,
+            created_via : "web",
             uid:"",
-            is_active:"FirstLogin"
+            is_active:"FirstLogin",
+            access_token : ""
           
     };
     var passwords = {
@@ -49,6 +56,7 @@ function doRegister(){
                     $("#registerDiv").addClass("hidden");
                     $("#registerSuccessDiv").removeClass("hidden");
                     $("#registerSuccessDiv").fadeIn();
+                    userData = {};
                 })
                 .catch(function(error) {
                     console.error("Error adding document: ", error);
@@ -64,3 +72,5 @@ function doRegister(){
         }
     }
 }
+
+

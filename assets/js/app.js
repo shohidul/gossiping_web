@@ -1,6 +1,4 @@
  var currentUser;
-$(document).ready(function(){
-
 
 /* -------------- get currentUser and his/her friendlist and so ------------------ */
 firebase.auth().onAuthStateChanged(function (user) {
@@ -31,7 +29,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                 $("#currenUserStatus").text(currentUser.is_active);
                  $("#statusSignal").addClass("green-dot");
 
-                storageRef.child('images/' + currentUser.photo_url).getDownloadURL().then(function (url) {
+                storageRef.child('images/' + doc.data().photo_url).getDownloadURL().then(function (url) {
                     $("#currentUserImg").attr("src", url);
                 });
                 
@@ -206,15 +204,37 @@ function fetchFriendWhomISentRequestsTo() {
             
             var htmlContent = "";
             if (doc.data().from_uid != currentUser.uid) {
-                html += '<div class="friend-chat">'
+                if(doc.data().fileurl.length >0){
+                           html += '<div class="friend-chat">'
+                        +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                        +'<div class="selected-user-info">'
+                        + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                        +'<time class="chat-time">'+doc.data().time+'</time></p>'
+                        +'<p class="selected-user-chat">'+doc.data().fileurl+'</p></div>'
+                        +'</div>';
+                }else{
+                           html += '<div class="friend-chat">'
                         +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
                         +'<div class="selected-user-info">'
                         + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                         +'<time class="chat-time">'+doc.data().time+'</time></p>'
                         +'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
                         +'</div>';
+                }
+         
             } else {
-                html += '<div class="my-chat">'
+                if(doc.data().fileurl.length >0){
+                      html += '<div class="my-chat">'
+                        +'<div class="selected-user-info">'
+                        + '<p class="text-right">'
+                        + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
+                        +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                        + '</p>'
+                        +'<p class="selected-user-chat text-right pull-right">'+doc.data().fileurl+'</p></div>'
+                        +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                        +'</div>';
+                }else{
+                      html += '<div class="my-chat">'
                         +'<div class="selected-user-info">'
                         + '<p class="text-right">'
                         + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
@@ -223,6 +243,8 @@ function fetchFriendWhomISentRequestsTo() {
                         +'<p class="selected-user-chat text-right pull-right">'+doc.data().text+'</p></div>'
                         +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
                         +'</div>';
+                }
+              
             }
           
         });
@@ -239,14 +261,24 @@ function fetchFriendWhomISentRequestsTo() {
                 
                 var newMsg = "";
                 if(change.doc.data().from_uid == $("#friend_uid").val()){
-
-                    newMsg = '<div class="friend-chat">'
+                     if(change.doc.data().fileurl.length >0){
+                            newMsg = '<div class="friend-chat">'
+                                +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                                +'<div class="selected-user-info">'
+                                + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                                +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
+                                +'<p class="selected-user-chat">'+change.doc.data().fileurl+'</p></div>'
+                                +'</div>';
+                     }else{
+                            newMsg = '<div class="friend-chat">'
                                 +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
                                 +'<div class="selected-user-info">'
                                 + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                                 +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
                                 +'<p class="selected-user-chat">'+change.doc.data().text+'</p></div>'
                                 +'</div>';
+                     }
+                 
                  }/*else if(change.doc.data().to_uid == currentUser.uid){
                     newMsg = '<div class="my-chat">'
                             +'<div class="selected-user-info">'
@@ -270,10 +302,9 @@ function fetchFriendWhomISentRequestsTo() {
 });
 
 
-
 /* ------------------- Message Send --------------------*/
 function sendMessage() {
-    if($('#chat-box').val() != ""){
+    if($('#chat-box').val() != "" || imgURL.length > 1){
         var friendUID = $("#friend_uid").val();
         var friendshipID = $("#friendship_id").val();
         var message = $('#chat-box').val();
@@ -281,7 +312,7 @@ function sendMessage() {
         var date = moment().format('LL');
         var day = moment().format('dddd');
         var time = moment().format('LT');
-        var fileurl = "";
+        var fileurl = imgURL;
         var msgtime = Date.now();
 
         var messageData = {
@@ -305,9 +336,24 @@ function sendMessage() {
 
 
         $('#chat-box').val("");
+        imgURL = "";
+        
+        if(fileurl.length > 0){
+         var  sendhtml =   '<div class="my-chat">'
+                        + '<div class="selected-user-info">'
+                        + '<p class="text-right">'
+                        + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
+                        + '<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                        + '</p>'
+          + '<img id="" class="selected-user-image pull-right" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                  + '<img id="" class="selected-user-chat text-right pull-right" style="width : 80px; height :80px;" src="'+fileurl+'" alt="">'
+                       
+                        + '</div>';
 
-
-        /*--start-------------print my send messages---------------------------------------*/
+        $(".chat-screen .body").append(sendhtml);
+        $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
+            
+        }else{
         var  sendhtml =   '<div class="my-chat">'
                         + '<div class="selected-user-info">'
                         + '<p class="text-right">'
@@ -319,58 +365,50 @@ function sendMessage() {
                         + '</div>';
 
         $(".chat-screen .body").append(sendhtml);
-        $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
-        /*-end----------------print my send messages---------------------------------------*/
+        $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000); 
+            
+        }
+        
     }
 }
-                             
+
+
+var imgfile;
+var imgURL = "";
+var sendFile = function(event) {
+   imgfile = event.target.files[0];
+   var uploadTask = storageRef.child('images/' + imgfile.name).put(imgfile);
+
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
+      function(snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        }, function(error) {
+                console.log(error);
+        }, function() {
+              uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                imgURL = downloadURL;
+                sendMessage();
+              });
+        });
+};
+
+
+
 $("#send_btn").on("click", function(){
     sendMessage();
-    
 })
 
 $('#chat-box').keypress(function (e) {
     if (e.which == 13 && !e.shiftKey) {
         sendMessage();
         e.preventDefault();
+        $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
     }
     /*if (e.shiftKey) {
         this.value = this.value+"\n";
     }*/
 });
-/*
-function getCaret(el) { 
-    if (el.selectionStart) { 
-        return el.selectionStart; 
-    } else if (document.selection) { 
-        el.focus();
-        var r = document.selection.createRange(); 
-        if (r == null) { 
-            return 0;
-        }
-        var re = el.createTextRange(), rc = re.duplicate();
-        re.moveToBookmark(r.getBookmark());
-        rc.setEndPoint('EndToStart', re);
-        return rc.text.length;
-    }  
-    return 0; 
-}
-$('#chat-box').keyup(function (event) {
-    if (event.keyCode == 13) {
-        var content = this.value;  
-        var caret = getCaret(this);          
-        if(event.shiftKey){
-            this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
-            
-        } else {
-            //this.value = content.substring(0, caret - 1) + content.substring(caret, content.length);
-            sendMessage();
-            e.preventDefault();
-            
-        }
-    }
-});
-*/
+
 
 
 $("#search_box").on("input", function () {
@@ -518,17 +556,27 @@ $(".logout-btn").on("click", function () {
     });
     window.location.href = "index.html";
 });
-})
+
 
 $("#edit-profile-img").on("click", function(){
     $("#browsedImage").trigger("click");
 })
+
+
+
 
 var file;
 var loadFile = function(event) {
    file = event.target.files[0];
    $("#edit-profile-img").attr("src", URL.createObjectURL(event.target.files[0]));
 };
+
+
+
+$("#btn_image_send").on("click", function(event){
+    $("#sentImage").trigger("click");
+})
+
 
 
 function imageUpload(file){
@@ -569,11 +617,42 @@ var profileData = {
                
                 console.log("Profile updated successfully successfully!");
             });
-
-      
-      
       imageUpload(file);
-    
 })
 
 
+
+
+/*
+function getCaret(el) { 
+    if (el.selectionStart) { 
+        return el.selectionStart; 
+    } else if (document.selection) { 
+        el.focus();
+        var r = document.selection.createRange(); 
+        if (r == null) { 
+            return 0;
+        }
+        var re = el.createTextRange(), rc = re.duplicate();
+        re.moveToBookmark(r.getBookmark());
+        rc.setEndPoint('EndToStart', re);
+        return rc.text.length;
+    }  
+    return 0; 
+}
+$('#chat-box').keyup(function (event) {
+    if (event.keyCode == 13) {
+        var content = this.value;  
+        var caret = getCaret(this);          
+        if(event.shiftKey){
+            this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
+            
+        } else {
+            //this.value = content.substring(0, caret - 1) + content.substring(caret, content.length);
+            sendMessage();
+            e.preventDefault();
+            
+        }
+    }
+});
+*/
