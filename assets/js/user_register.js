@@ -1,4 +1,5 @@
 /*--------firebase register function-------------*/
+
 $('#reg_re_password').keypress(function(e){
    if(e.keyCode == 13) {
        doRegister();
@@ -9,9 +10,16 @@ $('#register_btn').on('click', function () {
 });
 function doRegister(){
     
+ $("#register_btn").addClass("hidden");
+ $("#register_loading").removeClass("hidden");
+        var date = moment().format('LL');
+        var day = moment().format('dddd');
+        var time = moment().format('LT');
+        var createtime = Date.now();
+
     var userData = {
-            first_name: "",
-            last_name: "",
+            first_name: $('#first_name').val(),
+            last_name: $('#last_name').val(),
             birth_date: "",
             gender: "",
             email: $('#reg_email').val(),
@@ -21,12 +29,14 @@ function doRegister(){
             username: "",
             photo_url:"",
             profile_background_url:"",
-            created_at:"",
-            created_date:"",
-            created_day:"",
-            created_month:"",
+            created_at:createtime,
+            created_date:date,
+            created_day:day,
+            created_time:time,
+            created_via : "web",
             uid:"",
-            is_active:"Online"
+            is_active:"FirstLogin",
+            access_token : ""
           
     };
     var passwords = {
@@ -39,25 +49,28 @@ function doRegister(){
           
         firebase.auth().createUserWithEmailAndPassword(userData.email, passwords.password)
           .then(function(authUser){
-            
-                console.log("Authenticated successfully with payload:", authUser);
-
                 userData.uid = authUser.user.uid;
-
                 usersRef.doc(authUser.user.uid).set(userData)
                 .then(function() {
-                    console.log("Document written with ID: ");
+                    $("#registerDiv").fadeOut();
+                    $("#registerDiv").addClass("hidden");
+                    $("#registerSuccessDiv").removeClass("hidden");
+                    $("#registerSuccessDiv").fadeIn();
+                    userData = {};
                 })
                 .catch(function(error) {
                     console.error("Error adding document: ", error);
                 });
-                loadPage("pages/user_profile.html");
+                
             
           }).catch(function(error){
-                console.log("Error creating user:", error);
+                $("#register_btn").removeClass("hidden");
+                $("#register_loading").addClass("hidden");
           });
       } else {
                 console.log("password and confirm password didn't match :", error);
         }
     }
 }
+
+

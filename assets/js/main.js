@@ -18,7 +18,7 @@
 
 /* 2nd way*/
 
-loadPage("pages/home.html");
+loadPage("pages/login.html");
 
 function loadPage(pageURL){
     $('#mainContent').load(pageURL);
