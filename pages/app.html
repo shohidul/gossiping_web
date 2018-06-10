@@ -14,7 +14,7 @@
                         <a href="javascript:void(0);" class="page-link"><i class="material-icons">notifications</i></a>
                     </li>
                     <li class="page-item">
-                        <a href="javascript:void(0);" class="page-link"><i class="material-icons">settings</i></a>
+                        <a href="javascript:void(0);" class="page-link" id="account_settings"><i class="material-icons">settings</i></a>
                     </li>
                     <!--<li class="page-item">
                         <a href="javascript:void(0);" class="page-link">6<div class="ripple-container"></div></a>
@@ -107,7 +107,7 @@
                     <h1>Welcome</h1>
                 </div>
            </div>
-            <div class="first-screen hidden">
+            <div class="first-screen">
                <div class="top">
                     <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
 
@@ -134,7 +134,7 @@
                         </div>
                     </div>-->
                     
-                     <div class="card card-profile edit-profile">
+                     <div class="card card-profile edit-profile hidden">
                         <div class="card-avatar">
                             <img class="img" src="assets/img/blank-profile.jpeg" title="" id="edit-profile-img">
                             <input type="file" accept="image/*" onchange="loadFile(event)" class="form-control-file border hidden" id="browsedImage" /> 
@@ -143,44 +143,62 @@
                             <h6 class="card-category text-gray">Update your details</h6>
                             <h4 class="card-title" id="user_profile_name"></h4>
                             <div class="row">
-                                <div class="col-md-6">
-                                      <div class="form-group bmd-form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                              <span class="input-group-text">
-                                                <i class="material-icons">face</i>
-                                              </span>
-                                            </div>
-                                            <input class="form-control" placeholder="First Name..." type="text" id="first_name" required>
-                                         </div>
-                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                     <div class="form-group bmd-form-group">
-                                        <div class="input-group">
-                                            <input class="form-control" placeholder="Last Name..." type="text" id="last_name">
-                                         </div>
-                                     </div>
-                                </div>
-                             </div>
-                                            
+                                        <div class="col-md-6">
+                                              <div class="form-group bmd-form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                      <span class="input-group-text">
+                                                        <i class="material-icons">face</i>
+                                                      </span>
+                                                    </div>
+                                                    <input class="form-control" placeholder="Username" type="text" id="user_name">
+                                                 </div>
+                                             </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                               <div class="form-group bmd-form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                      <span class="input-group-text">
+                                                        <i class="material-icons">face</i>
+                                                      </span>
+                                                    </div>
+                                                      
+                                                    <select class="form-control" id="user_country">
+                                                      <option>1</option>
+                                                      <option>2</option>
+                                                      <option>3</option>
+                                                      <option>4</option>
+                                                      <option>5</option>
+                                                    </select>
+                                                                   
+                                                         </div>
+                                             </div>
+
+                                        </div>
+                             </div>             
                              <div class="row">
                                 <div class="col-md-6">
-                                      <div class="form-group bmd-form-group">
+                                       <div class="form-group bmd-form-group">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                               <span class="input-group-text">
-                                                <i class="material-icons">face</i>
+                                                <i class="material-icons">local_phone</i>
                                               </span>
                                             </div>
-                                            <input class="form-control" placeholder="First Name..." type="text" id="first_name" required>
+                                            <input class="form-control" placeholder="Email" type="email" id="user_rec_email">
                                          </div>
                                      </div>
                                 </div>
                                 <div class="col-md-6">
-                                     <div class="form-group bmd-form-group">
+                                      <div class="form-group bmd-form-group">
                                         <div class="input-group">
-                                            <input class="form-control" placeholder="Last Name..." type="text" id="last_name">
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text">
+                                                <i class="material-icons">local_phone</i>
+                                              </span>
+                                            </div>
+                                            <input class="form-control" placeholder="Phone" type="text" id="user_phone_no">
                                          </div>
                                      </div>
                                 </div>
@@ -189,7 +207,7 @@
                             <div class="col-md-6">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1"> Radio is off
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="user_male" value="option1"> Male
                                     <span class="circle">
                                         <span class="check"></span>
                                     </span>
@@ -197,7 +215,7 @@
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" checked=""> Radio is on
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="user_female" value="option2" checked=""> Female
                                     <span class="circle">
                                         <span class="check"></span>
                                     </span>
@@ -209,6 +227,77 @@
                                 </div>
                             </div>
                             <button class="btn btn-info btn-round" id="update_profile">Update</button>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="card card-profile edit-account hidden">
+                        <div class="card-body ">
+                            <h6 class="card-category text-gray">Update your account</h6>
+                            <h4 class="card-title" id="user_profile_name"></h4>
+                            <div class="row">
+                                        <div class="col-md-6">
+                                              <div class="form-group bmd-form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                      <span class="input-group-text">
+                                                        <i class="material-icons">face</i>
+                                                      </span>
+                                                    </div>
+                                                    <input class="form-control" placeholder="Username" type="text" id="user_name">
+                                                 </div>
+                                             </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                               <div class="form-group bmd-form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                      <span class="input-group-text">
+                                                        <i class="material-icons">face</i>
+                                                      </span>
+                                                    </div>
+                                                      
+                                                    <select class="form-control" id="user_country">
+                                                      <option>1</option>
+                                                      <option>2</option>
+                                                      <option>3</option>
+                                                      <option>4</option>
+                                                      <option>5</option>
+                                                    </select>
+                                                                   
+                                                         </div>
+                                             </div>
+
+                                        </div>
+                             </div>             
+                             <div class="row">
+                                <div class="col-md-6">
+                                       <div class="form-group bmd-form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text">
+                                                <i class="material-icons">local_phone</i>
+                                              </span>
+                                            </div>
+                                            <input class="form-control" placeholder="Email" type="email" id="user_rec_email">
+                                         </div>
+                                     </div>
+                                </div>
+                                <div class="col-md-6">
+                                      <div class="form-group bmd-form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text">
+                                                <i class="material-icons">local_phone</i>
+                                              </span>
+                                            </div>
+                                            <input class="form-control" placeholder="Phone" type="text" id="user_phone_no">
+                                         </div>
+                                     </div>
+                                </div>
+                            </div>
+                          
+                            <button class="btn btn-info btn-round" id="update_account">Update</button>
                         </div>
                     </div>
                 </div>
@@ -262,7 +351,6 @@
     $(".refresh-btn").on("click", function(){
         $('#mainContent').load("pages/app.html");
     })
-    
     $('#date').combodate({
         minYear: 1975,
         maxYear: 2018
@@ -271,3 +359,4 @@
 </script>
 
 <script src="assets/js/app.js"></script>
+<script src="assets/js/account.js"></script>
