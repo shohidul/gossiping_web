@@ -22,7 +22,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                      usersRef.doc(currentUser.uid).update({
                         "is_active": "Online"
                     })                    
-                     //$(".welcome-screen").removeClass("hidden");
+                   // $(".welcome-screen").removeClass("hidden");
                 }
                $("#user_profile_name").text(userFullName);
                  $("#currenUsersFullName").text(userFullName);
@@ -563,7 +563,7 @@ $("#edit-profile-img").on("click", function(){
 
 
 
-var file;
+var file = "";
 var loadFile = function(event) {
    file = event.target.files[0];
    $("#edit-profile-img").attr("src", URL.createObjectURL(event.target.files[0]));
@@ -598,24 +598,43 @@ function imageUpload(file){
 
 
 $("#update_profile").on('click', function(){
-var profileData = {
-    photo_url : file.name
-/*     first_name : "",
-    last_name : "",
-    username : "",
-    recovery_email : "",
-    phone : "",
+    var profileData;
+if(file == ""){
+    profileData = {
+  /*  first_name : "",
+    last_name : "",*/
+    username : $("#user_name").val(),
+    recovery_email : $("#user_rec_email").val(),
+    phone : $("#user_phone_no").val(),
     gender : "",
-    birth_date : ""*/
+    birth_date :  $('#date').val()
     
 }
+    
+}else{
+    profileData = {
+    photo_url : file.name,
+  /*  first_name : "",
+    last_name : "",*/
+    username : $("#user_name").val(),
+    recovery_email : $("#user_rec_email").val(),
+    phone : $("#user_phone_no").val(),
+    gender : "",
+    birth_date :  $('#date').val()
+    
+}
+}
+
   usersRef.doc(currentUser.uid)
         .update(profileData)
         .then(function() {
                
-                console.log("Profile updated successfully successfully!");
+                // imageUpload(file);
+     $(".welcome-screen").removeClass("hidden");
+                    $(".first-screen").addClass("hidden");
+      
             });
-      imageUpload(file);
+     
 })
 
 
