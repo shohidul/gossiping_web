@@ -10,8 +10,8 @@ $('#login_btn').on('click', function () {
 
 
 function doLogin() {
-    $("#login_btn").addClass("hidden");
     $("#login_loading").removeClass("hidden");
+    $("#login_btn").addClass("hidden");
     var loginInfo = {
         email: $('#login_email').val(),
         password: $('#login_password').val()
@@ -30,7 +30,7 @@ function doLogin() {
     }
 }
 
- var fbuser;
+
 var provider = new firebase.auth.FacebookAuthProvider();
 $("#login_by_fb").on("click", function(){
 
@@ -45,7 +45,7 @@ $("#login_by_fb").on("click", function(){
    
     
     var token = result.credential.accessToken;
-     fbuser = result.user;
+    var fbuser = result.user;
     var uid = fbuser.uid;
     
     var email = fbuser.email;
