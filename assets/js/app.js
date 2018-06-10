@@ -1,6 +1,5 @@
  var currentUser;
 
-
 /* -------------- get currentUser and his/her friendlist and so ------------------ */
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -30,7 +29,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                 $("#currenUserStatus").text(currentUser.is_active);
                  $("#statusSignal").addClass("green-dot");
 
-                storageRef.child('images/' + currentUser.photo_url).getDownloadURL().then(function (url) {
+                storageRef.child('images/' + doc.data().photo_url).getDownloadURL().then(function (url) {
                     $("#currentUserImg").attr("src", url);
                 });
                 
