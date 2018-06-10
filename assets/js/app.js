@@ -1,5 +1,9 @@
  var currentUser;
  var password = 'my-password';
+function decrypt(message, password){
+        var decrypted = CryptoJS.AES.decrypt(message, password);
+        return decrypted.toString(CryptoJS.enc.Utf8);
+}
 /* -------------- get currentUser and his/her friendlist and so ------------------ */
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -22,7 +26,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                      usersRef.doc(currentUser.uid).update({
                         "is_active": "Online"
                     })                    
-                   $(".welcome-screen").removeClass("hidden");
+                   // $(".welcome-screen").removeClass("hidden");
                 }
                $("#user_profile_name").text(userFullName);
                  $("#currenUsersFullName").text(userFullName);
@@ -202,7 +206,6 @@ function fetchFriendWhomISentRequestsTo() {
      dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", friendshipID).limit(20).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) { 
             
-            
             if (doc.data().from_uid != currentUser.uid) {
                 if(doc.data().fileurl.length >0){ // file send
                            html += '<div class="friend-chat">'
@@ -218,7 +221,7 @@ function fetchFriendWhomISentRequestsTo() {
                         +'<div class="selected-user-info">'
                         + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                         +'<time class="chat-time">'+doc.data().time+'</time></p>'
-                        +'<p class="selected-user-chat">'+CryptoJS.AES.decrypt(doc.data().text, password).decrypted.toString(CryptoJS.enc.Utf8)+'</p></div>'
+                        +'<p class="selected-user-chat">'+decrypt(doc.data().text, password)+'</p></div>'
                         +'</div>';
                 }
          
@@ -240,7 +243,7 @@ function fetchFriendWhomISentRequestsTo() {
                         + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
                         +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
                         + '</p>'
-                        +'<p class="selected-user-chat text-right pull-right">'+CryptoJS.AES.decrypt(doc.data().text, password).decrypted.toString(CryptoJS.enc.Utf8)+'</p></div>'
+                        +'<p class="selected-user-chat text-right pull-right">'+decrypt(doc.data().text, password)+'</p></div>'
                         +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
                         +'</div>';
                 }
@@ -275,7 +278,7 @@ function fetchFriendWhomISentRequestsTo() {
                                 +'<div class="selected-user-info">'
                                 + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                                 +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
-                                +'<p class="selected-user-chat">'+CryptoJS.AES.decrypt(change.doc.data().text, password).decrypted.toString(CryptoJS.enc.Utf8)+'</p></div>'
+                                +'<p class="selected-user-chat">'+decrypt(change.doc.data().text, password)+'</p></div>'
                                 +'</div>';
                      }
                  
@@ -320,7 +323,7 @@ function sendMessage() {
 
         var messageData = {
             from_uid: currentUser.uid,
-            text: encrypted.toString(),
+            text: message,
             to_uid: friendUID,
             date: date,
             day: day,
