@@ -202,7 +202,6 @@ function fetchFriendWhomISentRequestsTo() {
      dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", friendshipID).limit(20).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) { 
             
-            var htmlContent = "";
             if (doc.data().from_uid != currentUser.uid) {
                 if(doc.data().fileurl.length >0){
                            html += '<div class="friend-chat">'
@@ -210,7 +209,7 @@ function fetchFriendWhomISentRequestsTo() {
                         +'<div class="selected-user-info">'
                         + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                         +'<time class="chat-time">'+doc.data().time+'</time></p>'
-                        +'<p class="selected-user-chat">'+doc.data().fileurl+'</p></div>'
+                        +'<img class="card shared-img" src='+doc.data().fileurl+'></div>'
                         +'</div>';
                 }else{
                            html += '<div class="friend-chat">'
@@ -230,7 +229,7 @@ function fetchFriendWhomISentRequestsTo() {
                         + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
                         +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
                         + '</p>'
-                        +'<p class="selected-user-chat text-right pull-right">'+doc.data().fileurl+'</p></div>'
+                        +'<img class="card shared-img pull-right" src='+doc.data().fileurl+'></div>'
                         +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
                         +'</div>';
                 }else{
@@ -267,7 +266,7 @@ function fetchFriendWhomISentRequestsTo() {
                                 +'<div class="selected-user-info">'
                                 + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                                 +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
-                                +'<p class="selected-user-chat">'+change.doc.data().fileurl+'</p></div>'
+                                +'<img class="card shared-img" src='+change.doc.data().fileurl+'></div>'
                                 +'</div>';
                      }else{
                             newMsg = '<div class="friend-chat">'
@@ -345,9 +344,8 @@ function sendMessage() {
                         + '<time class="chat-time">'+time+' </time> &nbsp;&nbsp;'
                         + '<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
                         + '</p>'
-          + '<img id="" class="selected-user-image pull-right" src="'+$("#currentUserImg").attr('src')+'" alt="">'
-                  + '<img id="" class="selected-user-chat text-right pull-right" style="width : 80px; height :80px;" src="'+fileurl+'" alt="">'
-                       
+                        + '<img id="" class="selected-user-image pull-right" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                        +'<img class="card shared-img pull-right" src='+fileurl+'></div>'
                         + '</div>';
 
         $(".chat-screen .body").append(sendhtml);
