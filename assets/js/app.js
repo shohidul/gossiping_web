@@ -1,5 +1,9 @@
- var currentUser;
-
+var currentUser;
+var password = 'my-password';
+function decrypt(message, password){
+        var decrypted = CryptoJS.AES.decrypt(message, password);
+        return decrypted.toString(CryptoJS.enc.Utf8);
+}
 /* -------------- get currentUser and his/her friendlist and so ------------------ */
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -11,27 +15,31 @@ firebase.auth().onAuthStateChanged(function (user) {
                 // ---- current user data
                 currentUser = doc.data();
                 var userFullName = currentUser.first_name + " " + currentUser.last_name;
-                if(currentUser.is_active == "FirstLogin"){
-                    $(".welcome-screen").addClass("hidden");
-                    $(".first-screen").removeClass("hidden");
-                   /* $("#user_profile_name").text(userFullName);*/
+                if(currentUser.is_active == "new"){
+                   // $(".welcome-screen").addClass("hidden");
+                    $(".edit-profile").removeClass("hidden");
                     usersRef.doc(currentUser.uid).update({
                         "is_active": "Online"
                     })
+                    $("#currenUserStatus").text("Online");
                 }else{
                      usersRef.doc(currentUser.uid).update({
                         "is_active": "Online"
-                    })                    
-                   // $(".welcome-screen").removeClass("hidden");
+                    })     
+                    $("#currenUserStatus").text(currentUser.is_active);
+                    //$(".welcome-screen").removeClass("hidden");
                 }
-               $("#user_profile_name").text(userFullName);
+                 $("#user_profile_name").text(userFullName);
                  $("#currenUsersFullName").text(userFullName);
-                $("#currenUserStatus").text(currentUser.is_active);
+               
                  $("#statusSignal").addClass("green-dot");
 
-                storageRef.child('images/' + doc.data().photo_url).getDownloadURL().then(function (url) {
+                if(doc.data().photo_url != ""){
+                 storageRef.child('images/' + doc.data().photo_url).getDownloadURL().then(function (url) {
                     $("#currentUserImg").attr("src", url);
                 });
+                }
+           
                 
                 
                 fetchFriendWhoSentRequests();
@@ -43,8 +51,10 @@ firebase.auth().onAuthStateChanged(function (user) {
                     .onSnapshot(function (snapshot) {
                         if (snapshot.size != 0) {
                             $("#notificationCount").text(snapshot.size);
+                            $("#notification_badge").text(snapshot.size);
                         } else {
                             $("#notificationCount").text("");
+                            $("#notification_badge").text("");
                         }
                         snapshot.docChanges().forEach(function (change) {
                             if (change.type === "added") {
@@ -70,6 +80,8 @@ firebase.auth().onAuthStateChanged(function (user) {
                                                       + '</li>';
 
                                             $(".notification-list").append(searchlisthtml);
+                                            
+                                            $.notify(childData.first_name + " has sent you a request", { title: "Friend Request!" }, { url: url});
 
                                         });
                                     }
@@ -182,6 +194,7 @@ function fetchFriendWhomISentRequestsTo() {
  $(".friend-list").on("click", '.friend', function(e){ 
     if ($('.chat-screen').hasClass("hidden")) {
         $('.welcome-screen').addClass("hidden");
+        $('.first-screen .body').addClass("hidden");
         $('.chat-screen').removeClass("hidden");
     }
 
@@ -199,11 +212,11 @@ function fetchFriendWhomISentRequestsTo() {
 
     $(".chat-screen .body").html("");
     var html = ""; 
-     dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", friendshipID).limit(20).get().then(function(querySnapshot) {
+     dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", friendshipID).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) { 
             
             if (doc.data().from_uid != currentUser.uid) {
-                if(doc.data().fileurl.length >0){
+                if(doc.data().fileurl.length >0){ // file send
                            html += '<div class="friend-chat">'
                         +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
                         +'<div class="selected-user-info">'
@@ -217,12 +230,12 @@ function fetchFriendWhomISentRequestsTo() {
                         +'<div class="selected-user-info">'
                         + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                         +'<time class="chat-time">'+doc.data().time+'</time></p>'
-                        +'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
+                        +'<p class="selected-user-chat">'+decrypt(doc.data().text, password)+'</p></div>'
                         +'</div>';
                 }
          
             } else {
-                if(doc.data().fileurl.length >0){
+                if(doc.data().fileurl.length >0){ // file send
                       html += '<div class="my-chat">'
                         +'<div class="selected-user-info">'
                         + '<p class="text-right">'
@@ -239,7 +252,7 @@ function fetchFriendWhomISentRequestsTo() {
                         + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
                         +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
                         + '</p>'
-                        +'<p class="selected-user-chat text-right pull-right">'+doc.data().text+'</p></div>'
+                        +'<p class="selected-user-chat text-right pull-right">'+decrypt(doc.data().text, password)+'</p></div>'
                         +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
                         +'</div>';
                 }
@@ -260,7 +273,7 @@ function fetchFriendWhomISentRequestsTo() {
                 
                 var newMsg = "";
                 if(change.doc.data().from_uid == $("#friend_uid").val()){
-                     if(change.doc.data().fileurl.length >0){
+                     if(change.doc.data().fileurl.length >0){ // file send
                             newMsg = '<div class="friend-chat">'
                                 +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
                                 +'<div class="selected-user-info">'
@@ -274,7 +287,7 @@ function fetchFriendWhomISentRequestsTo() {
                                 +'<div class="selected-user-info">'
                                 + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                                 +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
-                                +'<p class="selected-user-chat">'+change.doc.data().text+'</p></div>'
+                                +'<p class="selected-user-chat">'+decrypt(change.doc.data().text, password)+'</p></div>'
                                 +'</div>';
                      }
                  
@@ -304,19 +317,31 @@ function fetchFriendWhomISentRequestsTo() {
 /* ------------------- Message Send --------------------*/
 function sendMessage() {
     if($('#chat-box').val() != "" || imgURL.length > 1){
-        var friendUID = $("#friend_uid").val();
-        var friendshipID = $("#friendship_id").val();
-        var message = $('#chat-box').val();
-
         var date = moment().format('LL');
         var day = moment().format('dddd');
         var time = moment().format('LT');
         var fileurl = imgURL;
         var msgtime = Date.now();
+        
+        var message = "";
+        var friendUID = $("#friend_uid").val();
+        var friendshipID = $("#friendship_id").val();
+        
+        var me = $("#currenUsersFullName").text(); 
+        var friend = $("#friend_name").text();
+ 
+        var text = $('#chat-box').val();
+        if ( text.charAt( 0 ) == '/' ) {
+            message = getAction(me, text.slice(1), friend);
+          }else{
+             message = text;
+          }
+                
+        var encrypted = CryptoJS.AES.encrypt(message, password).toString();
 
         var messageData = {
             from_uid: currentUser.uid,
-            text: message,
+            text: encrypted,
             to_uid: friendUID,
             date: date,
             day: day,
@@ -351,7 +376,7 @@ function sendMessage() {
         $(".chat-screen .body").append(sendhtml);
         $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
             
-        }else{
+        }else{ // message send
         var  sendhtml =   '<div class="my-chat">'
                         + '<div class="selected-user-info">'
                         + '<p class="text-right">'
@@ -444,7 +469,8 @@ $("#search_box").on("input", function () {
     });
 });
 
-$("#searchCloseBtn").on("click", function () {
+$("#searchCloseBtn").on("click", function (e) {
+    e.preventDefault();
     $("#searchBtn").removeClass("hidden");
     $(".nav-pill-tabs").removeClass("hidden");
 
@@ -461,6 +487,7 @@ $("#searchCloseBtn").on("click", function () {
  $(".search-list").on("click", '.friend', function (e) {
      if ($('.chat-screen').hasClass("hidden")) {
          $('.welcome-screen').addClass("hidden");
+         $('.first-screen .body').addClass("hidden");
          $('.chat-screen').removeClass("hidden");
      }
 
@@ -518,11 +545,13 @@ $("#add_friend").on("click", function () {
 $(".notification-list").on("click", ".acceptBtn", function () {
     var current_li = $(this).closest("li");
     var request_from = current_li.find(".friendship-uid").val();
-
+    var friendName = current_li.find(".user-full-name").val();
+    var photoURL = current_li.find("#friend_user_image").val();
+    
     dbRef.collection('friendship').doc(request_from).update({
         status: 2
     }).then(function () {
-        console.log("Request accepted!");
+         $.notify(friendName + " has accepted your request !", { title: "Friend Request!" }, { url: photoURL});
         current_li.remove();
     });
 
@@ -578,26 +607,32 @@ $("#btn_image_send").on("click", function(event){
 
 
 function imageUpload(file){
-    console.log("start ........ " + file.name);
-   var uploadTask = storageRef.child('images/' + file.name).put(file);
+   var uploadTask = storageRef.child('images/' + currentUser.uid+".jpg").put(file);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       function(snapshot) {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
+        
         }, function(error) {
                 console.log(error);
         }, function() {
               uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                console.log('File available at', downloadURL);
-                window.location.replace("index.html");
+                $(".edit-profile").addClass("hidden");
+                 $("#currentUserImg").attr("src", downloadURL);
               });
         });
 }
 
 
 
+$("#skip_update_profile").on('click', function(){
+      $(".edit-profile").addClass("hidden");
+})
 $("#update_profile").on('click', function(){
+     $("#skip_update_profile").addClass("hidden");
+     $("#update_profile").addClass("hidden");
+     $("#update_loading").removeClass("hidden");
+ 
     var profileData;
 if(file == ""){
     profileData = {
@@ -613,7 +648,7 @@ if(file == ""){
     
 }else{
     profileData = {
-    photo_url : file.name,
+    photo_url : currentUser.uid+".jpg",
   /*  first_name : "",
     last_name : "",*/
     username : $("#user_name").val(),
@@ -625,15 +660,13 @@ if(file == ""){
 }
 }
 
+
   usersRef.doc(currentUser.uid)
         .update(profileData)
         .then(function() {
                
-                // imageUpload(file);
-     $(".welcome-screen").removeClass("hidden");
-                    $(".first-screen").addClass("hidden");
-      
-            });
+            imageUpload(file);
+         });
      
 })
 
@@ -673,3 +706,39 @@ $('#chat-box').keyup(function (event) {
     }
 });
 */
+
+
+$("#account_settings").on("click", function(){
+    
+   $(".edit-account").removeClass("hidden"); 
+        usersRef.doc(auth.currentUser.uid).get().then(function (doc) {
+            if (doc.exists) {
+                $("#user_first_name").val(doc.data().first_name);
+                $("#user_last_name").val(doc.data().last_name);
+            }
+        });
+});
+
+$("#update_account").on("click", function(){
+   
+    var pw = $("#user_new_password").val();
+    var npw = $("#user_re_new_password").val();
+    
+    if (pw !='' && pw === npw) {
+
+        var user = firebase.auth().currentUser;
+        user.updatePassword(pw).then(function() {
+
+            usersRef.doc(user.uid).update({
+                "first_name": $("#user_first_name").val(),
+                "last_name": $("#user_last_name").val()
+            });
+         
+        }).catch(function(error) {
+          console.log("Password not updated");
+        });
+    }
+    
+    $(".edit-account").addClass("hidden"); 
+});
+

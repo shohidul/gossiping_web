@@ -251,6 +251,10 @@
     .friend:hover{
         background-color: #f5f5f5;
     }
+    
+    .current-user-info{
+        padding-right : 70px;
+    } 
     .current-user-image{
         width: 75px;
         height: 75px;
@@ -406,6 +410,16 @@
         height: 150px !important;
         width: 250px !important;
         object-fit: cover;
+    }
+
+    .color-red{
+        color : red;
+    }
+    .color-green{
+        color : green;
+    }
+    .color-blue{
+        color : blue;
     }
 
     @media (max-width: 998px) {
