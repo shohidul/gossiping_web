@@ -80,6 +80,8 @@ firebase.auth().onAuthStateChanged(function (user) {
                                                       + '</li>';
 
                                             $(".notification-list").append(searchlisthtml);
+                                            
+                                            $.notify(childData.first_name + " has sent you a request", { title: "Friend Request!" }, { url: url});
 
                                         });
                                     }
@@ -210,7 +212,7 @@ function fetchFriendWhomISentRequestsTo() {
 
     $(".chat-screen .body").html("");
     var html = ""; 
-     dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", friendshipID).limit(20).get().then(function(querySnapshot) {
+     dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", friendshipID).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) { 
             
             if (doc.data().from_uid != currentUser.uid) {
@@ -315,17 +317,27 @@ function fetchFriendWhomISentRequestsTo() {
 /* ------------------- Message Send --------------------*/
 function sendMessage() {
     if($('#chat-box').val() != "" || imgURL.length > 1){
-        var friendUID = $("#friend_uid").val();
-        var friendshipID = $("#friendship_id").val();
-        var message = $('#chat-box').val();
-         
-        var encrypted = CryptoJS.AES.encrypt(message, password).toString();
-        
         var date = moment().format('LL');
         var day = moment().format('dddd');
         var time = moment().format('LT');
         var fileurl = imgURL;
         var msgtime = Date.now();
+        
+        var message = "";
+        var friendUID = $("#friend_uid").val();
+        var friendshipID = $("#friendship_id").val();
+        
+        var me = $("#currenUsersFullName").text(); 
+        var friend = $("#friend_name").text();
+ 
+        var text = $('#chat-box').val();
+        if ( text.charAt( 0 ) == '/' ) {
+            message = getAction(me, text.slice(1), friend);
+          }else{
+             message = text;
+          }
+                
+        var encrypted = CryptoJS.AES.encrypt(message, password).toString();
 
         var messageData = {
             from_uid: currentUser.uid,
@@ -533,11 +545,13 @@ $("#add_friend").on("click", function () {
 $(".notification-list").on("click", ".acceptBtn", function () {
     var current_li = $(this).closest("li");
     var request_from = current_li.find(".friendship-uid").val();
-
+    var friendName = current_li.find(".user-full-name").val();
+    var photoURL = current_li.find("#friend_user_image").val();
+    
     dbRef.collection('friendship').doc(request_from).update({
         status: 2
     }).then(function () {
-        console.log("Request accepted!");
+         $.notify(friendName + " has accepted your request !", { title: "Friend Request!" }, { url: photoURL});
         current_li.remove();
     });
 
