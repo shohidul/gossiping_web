@@ -2,6 +2,10 @@
    <div class="main-container">
        <div class="left-side">
             <div class="left-inside-top">
+              <div class="pull-right">
+                <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>
+                <button class=" btn btn-rose btn-just-icon btn-round logout-btn"><i class="material-icons">power_settings_new</i></button>
+              </div>
                <div class="current-user">
                     <img id="currentUserImg" class="current-user-image" src="assets/img/blank-profile.jpeg" alt="">
                     <div class="current-user-info">
@@ -9,9 +13,12 @@
                         <p class="current-user-status"><span id="currenUserStatus"></span> &nbsp; <span id="statusSignal" class="dot"></span></p>
                     </div>
                </div>
+                
                 <ul class="pagination pagination-primary pull-right top-left-btn-group">
                     <li class="page-item">
-                        <a href="javascript:void(0);" class="page-link" id="user_notifications"><i class="material-icons">notifications</i></a>
+                        <a href="javascript:void(0);" class="page-link" id="user_notifications"><i class="material-icons">notifications</i>
+                         <span class="badge badge-pill badge-danger" id="notification_badge"></span>
+                        </a>
                     </li>
                     <li class="page-item">
                         <a href="javascript:void(0);" class="page-link" id="account_settings"><i class="material-icons">settings</i></a>
@@ -94,21 +101,14 @@
        </div>
        
        <div class="right-side">
-           <div class="welcome-screen hidden">
-                <div class="top">
-                    <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
-
-                    <div class="top-right-btn-group pull-right">
-                        <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>
-                        <button class=" btn btn-rose btn-just-icon btn-round logout-btn"><i class="material-icons">power_settings_new</i></button>
-                    </div>
-                </div>
+           <div class="welcome-screen">
+               <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
                 <div class="bottom">
                     <h1>Welcome</h1>
                 </div>
            </div>
-            <div class="first-screen hidden">
-               <div class="top">
+            <div class="first-screen">
+  <!--             <div class="top">
                     <button id="" class="btn btn-primary btn-link side-btn"><i class="material-icons">menu</i></button>
 
                     <div class="top-right-btn-group pull-right">
@@ -116,7 +116,7 @@
                         <button class=" btn btn-rose btn-just-icon btn-round logout-btn"><i class="material-icons">power_settings_new</i></button>
                     </div>
                 </div>
-                <br>
+              -->
                 <div class="body">
              <!--       <div class="card card-profile hidden view-profile">
                         <div class="card-avatar">
@@ -226,7 +226,9 @@
                                      <input type="text" id="date" data-format="DD-MM-YYYY" data-template="D MMM YYYY" name="date" value="09-01-2013">
                                 </div>
                             </div>
-                            <button class="btn btn-info btn-round" id="update_profile">Update</button>
+                            <img src="/assets/img/loading.gif" style="height : 60px;" class="hidden" id="update_loading"> 
+                            <button class="btn btn-round" id="skip_update_profile">Skip</button>
+                             <button class="btn btn-success btn-round" id="update_profile">Update</button>
                         </div>
                     </div>
                     
@@ -270,7 +272,7 @@
                                                 <i class="material-icons">local_phone</i>
                                               </span>
                                             </div>
-                                            <input class="form-control" placeholder="Current Password" type="text" id="user_current_password">
+                                            <input class="form-control" placeholder="Current Password" type="password" id="user_current_password">
                                          </div>
                                      </div>
                                 </div>
@@ -284,7 +286,7 @@
                                                 <i class="material-icons">local_phone</i>
                                               </span>
                                             </div>
-                                            <input class="form-control" placeholder="New Password" type="text" id="user_new_password">
+                                            <input class="form-control" placeholder="New Password" type="password" id="user_new_password">
                                          </div>
                                      </div>
                                 </div>
@@ -296,7 +298,7 @@
                                                 <i class="material-icons">local_phone</i>
                                               </span>
                                             </div>
-                                            <input class="form-control" placeholder="New Password Again" type="text" id="user_re_new_password">
+                                            <input class="form-control" placeholder="New Password Again" type="password" id="user_re_new_password">
                                          </div>
                                      </div>
                                 </div>
@@ -365,4 +367,3 @@
 </script>
 
 <script src="assets/js/app.js"></script>
-<script src="assets/js/account.js"></script>

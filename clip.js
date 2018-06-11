@@ -56,60 +56,8 @@ $("#login_by_fb").on("click", function(){
         var day = moment().format('dddd');
         var time = moment().format('LT');
         var createtime = Date.now();
-
-        var blob = null;
-        var xhr = new XMLHttpRequest(); 
-        xhr.open("GET", photo); 
-        xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
-        xhr.onload = function() 
-        {
-            blob = xhr.response;//xhr.response is now a blob object
-            var filename = uid + ".jpg";
-            var file = new File([blob], filename, type: "images/jpeg");
-             var uploadTask = storageRef.child('images/' + file.name ).put(file);
-
-            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-              function(snapshot) {
-                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                }, function(error) {
-                        console.log(error);
-                }, function() {
-                      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                                   var userData = {
-                                        first_name: firstName,
-                                        last_name: lastName,
-                                        birth_date: "",
-                                        gender: "",
-                                        email: email,
-                                        phone:"",
-                                        address:"",
-                                        recovery_email: "",
-                                        username: "",
-                                        photo_url:downloadURL,
-                                        profile_background_url:"",
-                                        created_at:createtime,
-                                        created_date:date,
-                                        created_day:day,
-                                        created_time:time,
-                                        created_via : "facebook",
-                                        uid: uid,
-                                        is_active:"FirstLogin",
-                                        access_token : token
-
-                                    };
-
-                                  usersRef.doc(uid).set(userData)
-                                            .then(function() {
-                                                 loadPage("pages/app.html");
-                                  })
-
-
-                      });
-                });
-
-        }
-        xhr.send();
+      var img = new Image();
+      img.src = "http://yinoneliraz-001-site1.smarterasp.net/MyPicture.png?time=" + (new Date()).getTime();
 
 
 
