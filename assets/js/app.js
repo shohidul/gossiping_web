@@ -1,5 +1,9 @@
  var currentUser;
-
+ var password = 'my-password';
+function decrypt(message, password){
+        var decrypted = CryptoJS.AES.decrypt(message, password);
+        return decrypted.toString(CryptoJS.enc.Utf8);
+}
 /* -------------- get currentUser and his/her friendlist and so ------------------ */
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -203,7 +207,7 @@ function fetchFriendWhomISentRequestsTo() {
         querySnapshot.forEach(function(doc) { 
             
             if (doc.data().from_uid != currentUser.uid) {
-                if(doc.data().fileurl.length >0){
+                if(doc.data().fileurl.length >0){ // file send
                            html += '<div class="friend-chat">'
                         +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
                         +'<div class="selected-user-info">'
@@ -217,12 +221,12 @@ function fetchFriendWhomISentRequestsTo() {
                         +'<div class="selected-user-info">'
                         + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                         +'<time class="chat-time">'+doc.data().time+'</time></p>'
-                        +'<p class="selected-user-chat">'+doc.data().text+'</p></div>'
+                        +'<p class="selected-user-chat">'+decrypt(doc.data().text, password)+'</p></div>'
                         +'</div>';
                 }
          
             } else {
-                if(doc.data().fileurl.length >0){
+                if(doc.data().fileurl.length >0){ // file send
                       html += '<div class="my-chat">'
                         +'<div class="selected-user-info">'
                         + '<p class="text-right">'
@@ -239,7 +243,7 @@ function fetchFriendWhomISentRequestsTo() {
                         + '<time class="chat-time">'+doc.data().time+' </time> &nbsp;&nbsp;'
                         +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
                         + '</p>'
-                        +'<p class="selected-user-chat text-right pull-right">'+doc.data().text+'</p></div>'
+                        +'<p class="selected-user-chat text-right pull-right">'+decrypt(doc.data().text, password)+'</p></div>'
                         +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
                         +'</div>';
                 }
@@ -260,7 +264,7 @@ function fetchFriendWhomISentRequestsTo() {
                 
                 var newMsg = "";
                 if(change.doc.data().from_uid == $("#friend_uid").val()){
-                     if(change.doc.data().fileurl.length >0){
+                     if(change.doc.data().fileurl.length >0){ // file send
                             newMsg = '<div class="friend-chat">'
                                 +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
                                 +'<div class="selected-user-info">'
@@ -274,7 +278,7 @@ function fetchFriendWhomISentRequestsTo() {
                                 +'<div class="selected-user-info">'
                                 + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
                                 +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
-                                +'<p class="selected-user-chat">'+change.doc.data().text+'</p></div>'
+                                +'<p class="selected-user-chat">'+decrypt(change.doc.data().text, password)+'</p></div>'
                                 +'</div>';
                      }
                  
@@ -307,7 +311,10 @@ function sendMessage() {
         var friendUID = $("#friend_uid").val();
         var friendshipID = $("#friendship_id").val();
         var message = $('#chat-box').val();
-
+         
+          var encrypted = CryptoJS.AES.encrypt(message, password);
+          console.log(encrypted.toString());
+        
         var date = moment().format('LL');
         var day = moment().format('dddd');
         var time = moment().format('LT');
@@ -351,7 +358,7 @@ function sendMessage() {
         $(".chat-screen .body").append(sendhtml);
         $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
             
-        }else{
+        }else{ // message send
         var  sendhtml =   '<div class="my-chat">'
                         + '<div class="selected-user-info">'
                         + '<p class="text-right">'
@@ -673,3 +680,7 @@ $('#chat-box').keyup(function (event) {
     }
 });
 */
+
+
+
+
