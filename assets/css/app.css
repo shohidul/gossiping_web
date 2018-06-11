@@ -412,6 +412,16 @@
         object-fit: cover;
     }
 
+    .color-red{
+        color : red;
+    }
+    .color-green{
+        color : green;
+    }
+    .color-blue{
+        color : blue;
+    }
+
     @media (max-width: 998px) {
         .left-side{
             transform: translateX(-100%);
