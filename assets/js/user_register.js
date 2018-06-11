@@ -35,7 +35,7 @@ function doRegister(){
             created_time:time,
             created_via : "web",
             uid:"",
-            is_active:"FirstLogin",
+            is_active:"new",
             access_token : ""
           
     };

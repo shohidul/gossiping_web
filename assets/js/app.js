@@ -1,5 +1,5 @@
- var currentUser;
- var password = 'my-password';
+var currentUser;
+var password = 'my-password';
 function decrypt(message, password){
         var decrypted = CryptoJS.AES.decrypt(message, password);
         return decrypted.toString(CryptoJS.enc.Utf8);
@@ -15,27 +15,31 @@ firebase.auth().onAuthStateChanged(function (user) {
                 // ---- current user data
                 currentUser = doc.data();
                 var userFullName = currentUser.first_name + " " + currentUser.last_name;
-                if(currentUser.is_active == "FirstLogin"){
-                    $(".welcome-screen").addClass("hidden");
-                    $(".first-screen").removeClass("hidden");
-                   /* $("#user_profile_name").text(userFullName);*/
+                if(currentUser.is_active == "new"){
+                   // $(".welcome-screen").addClass("hidden");
+                    $(".edit-profile").removeClass("hidden");
                     usersRef.doc(currentUser.uid).update({
                         "is_active": "Online"
                     })
+                    $("#currenUserStatus").text("Online");
                 }else{
                      usersRef.doc(currentUser.uid).update({
                         "is_active": "Online"
-                    })                    
-                   // $(".welcome-screen").removeClass("hidden");
+                    })     
+                    $("#currenUserStatus").text(currentUser.is_active);
+                    //$(".welcome-screen").removeClass("hidden");
                 }
-               $("#user_profile_name").text(userFullName);
+                 $("#user_profile_name").text(userFullName);
                  $("#currenUsersFullName").text(userFullName);
-                $("#currenUserStatus").text(currentUser.is_active);
+               
                  $("#statusSignal").addClass("green-dot");
 
-                storageRef.child('images/' + doc.data().photo_url).getDownloadURL().then(function (url) {
+                if(doc.data().photo_url != ""){
+                 storageRef.child('images/' + doc.data().photo_url).getDownloadURL().then(function (url) {
                     $("#currentUserImg").attr("src", url);
                 });
+                }
+           
                 
                 
                 fetchFriendWhoSentRequests();
@@ -47,8 +51,10 @@ firebase.auth().onAuthStateChanged(function (user) {
                     .onSnapshot(function (snapshot) {
                         if (snapshot.size != 0) {
                             $("#notificationCount").text(snapshot.size);
+                            $("#notification_badge").text(snapshot.size);
                         } else {
                             $("#notificationCount").text("");
+                            $("#notification_badge").text("");
                         }
                         snapshot.docChanges().forEach(function (change) {
                             if (change.type === "added") {
@@ -186,6 +192,7 @@ function fetchFriendWhomISentRequestsTo() {
  $(".friend-list").on("click", '.friend', function(e){ 
     if ($('.chat-screen').hasClass("hidden")) {
         $('.welcome-screen').addClass("hidden");
+        $('.first-screen .body').addClass("hidden");
         $('.chat-screen').removeClass("hidden");
     }
 
@@ -312,8 +319,7 @@ function sendMessage() {
         var friendshipID = $("#friendship_id").val();
         var message = $('#chat-box').val();
          
-          var encrypted = CryptoJS.AES.encrypt(message, password);
-          console.log(encrypted.toString());
+        var encrypted = CryptoJS.AES.encrypt(message, password).toString();
         
         var date = moment().format('LL');
         var day = moment().format('dddd');
@@ -323,7 +329,7 @@ function sendMessage() {
 
         var messageData = {
             from_uid: currentUser.uid,
-            text: message,
+            text: encrypted,
             to_uid: friendUID,
             date: date,
             day: day,
@@ -451,7 +457,8 @@ $("#search_box").on("input", function () {
     });
 });
 
-$("#searchCloseBtn").on("click", function () {
+$("#searchCloseBtn").on("click", function (e) {
+    e.preventDefault();
     $("#searchBtn").removeClass("hidden");
     $(".nav-pill-tabs").removeClass("hidden");
 
@@ -468,6 +475,7 @@ $("#searchCloseBtn").on("click", function () {
  $(".search-list").on("click", '.friend', function (e) {
      if ($('.chat-screen').hasClass("hidden")) {
          $('.welcome-screen').addClass("hidden");
+         $('.first-screen .body').addClass("hidden");
          $('.chat-screen').removeClass("hidden");
      }
 
@@ -585,26 +593,32 @@ $("#btn_image_send").on("click", function(event){
 
 
 function imageUpload(file){
-    console.log("start ........ " + file.name);
-   var uploadTask = storageRef.child('images/' + file.name).put(file);
+   var uploadTask = storageRef.child('images/' + currentUser.uid+".jpg").put(file);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       function(snapshot) {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
+        
         }, function(error) {
                 console.log(error);
         }, function() {
               uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                console.log('File available at', downloadURL);
-                window.location.replace("index.html");
+                $(".edit-profile").addClass("hidden");
+                 $("#currentUserImg").attr("src", downloadURL);
               });
         });
 }
 
 
 
+$("#skip_update_profile").on('click', function(){
+      $(".edit-profile").addClass("hidden");
+})
 $("#update_profile").on('click', function(){
+     $("#skip_update_profile").addClass("hidden");
+     $("#update_profile").addClass("hidden");
+     $("#update_loading").removeClass("hidden");
+ 
     var profileData;
 if(file == ""){
     profileData = {
@@ -620,7 +634,7 @@ if(file == ""){
     
 }else{
     profileData = {
-    photo_url : file.name,
+    photo_url : currentUser.uid+".jpg",
   /*  first_name : "",
     last_name : "",*/
     username : $("#user_name").val(),
@@ -632,15 +646,13 @@ if(file == ""){
 }
 }
 
+
   usersRef.doc(currentUser.uid)
         .update(profileData)
         .then(function() {
                
-                // imageUpload(file);
-     $(".welcome-screen").removeClass("hidden");
-                    $(".first-screen").addClass("hidden");
-      
-            });
+            imageUpload(file);
+         });
      
 })
 
@@ -682,5 +694,37 @@ $('#chat-box').keyup(function (event) {
 */
 
 
+$("#account_settings").on("click", function(){
+    
+   $(".edit-account").removeClass("hidden"); 
+        usersRef.doc(auth.currentUser.uid).get().then(function (doc) {
+            if (doc.exists) {
+                $("#user_first_name").val(doc.data().first_name);
+                $("#user_last_name").val(doc.data().last_name);
+            }
+        });
+});
 
+$("#update_account").on("click", function(){
+   
+    var pw = $("#user_new_password").val();
+    var npw = $("#user_re_new_password").val();
+    
+    if (pw !='' && pw === npw) {
+
+        var user = firebase.auth().currentUser;
+        user.updatePassword(pw).then(function() {
+
+            usersRef.doc(user.uid).update({
+                "first_name": $("#user_first_name").val(),
+                "last_name": $("#user_last_name").val()
+            });
+         
+        }).catch(function(error) {
+          console.log("Password not updated");
+        });
+    }
+    
+    $(".edit-account").addClass("hidden"); 
+});
 

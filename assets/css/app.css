@@ -251,6 +251,10 @@
     .friend:hover{
         background-color: #f5f5f5;
     }
+    
+    .current-user-info{
+        padding-right : 70px;
+    } 
     .current-user-image{
         width: 75px;
         height: 75px;
