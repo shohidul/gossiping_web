@@ -22,8 +22,8 @@
     $("#friend_image").attr("src", friendPhotoUrl);
 
     $(".chat-screen .body").html("");
-    var html = ""; 
-     dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", friendshipID).get().then(function(querySnapshot) {
+/*    var html = ""; 
+     dbRef.collection('messages').orderBy("msgtime", "desc").where("friendship_id", "==", friendshipID).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) { 
             
             if (doc.data().from_uid != currentUser.uid) {
@@ -74,50 +74,63 @@
          $(".chat-screen .body").html(html); 
          $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000);
     });
- 
+ */
      
 /*-----start---------------get realtime messages data-----------------------------*/ 
+    var html = ""; 
     var q = dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", $("#friendship_id").val());
      q.onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
-           // if (change.doc.type === "added") { 
                 
-                var newMsg = "";
-                if(change.doc.data().from_uid == $("#friend_uid").val()){
-                     if(change.doc.data().fileurl.length >0){ // file send
-                            newMsg = '<div class="friend-chat">'
-                                +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
-                                +'<div class="selected-user-info">'
-                                + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
-                                +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
-                                +'<img class="card shared-img" src='+change.doc.data().fileurl+'></div>'
-                                +'</div>';
-                     }else{
-                            newMsg = '<div class="friend-chat">'
-                                +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
-                                +'<div class="selected-user-info">'
-                                + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
-                                +'<time class="chat-time">'+change.doc.data().time+'</time></p>'
-                                +'<p class="selected-user-chat">'+decrypt(change.doc.data().text, password)+'</p></div>'
-                                +'</div>';
-                     }
-                 
-                 }/*else if(change.doc.data().to_uid == currentUser.uid){
-                    newMsg = '<div class="my-chat">'
-                            +'<div class="selected-user-info">'
-                            + '<p class="text-right">'
-                            + '<time class="chat-time">'+change.doc.data().time+' </time> &nbsp;&nbsp;'
-                            +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
-                            + '</p>'
-                            +'<p class="selected-user-chat text-right pull-right">'+change.doc.data().text+"<br>"+friendshipID+'</p></div>'
-                            +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
-                            +'</div>';
-                }*/
-                $(".chat-screen .body").append(newMsg);
-                
-            //}
+            var doc = change.doc.data();
+            
+            if (doc.from_uid != currentUser.uid) {
+                if(doc.fileurl.length >0){ // file send
+                           html += '<div class="friend-chat">'
+                        +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                        +'<div class="selected-user-info">'
+                        + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                        +'<time class="chat-time">'+doc.time+'</time></p>'
+                        +'<img class="card shared-img" src='+doc.fileurl+'></div>'
+                        +'</div>';
+                }else{
+                         html += '<div class="friend-chat">'
+                        +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                        +'<div class="selected-user-info">'
+                        + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                        +'<time class="chat-time">'+doc.time+'</time></p>'
+                        +'<p class="selected-user-chat">'+decrypt(doc.text, password)+'</p></div>'
+                        +'</div>';
+                }
+         
+            } else {
+                if(doc.fileurl.length >0){ // file send
+                      html += '<div class="my-chat">'
+                        +'<div class="selected-user-info">'
+                        + '<p class="text-right">'
+                        + '<time class="chat-time">'+doc.time+' </time> &nbsp;&nbsp;'
+                        +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                        + '</p>'
+                        +'<img class="card shared-img pull-right" src='+doc.fileurl+'></div>'
+                        +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                        +'</div>';
+                }else{
+                      html += '<div class="my-chat">'
+                        +'<div class="selected-user-info">'
+                        + '<p class="text-right">'
+                        + '<time class="chat-time">'+doc.time+' </time> &nbsp;&nbsp;'
+                        +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                        + '</p>'
+                        +'<p class="selected-user-chat text-right pull-right">'+decrypt(doc.text, password)+'</p></div>'
+                        +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                        +'</div>';
+                }
+              
+            }
+          
         });
-         $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 1000); 
+         $(".chat-screen .body").html(html); 
+         $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 0); 
     });
     /*-----end---------------get realtime messages data-----------------------------*/     
         
