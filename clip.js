@@ -65,3 +65,8 @@ $("#login_by_fb").on("click", function(){
 
   });
 })
+
+
+<!--    <div id="content_loading">
+             <img src="/assets/img/content_loading.gif" id="fb_login_loading">
+    </div>-->
