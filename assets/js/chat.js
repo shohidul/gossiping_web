@@ -1,6 +1,9 @@
 
 /* -------------- Friend onclick get chating data with this friend------------------ */
-
+function decrypt(message, password){
+        var decrypted = CryptoJS.AES.decrypt(message, password);
+        return decrypted.toString(CryptoJS.enc.Utf8);
+}
  $(".friend-list").on("click", '.friend', function(e){ 
     if ($('.chat-screen').hasClass("hidden")) {
         $('.welcome-screen').addClass("hidden");
@@ -9,6 +12,7 @@
     }
 
     var friendUID = $(this).find(".user-uid").val();
+    var chatStatus = $(this).find(".chat-status").val();
     var friendshipID = $(this).find(".friendship-id").val();
     var friendName = $(this).find(".user-full-name").text();
     var friendStatus = $(this).find(".user-status").val();
@@ -19,8 +23,96 @@
     $("#friend_uid").val(friendUID);
     $("#friendship_id").val(friendshipID);
     $("#chat_flag").val("p2p");
+    $("#chat_status").val(chatStatus);
+    console.log( $("#chat_status").val());
     $("#friend_image").attr("src", friendPhotoUrl);
+     
+    $(".chat-screen .body").html("");
+ 
+/*-----start---------------get realtime messages data-----------------------------*/ 
+    var html = ""; 
+    var q = dbRef.collection('messages').orderBy("msgtime").where("friendship_id", "==", $("#friendship_id").val());
+     q.onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+                
+            var doc = change.doc.data();
+            
+            if (doc.from_uid != currentUser.uid) {
+                if(doc.fileurl.length >0){ // file send
+                           html += '<div class="friend-chat">'
+                        +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                        +'<div class="selected-user-info">'
+                        + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                        +'<time class="chat-time">'+doc.time+'</time></p>'
+                        +'<img class="card shared-img" src='+doc.fileurl+'></div>'
+                        +'</div>';
+                }else{
+                         html += '<div class="friend-chat">'
+                        +'<img id="" class="selected-user-image" src="'+friendPhotoUrl+'" alt="">'
+                        +'<div class="selected-user-info">'
+                        + '<p id=""><span class="selected-user-full-name">'+friendName+'</span>&nbsp;&nbsp;'
+                        +'<time class="chat-time">'+doc.time+'</time></p>'
+                        +'<p class="selected-user-chat">'+decrypt(doc.text, password)+'</p></div>'
+                        +'</div>';
+                }
+         
+            } else {
+                if(doc.fileurl.length >0){ // file send
+                      html += '<div class="my-chat">'
+                        +'<div class="selected-user-info">'
+                        + '<p class="text-right">'
+                        + '<time class="chat-time">'+doc.time+' </time> &nbsp;&nbsp;'
+                        +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                        + '</p>'
+                        +'<img class="card shared-img pull-right" src='+doc.fileurl+'></div>'
+                        +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                        +'</div>';
+                }else{
+                      html += '<div class="my-chat">'
+                        +'<div class="selected-user-info">'
+                        + '<p class="text-right">'
+                        + '<time class="chat-time">'+doc.time+' </time> &nbsp;&nbsp;'
+                        +'<span class="selected-user-full-name">'+$("#currenUsersFullName").text()+'</span>'
+                        + '</p>'
+                        +'<p class="selected-user-chat text-right pull-right">'+decrypt(doc.text, password)+'</p></div>'
+                        +'<img id="" class="selected-user-image" src="'+$("#currentUserImg").attr('src')+'" alt="">'
+                        +'</div>';
+                }
+              
+            }
+          
+        });
+         $(".chat-screen .body").html(html); 
+         $(".chat-screen .body").animate({scrollTop: $(".chat-screen .body").prop("scrollHeight")}, 0); 
+    });
+    /*-----end---------------get realtime messages data-----------------------------*/     
+        
+    
+});
 
+ $(".recent-list").on("click", '.friend', function(e){ 
+    if ($('.chat-screen').hasClass("hidden")) {
+        $('.welcome-screen').addClass("hidden");
+        $('.first-screen .body').addClass("hidden");
+        $('.chat-screen').removeClass("hidden");
+    }
+
+    var friendUID = $(this).find(".user-uid").val();
+    var chatStatus = $(this).find(".chat-status").val();
+    var friendshipID = $(this).find(".friendship-id").val();
+    var friendName = $(this).find(".user-full-name").text();
+    var friendStatus = $(this).find(".user-status").val();
+    var friendPhotoUrl = $(this).find(".user-image").attr('src');
+
+    $("#friend_name").text(friendName);
+    $("#friend_status").text(friendStatus);
+    $("#friend_uid").val(friendUID);
+    $("#friendship_id").val(friendshipID);
+    $("#chat_flag").val("p2p");
+    $("#chat_status").val(chatStatus);
+    console.log( $("#chat_status").val());
+    $("#friend_image").attr("src", friendPhotoUrl);
+     
     $(".chat-screen .body").html("");
 /*    var html = ""; 
      dbRef.collection('messages').orderBy("msgtime", "desc").where("friendship_id", "==", friendshipID).get().then(function(querySnapshot) {
@@ -137,7 +229,6 @@
     
 });
 
-
 /* ------------------- Message Send --------------------*/
 function sendMessage() {
     if($('#chat-box').val() != "" || imgURL.length > 1){
@@ -179,6 +270,14 @@ function sendMessage() {
             .set(messageData)
             .then(function () {
                 console.log("Message Sent");
+                if( $("#chat_status").val() == 0){
+                       dbRef.collection('friendship').doc(friendshipID).update(
+                        {chat : 1}
+                       )
+                        .then(function() {
+                            console.log("frndship 0 to 1") ;   
+                        })
+                }
             });
 
 
@@ -242,7 +341,6 @@ var sendFile = function(event) {
 
 $("#add_friend").on("click", function () {
     var reqUID = $("#friend_uid").val();
-
     var date = moment().format('LL');
     var day = moment().format('dddd');
     var time = moment().format('LT');
@@ -255,7 +353,8 @@ $("#add_friend").on("click", function () {
         day: day,
         time: time,
         timestamp: timestamp,
-        status: 1
+        status: 1,
+        chat: 0
     }
 
     dbRef.collection('friendship').doc()
@@ -276,7 +375,7 @@ $(".notification-list").on("click", ".acceptBtn", function () {
     dbRef.collection('friendship').doc(request_from).update({
         status: 2
     }).then(function () {
-         $.notify(friendName + " has accepted your request !", { title: "Friend Request!" }, { url: photoURL});
+        // $.notify(friendName + " has accepted your request !", { title: "Friend Request!" }, { url: photoURL});
         current_li.remove();
     });
 

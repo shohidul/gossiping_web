@@ -13,6 +13,7 @@ if(file == ""){
   /*  first_name : "",
     last_name : "",*/
     username : $("#user_name").val(),
+    mood : $("#user_mood").val(),
     recovery_email : $("#user_rec_email").val(),
     phone : $("#user_phone_no").val(),
     gender : "",
@@ -38,7 +39,7 @@ if(file == ""){
   usersRef.doc(currentUser.uid)
         .update(profileData)
         .then(function() {
-               
+            $("#currenUserStatus").text(profileData.mood);   
             imageUpload(file);
          });
      

@@ -5,10 +5,6 @@
    <div class="main-container hidden">
        <div class="left-side">
             <div class="left-inside-top">
-              <div class="pull-right">
-                <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>
-                <button class=" btn btn-rose btn-just-icon btn-round logout-btn"><i class="material-icons">power_settings_new</i></button>
-              </div>
                <div class="current-user">
                     <img id="currentUserImg" class="current-user-image" src="assets/img/blank-profile.jpeg" alt="">
                     <div class="current-user-info">
@@ -25,6 +21,11 @@
                     </li>
                     <li class="page-item">
                         <a href="javascript:void(0);" class="page-link" id="account_settings"><i class="material-icons">settings</i></a>
+                    </li>  
+                    <li class="page-item">
+                         <a href="javascript:void(0);" class="page-link logout-btn" ><i class="material-icons">power_settings_new</i></a>
+                        
+                      <!--    <button class=" btn btn-rose btn-just-icon btn-round logout-btn"><i class="material-icons">power_settings_new</i></button>-->
                     </li>
                     <!--<li class="page-item">
                         <a href="javascript:void(0);" class="page-link">6<div class="ripple-container"></div></a>
@@ -53,28 +54,36 @@
                
                <div class="nav-pill-tabs">
                    
-                    <ul class="nav nav-pills nav-pills-rose">
+                    <ul class="nav nav-pills nav-pills-rose" style="padding-left: 50px;">
                         <li class="nav-item">
-                            <a class="nav-link active show" href="#pill1" data-toggle="tab">Friends</a>
+                            <!--<a class="nav-link active show" href="#pill1" data-toggle="tab">Friends</a>-->
+                            <button href="#pill1" data-toggle="tab" class=" btn btn-rose btn-just-icon btn-round">
+                                 <i class="material-icons" style="padding: 0">forum</i>
+                            </button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#pill2" data-toggle="tab">
-                                 Notific 
-                                <span class="badge badge-pill badge-info" id="notificationCount"></span>
-                            </a>
+                        <li class="nav-item"> 
+                            <button href="#pill2" data-toggle="tab" class=" btn btn-rose btn-just-icon btn-round add-btn">
+                                 <i class="material-icons" style="padding: 0">people</i>
+                            </button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#pill3" data-toggle="tab">Channel</a>
+                         <li class="nav-item"> 
+                            <button href="#pill3" data-toggle="tab" class=" btn btn-rose btn-just-icon btn-round add-btn">
+                                 <i class="material-icons" style="padding: 0">group_work</i>
+                            </button>
+                        </li>
+                        <li class="nav-item"> 
+                            <button href="#pill4" data-toggle="tab" class=" btn btn-rose btn-just-icon btn-round add-btn">
+                                 <i class="material-icons" style="padding: 0">language</i>
+                            </button>
                         </li>
                     </ul>
                     <div class="tab-content tab-space">
                         <div class="tab-pane active show" id="pill1">
-                            <ul class="friend-list">
+                            <ul class="recent-list">
                             </ul>
                         </div>
                         <div class="tab-pane" id="pill2">
-                            <ul class="notification-list">
-                                
+                            <ul class="friend-list">
                             </ul>
                         </div>
                         <div class="tab-pane" id="pill3">
@@ -95,6 +104,24 @@
                                 
                             </ul>
                         </div>
+                         <div class="tab-pane" id="pill4">
+                           <!-- <ul class="global-list">
+                            </ul>-->
+                            <ul class="notification-list">
+                                
+                            </ul>
+                        </div>
+                        
+                        
+                        
+                      <!--    <a class="nav-link" href="#pill2" data-toggle="tab">
+                                 Notific 
+                                <span class="badge badge-pill badge-info" id="notificationCount"></span>
+                            </a>   
+
+                            <ul class="notification-list">
+                                
+                            </ul>-->
                     </div>
                 </div>
                 
@@ -145,6 +172,21 @@
                         <div class="card-body ">
                             <h6 class="card-category text-gray">Update your details</h6>
                             <h4 class="card-title" id="user_profile_name"></h4>
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group bmd-form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                      <span class="input-group-text">
+                                                        <i class="material-icons">face</i>
+                                                      </span>
+                                                    </div>
+                                                    <input class="form-control" placeholder="How's your mood ?" type="text" id="user_mood">
+                                                 </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                         <div class="col-md-6">
                                               <div class="form-group bmd-form-group">
@@ -322,10 +364,11 @@
                         <input type="hidden" id="friendship_id"/>
                          <input type="hidden" id="channel_id"/>
                         <input type="hidden" id="chat_flag"/>
+                        <input type="hidden" id="chat_status"/>
                         <div class="selected-user-info"><p id="friend_name" class="selected-user-full-name">Friend Name</p><p class="selected-user-status"><span id="friend_status">Active <span class="green-dot"></span></span></p></div>
                    </div>
                     <div class="top-right-btn-group pull-right">
-                        <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>
+                 <!--       <button id="" class=" btn btn-rose btn-just-icon btn-round refresh-btn"><i class="material-icons">cached</i></button>-->
                         <button class=" btn btn-rose btn-just-icon btn-round logout-btn"><i class="material-icons">power_settings_new</i></button>
                     </div>
                     <div class="top-right-btn-group pull-right hidden">
@@ -354,17 +397,13 @@
         $(".right-side").toggleClass("open");
         $(".left-side").toggleClass("open");
     })
-    
-    $(".refresh-btn").on("click", function(){
-        $('#mainContent').load("pages/app.html");
-    })
+
     $('#date').combodate({
         minYear: 1975,
         maxYear: 2018
     }); 
 
 </script>
-
 <script src="assets/js/app.js"></script>
 <script src="assets/js/profile.js"></script>
 <script src="assets/js/chat.js"></script>
