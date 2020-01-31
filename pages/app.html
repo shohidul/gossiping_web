@@ -369,8 +369,12 @@
                         <div class="selected-user-info"><p id="friend_name" class="selected-user-full-name">Friend Name</p><p class="selected-user-status"><span id="friend_status">Active <span class="green-dot"></span></span></p></div>
                    </div>
                     <div class="top-right-btn-group pull-right">
-                 <button id="" class=" btn btn-rose btn-just-icon btn-round call-btn"><i class="material-icons">call</i></button>
-                  <button id="" class=" btn btn-rose btn-just-icon btn-round video-call-btn"><i class="material-icons">video_call</i></button>
+                <input type="file" accept="image/*" class="form-control-file border hidden" id="sentImage" onchange="sendFile(event)"/>
+                 <button class="btn btn-fab btn-round btn-primary" id="btn_image_send">
+                   <i class="material-icons">attach_file</i>
+                 </button>
+                <!-- <button id="" class=" btn btn-rose btn-just-icon btn-round call-btn"><i class="material-icons">call</i></button>
+                  <button id="" class=" btn btn-rose btn-just-icon btn-round video-call-btn"><i class="material-icons">video_call</i></button>-->
                         <button class=" btn btn-rose btn-just-icon btn-round logout-btn"><i class="material-icons">power_settings_new</i></button>
                     </div>
                     <div class="top-right-btn-group pull-right hidden">
@@ -383,10 +387,7 @@
                     <textarea name="" id="chat-box" cols="30" rows="10"></textarea>
                    
    
-                <input type="file" accept="image/*" class="form-control-file border hidden" id="sentImage" onchange="sendFile(event)"/>
-                 <button class="btn btn-fab btn-round btn-primary" id="btn_image_send">
-                   <i class="material-icons">attach_file</i>
-                 </button>
+                
                     <button id="send_btn" class=" btn btn-rose btn-just-icon btn-round send-btn"><i class="material-icons">send</i></button>
                 </div>
            </div>

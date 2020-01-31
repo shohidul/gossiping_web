@@ -12,14 +12,15 @@ function loadPageByJS(buttonID, pageURL){
 
 auth.onAuthStateChanged(function (user) {
     if (user) {
-        loadPage("pages/app.html");
+       
+        
         usersRef.doc(user.uid).get().then(function (doc) {
 
             if (doc.exists) {
-                
+                 loadPage("pages/app.html");
                 // ---- current user data
                 currentUser = doc.data();
-                var userFullName = currentUser.first_name + " " + currentUser.last_name;
+                var userFullName = currentUser.first_name;
                 if(currentUser.is_active == "new"){
                     $(".welcome-screen").addClass("hidden");
                     $(".edit-profile").removeClass("hidden");

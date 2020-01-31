@@ -21,7 +21,7 @@ function doLogin() {
 
         auth.signInWithEmailAndPassword(loginInfo.email, loginInfo.password)
             .then(function (authData) {
-                loadPage("pages/app.html");
+            //loadPage("pages/app.html");
             }).catch(function (error) {
                   $("#login_btn").removeClass("hidden");
                   $("#login_loading").addClass("hidden");
